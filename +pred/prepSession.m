@@ -3,11 +3,14 @@ function D = prepSession(D, opts)
     if nargin < 2
         opts = struct();
     end
-    defopts = struct('mapNm', 'fDecoder', 'thetaNm', 'thetas', ...
-        'velNm', 'vel', 'velNextNm', 'velNext', ...
+    defopts = struct('useIme', false, 'mapNm', 'fDecoder', ...
+        'thetaNm', 'thetas', 'velNm', 'vel', 'velNextNm', 'velNext', ...
         'trainBlk', 1, 'testBlk', 2, 'trainProp', 0.5, ...
         'fieldsToAdd', {});
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
+    if opts.useIme
+        opts = replaceWithImeFields(opts);
+    end
     
     Tr = D.blocks(opts.trainBlk);
     Te = D.blocks(opts.testBlk);
@@ -21,6 +24,13 @@ function D = prepSession(D, opts)
     D.train = prepToFit(Tr, ixTr, opts.trainBlk, opts);
     D.test = prepToFit(Te, ixTe, opts.testBlk, opts);
 
+end
+
+function opts = replaceWithImeFields(opts)
+    opts.mapNm = 'fImeDecoder';
+    opts.velNm = 'velIme';
+    opts.velNextNm = 'velNextIme';
+    opts.thetaNm = 'thetasIme';
 end
 
 function ixTr = splitTrainAndTest(B, opts)
