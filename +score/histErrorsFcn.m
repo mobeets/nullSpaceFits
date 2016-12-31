@@ -1,6 +1,6 @@
 function errs = histErrorsFcn(YNcs, YN0, gs)
     % make histograms
-    Hs = score.histsFcn({YN0, YNcs}, gs, false);
+    Hs = score.histsFcn([YN0; YNcs], gs, false);
     warning('Should compare results putting true above for hist error');
     H0 = Hs{1}; Hcs = Hs(2:end);
     
@@ -14,7 +14,7 @@ function errs = histErrorsFcn(YNcs, YN0, gs)
         curerrs = nan(numel(grps), ndims);
         for jj = 1:numel(grps)
             for kk = 1:ndims
-                curerrs(jj,kk) = histErrorFcn(Hc{jj,kk}, H0{jj,kk});
+                curerrs(jj,kk) = histErrorFcn(Hc{jj}(:,kk), H0{jj}(:,kk));
             end
         end
         errs(ii) = nanmean(curerrs(:));

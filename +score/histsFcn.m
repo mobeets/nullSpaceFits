@@ -8,15 +8,15 @@ function [Hs, Xs] = histsFcn(Ys, gs, useFirstForRange)
     if nargin < 3
         useFirstForRange = false;
     end
-    nbins = score.optimalBinCount(Ys{1}, gs, false);
-    Xs = getHistRange(Ys, nbins, useFirstForRange);
+    nbins = score.optimalBinCount(Ys{1}, gs);
+    Xs = getHistRange(Ys, nbins, gs, useFirstForRange);
     Hs = cell(numel(Ys),1);
     for ii = 1:numel(Ys)
-        Hs{ii} = score.marginalDist(Ys{ii}, gs, Xs);
+        Hs{ii} = score.marginalHist(Ys{ii}, gs, Xs);
     end
 end
 
-function getHistRange(Ys, nbins, useFirstForRange)
+function Xs = getHistRange(Ys, nbins, gs, useFirstForRange)
     grps = sort(unique(gs));
     ngrps = numel(grps);
     nfeats = size(Ys{1},2);

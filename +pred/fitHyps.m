@@ -18,19 +18,15 @@ function F = fitHyps(D, hyps)
 
     % save only the data critical for scoring
     F.datestr = D.datestr;
-    F.train.latents = D.train.latents;
-    F.train.NB = D.train.NB;
-    F.train.RB = D.train.RB;
-    F.test.latents = D.test.latents;
-    F.test.NB = D.test.NB;
-    F.test.RB = D.test.RB;
+    F.train = D.train;
+    F.test = D.test;
     
     % fit all hyp predictions
     for ii = 1:numel(hyps)
-        F.fits(ii).name = hyps.name;
-        F.fits(ii).opts = hyps.opts;
-        F.fits(ii).latents = hyps.fitFcn(D.train, D.test, ...
-            D.simpleData.nullDecoder, hyps.opts);
+        F.fits(ii).name = hyps(ii).name;
+        F.fits(ii).opts = hyps(ii).opts;
+        F.fits(ii).latents = hyps(ii).fitFcn(D.train, D.test, ...
+            D.simpleData.nullDecoder, hyps(ii).opts);
     end
     
 end

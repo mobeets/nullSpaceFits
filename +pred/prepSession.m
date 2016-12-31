@@ -4,7 +4,9 @@ function D = prepSession(D, opts)
         opts = struct();
     end
     defopts = struct('mapNm', 'fDecoder', 'thetaNm', 'thetas', ...
-        'velNm', 'vel', 'trainBlk', 1, 'testBlk', 2, 'trainProp', 0.5);
+        'velNm', 'vel', 'velNextNm', 'velNext', ...
+        'trainBlk', 1, 'testBlk', 2, 'trainProp', 0.5, ...
+        'fieldsToAdd', {});
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     Tr = D.blocks(opts.trainBlk);
@@ -13,11 +15,11 @@ function D = prepSession(D, opts)
         ixTr = splitTrainAndTest(Tr, opts);
         ixTe = ~ixTr;
     else
-        ixTr = true(size(Tr.time,1),1);
-        ixTe = true(size(Te.time,1),1);
+        ixTr = true(numel(Tr.time),1);
+        ixTe = true(numel(Te.time),1);
     end
-    D.train = prepToFit(Tr, ixTr, opts);
-    D.test = prepToFit(Te, ixTe, opts);
+    D.train = prepToFit(Tr, ixTr, opts.trainBlk, opts);
+    D.test = prepToFit(Te, ixTe, opts.testBlk, opts);
 
 end
 
@@ -30,7 +32,7 @@ function ixTr = splitTrainAndTest(B, opts)
     ixTr = ismember(ts, Ts(ixTrTrain));
 end
 
-function C = prepToFit(B, ix, opts)
+function C = prepToFit(B, ix, blkInd, opts)
     C.latents = B.latents(ix,:);
     C.spikes = B.spikes(ix,:);
     
@@ -40,9 +42,9 @@ function C = prepToFit(B, ix, opts)
     
     % velocity info
     vels = B.(opts.velNm);
-    velNexts = B.([opts.velNm 'Next']);    
-    B.vel = vels(ix,:);
-    B.velNext = velNexts(ix,:);
+    velNexts = B.(opts.velNextNm);
+    C.vel = vels(ix,:);
+    C.velNext = velNexts(ix,:);    
     
     % add mapping and nul/row bases
     curMpg = B.(opts.mapNm);
@@ -51,4 +53,16 @@ function C = prepToFit(B, ix, opts)
     C.M0 = curMpg.M0;
     C.M1 = curMpg.M1;
     C.M2 = curMpg.M2;
+    
+    C.blkInd = blkInd;
+    C.ix = ix;
+    
+    if isempty(opts.fieldsToAdd)
+        return;
+    end
+    for ii = 1:numel(opts.fieldsToAdd)
+        fldNm = opts.fieldsToAdd{ii};
+        vs = B.(fldNm);
+        C.(fldNm) = vs(ix,:);
+    end
 end

@@ -13,21 +13,25 @@ function S = scoreAll(F, gs, grpName)
 %         covError: 112.0
 %         histError: 0.58
     
+    ix = ~isnan(gs);
+    
     % save info
     S.datestr = F.datestr;
     S.timestamp = datestr(datetime);
     S.grpName = grpName;
     S.gs = gs;
-    S.grps = unique(gs);
+    S.ixGs = ix;
+    S.grps = unique(gs(ix));
     
     % gather output-null activity
-    YN0 = F.test.latents*F.test.NB;
+    YN0 = F.test.latents(ix,:)*F.test.NB;
     YNcs = cell(numel(F.fits),1);
     for ii = 1:numel(F.fits)
-        YNcs{ii} = F.fits(ii).latents*F.test.NB;
+        YNcs{ii} = F.fits(ii).latents(ix,:)*F.test.NB;
     end
     
     % compute mean, cov, and hist errors per hypothesis
+    gs = gs(ix);
     histErrs = score.histErrorsFcn(YNcs, YN0, gs);
     for ii = 1:numel(F.fits)
         S.scores(ii).name = F.fits(ii).name;        
