@@ -1,4 +1,7 @@
-function hyps = getDefaultHyps()
+function hyps = getDefaultHyps(hnms)
+    if nargin < 1
+        hnms = {};
+    end
     hyps = [];
     
     % minimum
@@ -65,5 +68,10 @@ function hyps = getDefaultHyps()
     hyp.opts = struct('kNN', nan);
     hyp.fitFcn = @hypfit.closestRowValFit;
     hyps = [hyps hyp];
-
+    
+    % filter out unwanted hyps
+    if ~isempty(hnms)
+        hix = ismember({hyps.name}, hnms);
+        hyps = hyps(hix);
+    end
 end

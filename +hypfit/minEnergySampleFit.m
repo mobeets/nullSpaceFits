@@ -1,4 +1,4 @@
-function [Z, inds] = minEnergySampleFit(D, opts)
+function [Z, inds] = minEnergySampleFit(Tr, Te, dec, opts)
     if nargin < 2
         opts = struct();
     end
@@ -6,51 +6,35 @@ function [Z, inds] = minEnergySampleFit(D, opts)
     defopts = struct('minType', 'baseline', ...
         'fitInLatent', false, 'kNN', nan, 'addSpikeNoise', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
-    if ~opts.fitInLatent && strcmp(opts.decoderNm(1), 'f')
-        warning('minEnergyFit must use spike decoder, not factors.');
-        opts.decoderNm(1) = 'n';
-    elseif opts.fitInLatent && strcmp(opts.decoderNm(1), 'n')
-        warning('minEnergyFit must use factor decoder, not spikes.');
-        opts.decoderNm(1) = 'f';
-    end
-
-    B1 = D.blocks(1);
-    B2 = D.blocks(2);
+    
     if opts.fitInLatent
-        Y1 = B1.latents;
-        Y2 = B2.latents;
+        Y1 = Tr.latents;
+        Y2 = Te.latents;
+        RB2 = Te.RB;
+        NB2 = Te.NB;
     else
-        Y1 = B1.spikes;
-        Y2 = B2.spikes;
+        Y1 = Tr.spikes;
+        Y2 = Te.spikes;
+        RB2 = Te.RB_spikes;
+        NB2 = Te.NB_spikes;
     end
-    RB2 = B2.(opts.decoderNm).RowM2;
-    NB2 = B2.(opts.decoderNm).NulM2;
     Un1 = Y1*(NB2*NB2');
     Ur = Y2*(RB2*RB2');
 
-    dec = D.simpleData.nullDecoder;
     if strcmpi(opts.minType, 'baseline') && opts.fitInLatent
         mu = zeros(1,size(Y2,2));
     elseif strcmpi(opts.minType, 'baseline') && ~opts.fitInLatent
         mu = dec.spikeCountMean;        
     elseif strcmpi(opts.minType, 'minimum') && opts.fitInLatent        
-        zers = zeros(size(D.blocks(1).spikes,2), 1);
+        zers = zeros(size(Tr.spikes,2), 1);
         mu = tools.convertRawSpikesToRawLatents(dec, zers);
     elseif strcmpi(opts.minType, 'minimum') && ~opts.fitInLatent
         mu = zeros(1,size(Y2,2));
     end
     maxSps = max(Y1(:));
     
-%     if ~isnan(opts.kNN)
-%         % only consider Un1 for points close to current row space val
-%         curinds = getRowDists(Y1, Y2, RB2, opts.kNN);
-%     else
-%         curinds = repmat(1:size(Un1,1), size(Y2,1), 1);
-%     end    
-
     nt = size(Y2,1);
-    
-    sigma = D.simpleData.nullDecoder.spikeCountStd;
+    sigma = dec.spikeCountStd;
     nse = normrnd(zeros(nt, numel(sigma)), repmat(sigma, nt, 1));
     
     Un = nan(size(Ur));

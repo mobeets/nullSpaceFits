@@ -4,9 +4,10 @@ function D = prepSession(D, opts)
         opts = struct();
     end
     defopts = struct('useIme', false, 'mapNm', 'fDecoder', ...
+        'mapNm_spikes', 'nDecoder', ...
         'thetaNm', 'thetas', 'velNm', 'vel', 'velNextNm', 'velNext', ...
         'trainBlk', 1, 'testBlk', 2, 'trainProp', 0.5, ...
-        'fieldsToAdd', {});
+        'fieldsToAdd', []);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     if opts.useIme
         opts = replaceWithImeFields(opts);
@@ -28,6 +29,7 @@ end
 
 function opts = replaceWithImeFields(opts)
     opts.mapNm = 'fImeDecoder';
+    opts.mapNm_spikes = 'nImeDecoder';
     opts.velNm = 'velIme';
     opts.velNextNm = 'velNextIme';
     opts.thetaNm = 'thetasIme';
@@ -63,6 +65,8 @@ function C = prepToFit(B, ix, blkInd, opts)
     C.M0 = curMpg.M0;
     C.M1 = curMpg.M1;
     C.M2 = curMpg.M2;
+    C.NB_spikes = B.(opts.mapNm_spikes).NulM2;
+    C.RB_spikes = B.(opts.mapNm_spikes).RowM2;
     
     C.blkInd = blkInd;
     C.ix = ix;

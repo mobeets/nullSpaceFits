@@ -46,7 +46,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
         if mod(t, 500) == 0
             disp(['minEnergyFit: ' num2str(t) ' of ' num2str(nt)]);
         end
-        [U(t,:), isRelaxed] = hyps.quadFireFit(Te, t, -mu, ...
+        [U(t,:), isRelaxed] = hypfit.quadFireFit(Te, t, -mu, ...
             opts.fitInLatent, lb, ub, dec);
         nrs = nrs + isRelaxed;
         
@@ -92,7 +92,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
             'and bounds for ' num2str(nrs) ' timepoints.']);
     end
     if nlbs > 0 || nubs > 0
-        warning(['minEnergyFit hit lower bounds ' num2str(nlbs) ...
+        disp(['minEnergyFit hit lower bounds ' num2str(nlbs) ...
             ' times and upper bounds ' num2str(nubs) ' times.']);
     end
     if opts.nanIfOutOfBounds && opts.obeyBounds
