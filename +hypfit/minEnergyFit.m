@@ -89,11 +89,11 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     
     if nrs > 0
         warning(['minEnergyFit relaxed non-negativity constraints ' ...
-            'and bounds for ' num2str(nrs) ' timepoints.']);
+            'and bounds for ' num2str(nrs) ' timepoint(s).']);
     end
     if nlbs > 0 || nubs > 0
         disp(['minEnergyFit hit lower bounds ' num2str(nlbs) ...
-            ' times and upper bounds ' num2str(nubs) ' times.']);
+            ' time(s) and upper bounds ' num2str(nubs) ' time(s).']);
     end
     if opts.nanIfOutOfBounds && opts.obeyBounds
         opts.isOutOfBounds = tools.boundsFcn(Y1, opts.boundsType, dec);
@@ -102,7 +102,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
         c = sum(isOut);
         if c > 0
             warning(['minEnergyFit ignoring ' num2str(c) ...
-                ' points outside of bounds.']);
+                ' point(s) outside of bounds.']);
         end
     end    
 end

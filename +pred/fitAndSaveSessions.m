@@ -18,7 +18,7 @@ mkdir(saveDir);
 save(fullfile(saveDir, 'opts.mat'), 'grpName', 'opts', 'hyps', 'dts');
 
 % fit sessions
-for ii = 1%:numel(dts)
+for ii = 1:numel(dts)
     tic;
     disp(['Fitting ' dts{ii} '...']);
     [F,S,D] = pred.fitSession(dts{ii}, hnms, grpName, opts);

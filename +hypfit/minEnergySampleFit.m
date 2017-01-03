@@ -79,7 +79,7 @@ function [Z, inds] = minEnergySampleFit(Tr, Te, dec, opts)
     end
     if nInvalids > 0
         warning(['minEnergySampleFit: ' num2str(nInvalids) ...
-            ' samples had no valid points.']);
+            ' sample(s) had no valid points.']);
     end    
 
     U = Ur + Un;

@@ -38,8 +38,8 @@ function trials = makeTrials(D)
     
     trials.thetas = mod(trials.thetas, 360);
     trials.thetaActuals = mod(trials.thetaActuals, 360);
-    trials.thetaGrps = score.thetaGroup(trials.thetas, ...
-        score.thetaCenters(8));
+    trials.thetaGrps = io.thetaGroup(trials.thetas, ...
+        io.thetaCenters(8));
 
     % add latents
     trials.latents = tools.convertRawSpikesToRawLatents(...
@@ -74,10 +74,10 @@ function trial = addNewFields(trial, D)
         vec2trg = trial.vec2target(t,:);
         movVec = trial.movementVector(t,:);
         r = norm(vec2trg);
-        theta = tools.computeAngle(vec2trg, [1; 0]);
-        thetaActual = tools.computeAngle(movVec, [1; 0]);
+        theta = io.computeAngle(vec2trg, [1; 0]);
+        thetaActual = io.computeAngle(movVec, [1; 0]);
         prog = movVec*vec2trg'/norm(vec2trg);
-        angErr = tools.computeAngle(movVec, vec2trg);
+        angErr = io.computeAngle(movVec, vec2trg);
         velStar = D.params.IDEAL_SPEED*vec2trg/norm(vec2trg);
         if t > 1
             velPrev = trial.vel(t-1,:);

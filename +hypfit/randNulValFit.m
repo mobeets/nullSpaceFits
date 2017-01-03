@@ -29,8 +29,8 @@ function Z = randNulValFit(Tr, Te, dec, opts)
             c = c + 1;
         end
         if n0 - sum(ixOob) > 0
-            warning(['Corrected ' num2str(n0 - sum(ixOob)) ...
-                ' unconstrained samples to lie within bounds']);
+            disp(['Corrected ' num2str(n0 - sum(ixOob)) ...
+                ' unconstrained sample(s) to lie within bounds']);
         end
     end
 
