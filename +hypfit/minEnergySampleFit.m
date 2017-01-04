@@ -4,8 +4,10 @@ function [Z, inds] = minEnergySampleFit(Tr, Te, dec, opts)
     end
     assert(isa(opts, 'struct'));
     defopts = struct('minType', 'baseline', ...
-        'fitInLatent', false, 'kNN', nan, 'addSpikeNoise', true);
+        'fitInLatent', false, 'kNN', nan, 'addSpikeNoise', true, ...
+        'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
+    dispNm = ['minEnergyFit (' opts.minType ')'];
     
     if opts.fitInLatent
         Y1 = Tr.latents;
@@ -35,7 +37,7 @@ function [Z, inds] = minEnergySampleFit(Tr, Te, dec, opts)
     
     nt = size(Y2,1);
     sigma = dec.spikeCountStd;
-    nse = normrnd(zeros(nt, numel(sigma)), repmat(sigma, nt, 1));
+%     nse = normrnd(zeros(nt, numel(sigma)), repmat(sigma, nt, 1));
     
     Un = nan(size(Ur));
     inds = nan(nt,1);
@@ -78,7 +80,7 @@ function [Z, inds] = minEnergySampleFit(Tr, Te, dec, opts)
         Un(t,:) = unc;
     end
     if nInvalids > 0
-        warning(['minEnergySampleFit: ' num2str(nInvalids) ...
+        disp([dispNm ': ' num2str(nInvalids) ...
             ' sample(s) had no valid points.']);
     end    
 
@@ -87,6 +89,11 @@ function [Z, inds] = minEnergySampleFit(Tr, Te, dec, opts)
     if opts.fitInLatent
         Z = U;
     else
+        if opts.nanIfOutOfBounds
+            isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, true);
+            ixOob = isOutOfBounds(U);
+            U(ixOob,:) = nan;
+        end
         Z = tools.convertRawSpikesToRawLatents(dec, U');
     end
 %     NBz = D.blocks(2).fDecoder.NulM2;

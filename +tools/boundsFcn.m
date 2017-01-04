@@ -1,6 +1,9 @@
-function [isOutOfBoundsFcn, whereOutOfBounds] = boundsFcn(Y, kind, dec)
+function [isOutOfBoundsFcn, whereOutOfBounds] = boundsFcn(Y, kind, dec, inSpikes)
     if nargin < 2
-        kind = 'marginal';
+        kind = 'spikes';
+    end
+    if nargin < 4
+        inSpikes = false;
     end
     
     mns = min(Y);
@@ -23,7 +26,7 @@ function [isOutOfBoundsFcn, whereOutOfBounds] = boundsFcn(Y, kind, dec)
         minSps = 0;
         maxSps = 2*max(mxs);
         
-        if numel(mxs) == numel(dec.spikeCountMean)
+        if inSpikes
             % in spike space already
             whereOutOfBounds = @(u) u < minSps | u > maxSps;
             isOutOfBoundsFcn = @(u) any(whereOutOfBounds(u),2);

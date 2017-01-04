@@ -3,14 +3,19 @@ function hyps = getDefaultHyps(hnms)
         hnms = {};
     end
     hyps = [];
+    fitInLatent = false;    
+    addNoise = true;
+    obeyBounds = true;
+    nanIfOutOfBounds = true;
+    % n.b. minimum-sample and baseline-sample ignore nanIfOutOfBounds
     
     % minimum
     clear hyp;
     hyp.name = 'minimum';
     hyp.opts = struct('minType', 'minimum', ...
-        'nanIfOutOfBounds', false, 'fitInLatent', false, ...
-        'obeyBounds', true, 'boundsType', 'spikes', ...
-        'addSpikeNoise', true);
+        'nanIfOutOfBounds', nanIfOutOfBounds, ...
+        'fitInLatent', fitInLatent, ...
+        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
     hyp.fitFcn = @hypfit.minEnergyFit;
     hyps = [hyps hyp];
 
@@ -18,9 +23,9 @@ function hyps = getDefaultHyps(hnms)
     clear hyp;
     hyp.name = 'baseline';
     hyp.opts = struct('minType', 'baseline', ...
-        'nanIfOutOfBounds', false, 'fitInLatent', false, ...
-        'obeyBounds', true, 'boundsType', 'spikes', ...
-        'addSpikeNoise', true);
+        'nanIfOutOfBounds', nanIfOutOfBounds, ...
+        'fitInLatent', fitInLatent, ...
+        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
     hyp.fitFcn = @hypfit.minEnergyFit;
     hyps = [hyps hyp];
 
@@ -28,7 +33,9 @@ function hyps = getDefaultHyps(hnms)
     clear hyp;
     hyp.name = 'minimum-sample';
     hyp.opts = struct('minType', 'minimum', ...
-        'fitInLatent', false, 'kNN', nan, 'addSpikeNoise', true);
+        'fitInLatent', fitInLatent, 'kNN', nan, ...
+        'addSpikeNoise', addNoise, ...
+        'nanIfOutOfBounds', false);
     hyp.fitFcn = @hypfit.minEnergySampleFit;
     hyps = [hyps hyp];
 
@@ -36,29 +43,42 @@ function hyps = getDefaultHyps(hnms)
     clear hyp;
     hyp.name = 'baseline-sample';
     hyp.opts = struct('minType', 'baseline', ...
-        'fitInLatent', false, 'kNN', nan, 'addSpikeNoise', true);
+        'fitInLatent', fitInLatent, 'kNN', nan, ...
+        'addSpikeNoise', addNoise, ...
+        'nanIfOutOfBounds', false);
     hyp.fitFcn = @hypfit.minEnergySampleFit;
+    hyps = [hyps hyp];
+    
+    % best-mean
+    clear hyp;
+    hyp.name = 'best-mean';
+    hyp.opts = struct('grpName', 'thetaActualGrps', ...
+        'addNoise', addNoise, ...
+        'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.bestMeanFit;
     hyps = [hyps hyp];
 
     % uncontrolled-uniform
     clear hyp;
     hyp.name = 'uncontrolled-uniform';
-    hyp.opts = struct('obeyBounds', true, 'boundsType', 'spikes');
-    hyp.fitFcn = @hypfit.minEnergyFit;
+    hyp.opts = struct('obeyBounds', obeyBounds, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.uniformSampleFit;
     hyps = [hyps hyp];
 
     % uncontrolled-empirical
     clear hyp;
     hyp.name = 'uncontrolled-empirical';
-    hyp.opts = struct('obeyBounds', true, 'boundsType', 'spikes');
+    hyp.opts = struct('obeyBounds', obeyBounds, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.randNulValFit;
     hyps = [hyps hyp];
 
     % habitual-corrected
     clear hyp;
     hyp.name = 'habitual-corrected';
-    hyp.opts = struct('thetaTol', 20, 'obeyBounds', true, ...
-            'boundsType', 'spikes');
+    hyp.opts = struct('thetaTol', 20, 'obeyBounds', obeyBounds, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.randNulValInGrpFit;
     hyps = [hyps hyp];
 

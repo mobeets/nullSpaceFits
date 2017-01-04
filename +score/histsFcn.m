@@ -1,4 +1,4 @@
-function [Hs, Xs] = histsFcn(Ys, gs, useFirstForRange)
+function [Hs, Xs, nbins] = histsFcn(Ys, gs, useFirstForRange)
 % make histograms for Ys across a common range
 %
 % n.b. when making hists for display,
@@ -19,25 +19,33 @@ end
 function Xs = getHistRange(Ys, nbins, gs, useFirstForRange)
     grps = sort(unique(gs));
     ngrps = numel(grps);
-    nfeats = size(Ys{1},2);
+    ndims = size(Ys{1},2);
     
     % find range of points to include
-    if useFirstForRange
-        mns = inf(nfeats,1); mxs = -inf(nfeats,1);
-        for ii = 1:numel(Ys)
-            mns(ii) = min(mns(ii), min(Ys{ii}));
-            mxs(ii) = max(mxs(ii), max(Ys{ii}));
+    mns = min(min(Ys{1}));
+    mxs = max(max(Ys{1})); % mns/mxs were the bounds used to choose nbins
+    xs = linspace(mns, mxs, nbins);
+    if ~useFirstForRange
+        for ii = 2:numel(Ys)
+            mns = min(mns, min(min(Ys{ii})));
+            mxs = max(mxs, max(max(Ys{ii})));
         end
-    else
-        mns = min(Ys{1});
-        mxs = max(Ys{1});
+        % must now increase xs to account for expanded range
+        binspace = mode(diff(xs));
+        while min(xs) > mns
+            xs = [min(xs)-binspace xs];
+        end
+        while max(xs) < mxs
+            xs = [xs max(xs)+binspace];
+        end
     end
     
+    % make cell array of bins repeated for each grp and dim
     Xs = cell(ngrps,1);
     for jj = 1:ngrps        
-        Xs{jj} = nan(nbins, nfeats);
-        for ii = 1:nfeats            
-            Xs{jj}(:,ii) = linspace(mns(ii), mxs(ii), nbins);
+        Xs{jj} = nan(numel(xs), ndims);
+        for ii = 1:ndims            
+            Xs{jj}(:,ii) = xs;
         end
     end
 end

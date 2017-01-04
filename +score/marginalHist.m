@@ -9,11 +9,7 @@ function Hs = marginalHist(Y, gs, Xs, nbins)
     
     if isempty(Xs)
         mns = min(Y); mxs = max(Y);
-        try
-            xs0 = linspace(min(mns), max(mxs), nbins);
-        catch
-            y=1;
-        end
+        xs0 = linspace(min(mns), max(mxs), nbins);
     end
     for jj = 1:ngrps
         Hs{jj} = nan(nbins, nfeats);

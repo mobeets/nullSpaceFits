@@ -1,7 +1,6 @@
-function errs = histErrorsFcn(YNcs, YN0, gs)
+function [errs, nbins] = histErrorsFcn(YNcs, YN0, gs)
     % make histograms
-    Hs = score.histsFcn([YN0; YNcs], gs, false);
-    warning('Should compare results putting true above for hist error');
+    [Hs,~,nbins] = score.histsFcn([YN0; YNcs], gs, false);
     H0 = Hs{1}; Hcs = Hs(2:end);
     
     % score each hyp, as mean across grps and dims

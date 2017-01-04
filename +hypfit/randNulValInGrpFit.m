@@ -4,7 +4,7 @@ function Z = randNulValInGrpFit(Tr, Te, dec, opts)
         opts = struct();
     end
     defopts = struct('thetaTol', 20, 'obeyBounds', true, ...
-        'boundsType', 'marginal');
+        'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     NB2 = Te.NB;
@@ -23,7 +23,7 @@ function Z = randNulValInGrpFit(Tr, Te, dec, opts)
     
     if opts.obeyBounds
         % resample invalid points
-        isOutOfBounds = tools.boundsFcn(Z1, opts.boundsType, dec);
+        isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
         maxC = 10;
@@ -36,12 +36,15 @@ function Z = randNulValInGrpFit(Tr, Te, dec, opts)
         end
         if n0 - sum(ixOob) > 0
             disp(['Corrected ' num2str(n0 - sum(ixOob)) ...
-                ' habitual samples to lie within bounds']);
+                ' habitual sample(s) to lie within bounds']);
+        end
+        if opts.nanIfOutOfBounds
+            Z(ixOob,:) = nan;
         end
     end
     if nErrs > 0
-        warning([num2str(nErrs) ...
-            ' habitual samples had no neighbors within range.']);
+        disp([num2str(nErrs) ...
+            ' habitual sample(s) had no neighbors within range.']);
     end
 
 end

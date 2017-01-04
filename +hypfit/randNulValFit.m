@@ -3,7 +3,7 @@ function Z = randNulValFit(Tr, Te, dec, opts)
     if nargin < 4
         opts = struct();
     end
-    defopts = struct('obeyBounds', true, 'boundsType', 'marginal');
+    defopts = struct('obeyBounds', true, 'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     NB2 = Te.NB;
@@ -17,7 +17,7 @@ function Z = randNulValFit(Tr, Te, dec, opts)
     
     if opts.obeyBounds
         % resample invalid points
-        isOutOfBounds = tools.boundsFcn(Z1, opts.boundsType, dec);
+        isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
         maxC = 10;
@@ -31,6 +31,9 @@ function Z = randNulValFit(Tr, Te, dec, opts)
         if n0 - sum(ixOob) > 0
             disp(['Corrected ' num2str(n0 - sum(ixOob)) ...
                 ' unconstrained sample(s) to lie within bounds']);
+        end
+        if opts.nanIfOutOfBounds
+            Z(ixOob,:) = nan;
         end
     end
 

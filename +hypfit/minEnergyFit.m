@@ -4,9 +4,9 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     end
     defopts = struct('minType', 'baseline', ...
         'nanIfOutOfBounds', false, 'fitInLatent', false, ...
-        'obeyBounds', true, 'boundsType', 'spikes', ...
-        'addSpikeNoise', true);
+        'obeyBounds', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
+    dispNm = ['minEnergyFit (' opts.minType ')'];
         
     if opts.fitInLatent
         Y1 = Tr.latents;
@@ -34,7 +34,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     elseif strcmpi(opts.minType, 'minimum') && ~opts.fitInLatent
         mu = [];
     else
-        assert(false, 'Invalid minType for minEnergyFit');
+        assert(false, ['Invalid minType for ' dispNm]);
     end
     sigma = dec.spikeCountStd;
     maxSps = 2*max(Tr.spikes(:));
@@ -44,7 +44,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     nrs = 0; nlbs = 0; nubs = 0;
     for t = 1:nt        
         if mod(t, 500) == 0
-            disp(['minEnergyFit: ' num2str(t) ' of ' num2str(nt)]);
+            disp([dispNm ': ' num2str(t) ' of ' num2str(nt)]);
         end
         [U(t,:), isRelaxed] = hypfit.quadFireFit(Te, t, -mu, ...
             opts.fitInLatent, lb, ub, dec);
@@ -63,10 +63,10 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
             end
         end
         
-        if numel(lb) > 0 && any(abs(U(t,:) - lb) < 1e-5)
+        if numel(lb) > 0 && any(U(t,:) < lb - 1e-5)
             nlbs = nlbs + 1;
         end
-        if numel(ub) > 0 && any(abs(U(t,:) - ub) < 1e-5)
+        if numel(ub) > 0 && any(U(t,:) > ub + 1e-5)
             nubs = nubs + 1;
         end
     end
@@ -78,6 +78,11 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
             Z = tools.convertRawSpikesToRawLatents(dec, sps');
         end
     else
+        if opts.obeyBounds && opts.nanIfOutOfBounds
+            isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, true);
+            ixOob = isOutOfBounds(U);
+            U(ixOob,:) = nan;
+        end
         Z = tools.convertRawSpikesToRawLatents(dec, U');
 %         Z = Z/Dc.FactorAnalysisParams.spikeRot;
     end
@@ -88,21 +93,12 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     Z = Z*(NB2*NB2') + Zr;
     
     if nrs > 0
-        warning(['minEnergyFit relaxed non-negativity constraints ' ...
+        disp([dispNm ' relaxed non-negativity constraints ' ...
             'and bounds for ' num2str(nrs) ' timepoint(s).']);
     end
     if nlbs > 0 || nubs > 0
-        disp(['minEnergyFit hit lower bounds ' num2str(nlbs) ...
+        disp([dispNm ' hit lower bounds ' num2str(nlbs) ...
             ' time(s) and upper bounds ' num2str(nubs) ' time(s).']);
     end
-    if opts.nanIfOutOfBounds && opts.obeyBounds
-        opts.isOutOfBounds = tools.boundsFcn(Y1, opts.boundsType, dec);
-        isOut = arrayfun(@(t) opts.isOutOfBounds(Z(t,:)), 1:nt);
-        Z(isOut,:) = nan;
-        c = sum(isOut);
-        if c > 0
-            warning(['minEnergyFit ignoring ' num2str(c) ...
-                ' point(s) outside of bounds.']);
-        end
-    end    
+
 end

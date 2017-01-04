@@ -21,7 +21,8 @@ save(fullfile(saveDir, 'opts.mat'), 'grpName', 'opts', 'hyps', 'dts');
 for ii = 1:numel(dts)
     tic;
     disp(['Fitting ' dts{ii} '...']);
-    [F,S,D] = pred.fitSession(dts{ii}, hnms, grpName, opts);
+    [F,D] = pred.fitSession(dts{ii}, hyps, grpName, opts);
+    S = score.scoreAll(F, grpName); % score each hyp
     toc;
 
     fnm = fullfile(saveDir, [dts{ii} '_fits.mat']);

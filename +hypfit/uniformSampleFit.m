@@ -2,7 +2,7 @@ function Z = uniformSampleFit(Tr, Te, dec, opts)
     if nargin < 4
         opts = struct();
     end
-    defopts = struct('obeyBounds', true, 'boundsType', 'spikes');
+    defopts = struct('obeyBounds', true, 'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     RB = Te.RB;
@@ -16,7 +16,7 @@ function Z = uniformSampleFit(Tr, Te, dec, opts)
     
     if opts.obeyBounds
         % resample invalid points
-        isOutOfBounds = tools.boundsFcn(Z1, opts.boundsType, dec);
+        isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
         maxC = 10;
@@ -29,7 +29,10 @@ function Z = uniformSampleFit(Tr, Te, dec, opts)
         end
         if n0 - sum(ixOob) > 0
             disp(['Corrected ' num2str(n0 - sum(ixOob)) ...
-                ' uniform sample samples to lie within bounds']);
+                ' uniform sample sample(s) to lie within bounds']);
+        end
+        if opts.nanIfOutOfBounds
+            Z(ixOob,:) = nan;
         end
     end
 

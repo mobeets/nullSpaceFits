@@ -15,7 +15,7 @@ function h = optimalBinCount(Y, gs)
 %     gs = ones(size(Y,1),1);
 
     crit = @(cs,h,n) 2./((n-1).*h) - sum(cs.^2)*(n+1)./((n-1)*n^2.*h);
-%     crit = @(cs,h,n) (2*mean(cs) - var(cs, 1))/h^2;
+    crit = @(cs,h,n) (2*mean(cs) - var(cs, 1))/h^2;
     xs = 10:200;
     
     grps = sort(unique(gs));

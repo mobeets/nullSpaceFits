@@ -20,13 +20,14 @@ function F = fitHyps(D, hyps)
     F.datestr = D.datestr;
     F.train = D.train;
     F.test = D.test;
+    F.dec = D.simpleData.nullDecoder;
     
     % fit all hyp predictions
     for ii = 1:numel(hyps)
         F.fits(ii).name = hyps(ii).name;
         F.fits(ii).opts = hyps(ii).opts;
         F.fits(ii).latents = hyps(ii).fitFcn(D.train, D.test, ...
-            D.simpleData.nullDecoder, hyps(ii).opts);
+            F.dec, hyps(ii).opts);
     end
     
 end
