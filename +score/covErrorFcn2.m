@@ -9,19 +9,18 @@ function err = covErrorFcn(YNc, YN0, gs)
 end
 
 function err = covErr(D1, D2)
-% Riemannian distance between the covariance matrices of D1 and D2
-% 
-% src: "A Metric for Covariance Matrices"
-% http://www.ipb.uni-bonn.de/pdfs/Forstner1999Metric.pdf
-%
-% note: invariant under scaling and rotation,
-%     but sensitive to rank-deficient matrices
-%     (hence the 'qz' and 'real' below)
+% src: "A simple procedure for the comparison of covariance matrices"
+% http://bmcevolbiol.biomedcentral.com/articles/10.1186/1471-2148-12-222
 %
     if sum(~isnan(sum(D1,2))) < 2 || sum(~isnan(sum(D2,2))) < 2
         % need at least 2 pts to calculate covariance
         err = nan; return;
     end
-    es = eig(nancov(D1), nancov(D2), 'qz'); % 'qz' for stability
-    err = real(sqrt(sum(log(es).^2)));
+    [u1,v11,~] = svd(nancov(D1), 'econ');
+    [u2,v22,~] = svd(nancov(D2), 'econ');
+    v11 = diag(v11)'; % var(D1*u1);
+    v22 = diag(v22)'; % var(D2*u2);
+    v21 = nanvar(D2*u1);
+    v12 = nanvar(D1*u2);
+    err = 2*sum((v11 - v21).^2 + (v12 - v22).^2);
 end

@@ -31,8 +31,8 @@ function S = scoreAll(F, grpName)
         YNcs{ii} = F.fits(ii).latents(ix,:)*F.test.NB;
         nNan = sum(any(isnan(F.fits(ii).latents(ix,:)),2));
         if nNan > 0
-            warning([F.fits(ii).name ': ' num2str(nNan) ...
-                ' Ignoring NaN prediction(s).']);
+            warning([F.fits(ii).name ': Ignoring ' num2str(nNan) ...
+                ' NaN prediction(s).']);
         end
     end
     
@@ -43,6 +43,7 @@ function S = scoreAll(F, grpName)
         S.scores(ii).name = F.fits(ii).name;        
         S.scores(ii).meanError = score.meanErrorFcn(YNcs{ii}, YN0, gs);
         S.scores(ii).covError = score.covErrorFcn(YNcs{ii}, YN0, gs);
+%         S.scores(ii).covError2 = score.covErrorFcn2(YNcs{ii}, YN0, gs);
         S.scores(ii).histError = histErrs(ii);
         S.scores(ii).histError_nbins = nbins;
     end

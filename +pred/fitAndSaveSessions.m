@@ -1,20 +1,21 @@
 %% set opts
 
-saveDir = 'data/fits_int';
+saveDir = 'data/fits_Int2Int_nIme';
 grpName = 'thetaActualGrps';
 opts = struct('useIme', false, 'trainBlk', 1, 'testBlk', 1);
-% hnms = {'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
 hnms = {};
 hyps = pred.getDefaultHyps(hnms);
 dts = tools.getDatesInDir();
+doOverwrite = false;
 
 %% fit and save
 
-% save opts
-% if exist(saveDir, 'dir')
-%     error('Cannot fit because directory already exists.');
-% end
-mkdir(saveDir);
+% init saveDir and save opts
+if ~doOverwrite && exist(saveDir, 'dir')
+    error('Cannot fit because directory already exists.');
+elseif ~exist(saveDir, 'dir')
+    mkdir(saveDir);
+end
 save(fullfile(saveDir, 'opts.mat'), 'grpName', 'opts', 'hyps', 'dts');
 
 % fit sessions
