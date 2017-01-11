@@ -6,14 +6,15 @@ function plotAvgError(errs, nms, opts)
         'FontSize', 24, 'FontSizeTitle', 32, 'FontName', 'helvetica', ...
         'doSave', false, 'saveDir', 'data/plots', 'filename', 'avgErr', ...
         'ext', 'pdf', 'title', '', 'clrs', [], ...
-        'ylbl', 'Avg. error', ...
+        'ylbl', 'Avg. error', 'showStars', true, ...
+        'starBaseName', 'Constant-cloud', ...
         'LineWidth', 2, 'ymax', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
     % show plot
     plot.init(opts.FontSize, opts.FontName);
-%     makeBoxPlot(errs, opts.clrs, opts.LineWidth);
-    makeBarPlot(errs, opts.clrs, opts.LineWidth);
+    makeBoxPlot(errs, opts.clrs, opts.LineWidth);
+%     makeBarPlot(errs, opts.clrs, opts.LineWidth);
     
     % format x-axis
     if ~isempty(nms)
@@ -24,25 +25,33 @@ function plotAvgError(errs, nms, opts)
             set(gca, 'XTickLabelRotation', 45);
         end
     end
-    
+        
     % format y-axis
     if ~isnan(opts.ymax)
-        ylim([0 opts.ymax]);
+        yl = [0 opts.ymax];
+        ylim(yl);
 %         set(gca, 'YTick', 0:opts.ymax);
     else
         yl = ylim;
-        ylim([0 yl(2)]);
+        yl = [0 yl(2)];
+        ylim(yl);
     end
-    ylabel(opts.ylbl);    
+    ylabel(opts.ylbl);
     
-    % format plot    
+    if opts.showStars
+        bInd = find(ismember(nms, opts.starBaseName));
+        plot.addSignificanceStars(errs, bInd);
+        ylim(yl);
+    end    
+    
+    % format plot
     title(opts.title, 'FontSize', opts.FontSizeTitle);
     set(gca, 'TickDir', 'out');
     set(gca, 'TickLength', [0 0]);
     set(gca, 'LineWidth', opts.LineWidth);
     box off;
     plot.setPrintSize(gcf, opts);    
-    
+        
     if opts.doSave
         export_fig(gcf, fullfile(opts.saveDir, ...
             [opts.filename '.' opts.ext]));

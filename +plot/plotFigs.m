@@ -1,6 +1,10 @@
 %% init
 
-fitsDir = 'data/fits_Int2Int_nIme';
+% fitType = 'Int2Int_nIme';
+% fitType = 'Int2Pert_nIme';
+fitType = 'Int2Pert_yIme';
+% fitType = 'Pert2Int_yIme';
+fitsDir = fullfile('data', ['fits_' fitType]);
 
 %% load scores
 
@@ -12,12 +16,11 @@ hypClrs = cell2mat(cellfun(@plot.hypColor, hypnms, 'uni', 0)');
 
 %% avg error
 
-errNm = 'histError';
-mnkNm = 'Lincoln';
-hypsToShow = {'minimum', 'baseline', 'best-mean', 'uncontrolled-uniform'};
-% hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
-%     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
-ymax = nan;
+errNm = 'covError';
+mnkNm = 'Jeffy';
+% hypsToShow = {'minimum', 'baseline', 'best-mean', 'uncontrolled-uniform'};
+hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
+    'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
 
 dtInds = io.getMonkeyDateFilter(dts, {mnkNm});
 hypInds = cellfun(@(c) find(ismember(hypnms, c)), hypsToShow);
@@ -25,16 +28,27 @@ errs = plot.getScoreArray(S, errNm, dtInds, hypInds);
 if strcmpi(errNm, 'histError')
     errs = 100*errs;
     ymax = 100;
-    errDispNm = 'histograms';
+    errDispNm = 'Histograms';
+    lblDispNm = 'histograms (%)';
 elseif strcmpi(errNm, 'meanError')
-    errDispNm = 'mean';
+    errDispNm = 'Mean';
+    lblDispNm = 'mean';
+    ymax = 15;
 else
-    errDispNm = 'covariance';
+    errDispNm = 'Covariance';
+    lblDispNm = 'covariance';
+    ymax = 20;
 end
-opts = struct('doSave', true, 'filename', [errNm '_11_' mnkNm(1)], ...
-    'width', 5, ...
-    'ylbl', ['Avg. error in ' errDispNm], ...
-    'title', ['Error in ' errDispNm ', Monkey ' mnkNm(1)], 'ymax', ymax, ...
+mnkTitle = ['Monkey ' mnkNm(1)];
+% title = ['Error in ' errDispNm ', ' mnkTitle];
+title = [errDispNm ', ' mnkTitle];
+% title = mnkTitle;
+fnm = [errNm '_' fitType '_' mnkNm(1)];
+opts = struct('doSave', false, 'filename', fnm, ...
+    'width', 4, ...
+    'ylbl', ['Avg. error in ' lblDispNm], ...
+    'title', title, 'ymax', ymax, ...
     'clrs', hypClrs(hypInds,:));
-close all;
+% close all;
 plot.plotAvgError(errs, hypDispNms(hypInds), opts);
+% breakyaxis([22 41]);

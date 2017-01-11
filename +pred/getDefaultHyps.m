@@ -1,6 +1,9 @@
-function hyps = getDefaultHyps(hnms)
+function hyps = getDefaultHyps(hnms, grpName)
     if nargin < 1
         hnms = {};
+    end
+    if nargin < 2
+        grpName = 'thetaActualGrps';
     end
     hyps = [];
     fitInLatent = false;    
@@ -52,7 +55,7 @@ function hyps = getDefaultHyps(hnms)
     % best-mean
     clear hyp;
     hyp.name = 'best-mean';
-    hyp.opts = struct('grpName', 'thetaActualGrps', ...
+    hyp.opts = struct('grpName', grpName, ...
         'addNoise', addNoise, ...
         'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.bestMeanFit;
