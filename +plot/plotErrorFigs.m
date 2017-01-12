@@ -1,5 +1,5 @@
 
-doSave = true;
+doSave = false;
 
 fitName = 'Int2Int_nIme';
 hypsToShow = {'minimum', 'baseline', 'best-mean', 'uncontrolled-uniform'};

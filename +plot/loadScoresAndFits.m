@@ -1,8 +1,9 @@
-function [S,F] = loadScoresAndFits(fitsDir, dts)
+function [S,F] = loadScoresAndFits(fitsName, dts)
 %
     if nargin < 2
         dts = {};
     end
+    fitsDir = fullfile('data', 'fits', fitsName);
     fnms = dir(fullfile(fitsDir, '*_scores.mat'));
     F = [];
     S = [];
