@@ -43,7 +43,6 @@ function S = scoreAll(F, grpName)
         S.scores(ii).name = F.fits(ii).name;        
         S.scores(ii).meanError = score.meanErrorFcn(YNcs{ii}, YN0, gs);
         S.scores(ii).covError = score.covErrorFcn(YNcs{ii}, YN0, gs);
-        S.scores(ii).covError2 = score.covErrorFcn2(YNcs{ii}, YN0, gs);
         S.scores(ii).histError = histErrs(ii);
         S.scores(ii).histError_nbins = nbins;
     end

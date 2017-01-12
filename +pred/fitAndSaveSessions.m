@@ -8,7 +8,7 @@
 % grpName = 'thetaActualGrps';
 % opts = struct('useIme', false, 'trainBlk', 1, 'testBlk', 2);
 
-saveDir = 'data/fits_Int2Pert_yIme';
+saveDir = 'data/fits_Int2Pert_yIme_v1';
 grpName = 'thetaActualImeGrps';
 opts = struct('useIme', true, 'trainBlk', 1, 'testBlk', 2);
 

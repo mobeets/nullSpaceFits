@@ -26,8 +26,8 @@ function F = fitHyps(D, hyps)
     for ii = 1:numel(hyps)
         F.fits(ii).name = hyps(ii).name;
         F.fits(ii).opts = hyps(ii).opts;
-        F.fits(ii).latents = hyps(ii).fitFcn(D.train, D.test, ...
-            F.dec, hyps(ii).opts);
+        F.fits(ii).latents = hyps(ii).fitFcn(F.train, F.test, ...
+            F.dec, F.fits(ii).opts);
     end
     
 end

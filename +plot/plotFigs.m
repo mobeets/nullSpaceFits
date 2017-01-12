@@ -2,7 +2,8 @@
 
 % fitType = 'Int2Int_nIme';
 % fitType = 'Int2Pert_nIme';
-fitType = 'Int2Pert_yIme';
+% fitType = 'Int2Pert_yIme';
+fitType = 'Int2Pert_yIme2';
 % fitType = 'Pert2Int_yIme';
 fitsDir = fullfile('data', ['fits_' fitType]);
 
@@ -17,7 +18,7 @@ hypClrs = cell2mat(cellfun(@plot.hypColor, hypnms, 'uni', 0)');
 %% avg error
 
 errNm = 'covError';
-mnkNm = 'Jeffy';
+mnkNm = 'Nelson';
 % hypsToShow = {'minimum', 'baseline', 'best-mean', 'uncontrolled-uniform'};
 hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
@@ -37,17 +38,17 @@ elseif strcmpi(errNm, 'meanError')
 else
     errDispNm = 'Covariance';
     lblDispNm = 'covariance';
-    ymax = 20;
+    ymax = 15;
 end
 mnkTitle = ['Monkey ' mnkNm(1)];
 % title = ['Error in ' errDispNm ', ' mnkTitle];
-title = [errDispNm ', ' mnkTitle];
+ttl = [errDispNm ', ' mnkTitle];
 % title = mnkTitle;
 fnm = [errNm '_' fitType '_' mnkNm(1)];
 opts = struct('doSave', false, 'filename', fnm, ...
     'width', 4, ...
     'ylbl', ['Avg. error in ' lblDispNm], ...
-    'title', title, 'ymax', ymax, ...
+    'title', ttl, 'ymax', ymax, ...
     'clrs', hypClrs(hypInds,:));
 % close all;
 plot.plotAvgError(errs, hypDispNms(hypInds), opts);

@@ -1,4 +1,4 @@
-function plotAvgError(errs, nms, opts)    
+function plotAvgError(errs, nms, opts)
     if nargin < 2
         opts = struct();
     end

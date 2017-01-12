@@ -1,10 +1,16 @@
-function [S,F] = loadScoresAndFits(fitsDir)
+function [S,F] = loadScoresAndFits(fitsDir, dts)
 %
+    if nargin < 2
+        dts = {};
+    end
     fnms = dir(fullfile(fitsDir, '*_scores.mat'));
     F = [];
     S = [];
     for ii = 1:numel(fnms)
-        fnm = fnms(ii).name;        
+        fnm = fnms(ii).name;
+        if ~isempty(dts) && ~ismember(dts, strrep(fnm, '_scores.mat', ''))
+            continue;
+        end
         X = load(fullfile(fitsDir, fnm));
         S = [S X.S];
         if nargout > 1

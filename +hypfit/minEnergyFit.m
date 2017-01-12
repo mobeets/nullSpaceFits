@@ -4,7 +4,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     end
     defopts = struct('minType', 'baseline', ...
         'nanIfOutOfBounds', false, 'fitInLatent', false, ...
-        'obeyBounds', true);
+        'obeyBounds', true, 'sigmaScale', 1.0);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     dispNm = ['minEnergyFit (' opts.minType ')'];
         
@@ -36,12 +36,13 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     else
         assert(false, ['Invalid minType for ' dispNm]);
     end
-    sigma = dec.spikeCountStd;
+    sigma = opts.sigmaScale*dec.spikeCountStd;
+%     warning('Scaling sigma to 50%...');
     maxSps = 2*max(Tr.spikes(:));
 
     [nt, nu] = size(Y2);
     U = nan(nt,nu);
-    nrs = 0; nlbs = 0; nubs = 0;
+    nrs = 0; nlbs = 0; nubs = 0; nis = 1;
     for t = 1:nt        
         if mod(t, 500) == 0
             disp([dispNm ': ' num2str(t) ' of ' num2str(nt)]);
@@ -56,10 +57,15 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
             ut = normrnd(ut0, sigma);
             while (any(ut < 0) || any(ut > 2*maxSps)) && c < 10
                 ut = normrnd(ut0, sigma);
+                if strcmpi(opts.minType, 'minimum')
+                    ut = max(ut, 0);
+                end
                 c = c + 1;
             end
             if ~(any(ut < 0) || any(ut > 2*maxSps))
                 U(t,:) = ut;
+            else
+                nis = nis + 1;
             end
         end
         
@@ -100,5 +106,8 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
         disp([dispNm ' hit lower bounds ' num2str(nlbs) ...
             ' time(s) and upper bounds ' num2str(nubs) ' time(s).']);
     end
-
+    if nis > 0
+        disp([dispNm ' could not add noise to ' num2str(nis) ...
+            ' timepoint(s)']);
+    end
 end
