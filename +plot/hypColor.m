@@ -11,12 +11,16 @@ function clr = hypColor(hypnm)
 %         clr = [0.0078 0.3922 0.3608];
         clr = [0.7725 0.1059 0.4902];
     elseif strcmpi(hypnm, 'best-mean')
-        clr = [0.1078    0.4922    0.4608];
+%         clr = [0.1078    0.4922    0.4608];
+%         clr = [0.2078    0.3922    0.3608];
+        clr = [1 0.4 0.4];
     elseif strcmpi(hypnm, 'uncontrolled-uniform')
 %         clr = [0.6940    0.3840    0.7560];
         clr = [0.4940    0.1840    0.5560];
+        clr = [119, 45, 134]/255;
     elseif strcmpi(hypnm, 'uncontrolled-empirical')
         clr = [0.4940    0.1840    0.5560];
+        clr = [160, 80, 190]/255;
     elseif strcmpi(hypnm, 'habitual-corrected')
 %         clr = [0.7725 0.1059 0.4902];
         clr = [0.8500    0.3250    0.0980];

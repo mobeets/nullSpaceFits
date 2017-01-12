@@ -1,21 +1,23 @@
 
 doSave = false;
 
-% fitName = 'Int2Int_nIme';
-% hypsToShow = {'minimum', 'baseline', 'best-mean', 'uncontrolled-uniform'};
-% errNms = {'histError'};
-
-fitName = 'Int2Pert_nIme';
-% fitName = 'Int2Pert_yIme_optSig';
+fitName = 'Int2Int_nIme';
+% fitName = 'Int2Pert_nIme';
 % fitName = 'Int2Pert_yIme';
 % fitName = 'Pert2Int_yIme';
 
-hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
-    'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
-errNms = {'meanError', 'covError', 'histError'};
+if strcmpi(fitName, 'Int2Int_nIme')
+    hypsToShow = {'minimum', 'baseline', 'best-mean', ...
+        'uncontrolled-uniform'};
+    errNms = {'histError'};
+else
+    hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
+        'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
+    errNms = {'meanError', 'covError', 'histError'};
+end
 
-% errNms = {'covError'};
-% mnkNms = {'Lincoln'};
+% errNms = {'meanError'};
+% mnkNms = {'Jeffy'};
 mnkNms = io.getMonkeys;
 close all;
 for ii = 1:numel(errNms)

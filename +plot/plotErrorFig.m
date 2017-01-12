@@ -50,6 +50,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         starBaseName = '';
     end
     errs = plot.getScoreArray(S, errNm, dtInds, hypInds);
+    errs = errs(~any(isinf(errs),2),:);
     if strcmpi(errNm, 'histError')
         errs = 100*errs;
         ymax = 100;
@@ -58,7 +59,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     elseif strcmpi(errNm, 'meanError')
         errDispNm = 'mean';
         lblDispNm = 'mean';
-        ymax = 17;
+        ymax = 15;
     else
         errDispNm = 'covariance';
         lblDispNm = 'covariance';
