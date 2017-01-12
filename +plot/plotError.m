@@ -3,17 +3,21 @@ function plotError(errs, nms, opts)
         opts = struct();
     end
     defopts = struct('width', 6, 'height', 6, 'margin', 0.125, ...
-        'FontSize', 24, 'FontSizeTitle', 28, 'FontName', 'helvetica', ...
+        'FontSize', 24, 'FontSizeTitle', 28, 'FontName', 'Helvetica', ...
         'doSave', false, 'saveDir', 'data/plots', 'filename', 'avgErr', ...
-        'ext', 'pdf', 'title', '', 'clrs', [], ...
+        'ext', 'pdf', 'title', '', 'clrs', [], 'doBox', true, ...
         'ylbl', 'Avg. error', 'starBaseName', '', ...
-        'LineWidth', 2, 'ymax', nan, 'TextNote', '');
+        'showZeroBoundary', false, ...
+        'LineWidth', 2, 'ymin', 0, 'ymax', nan, 'TextNote', '');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
     % show plot
     plot.init(opts.FontSize, opts.FontName);
-    makeBoxPlot(errs, opts.clrs, opts.LineWidth);
-%     makeBarPlot(errs, opts.clrs, opts.LineWidth);
+    if opts.doBox
+        makeBoxPlot(errs, opts.clrs, opts.LineWidth);
+    else
+        makeBarPlot(errs, opts.clrs, opts.LineWidth);
+    end
     
     % format x-axis
     if ~isempty(nms)
@@ -26,22 +30,29 @@ function plotError(errs, nms, opts)
     end
         
     % format y-axis
+    yl = ylim;
     if ~isnan(opts.ymax)
-        yl = [0 opts.ymax];
-        ylim(yl);
-%         set(gca, 'YTick', 0:opts.ymax);
-    else
         yl = ylim;
-        yl = [0 yl(2)];
+        yl = [yl(1) opts.ymax];
         ylim(yl);
     end
-    ylabel(opts.ylbl);
-    
+    if ~isnan(opts.ymin)
+        yl = ylim;
+        yl = [opts.ymin yl(2)];
+        ylim(yl);
+    end
+    h = ylabel(opts.ylbl);
+    set(h, 'interpreter', 'tex'); % funky bug somehow caused by boxplot
+
     if ~isempty(opts.starBaseName)
         bInd = find(ismember(nms, opts.starBaseName));
         plot.addSignificanceStars(errs, bInd);
         ylim(yl);
     end    
+    
+    if opts.showZeroBoundary
+        plot(xlim, [0 0], 'k-', 'LineWidth', opts.LineWidth);
+    end
     
     % format plot
     title(opts.title, 'FontSize', opts.FontSizeTitle);
@@ -67,16 +78,18 @@ function makeBoxPlot(pts, clrs, lw)
     bp = boxplot(pts, 'Colors', clrs, ...
         'Symbol', '.', 'OutlierSize', 12);
     set(bp, 'LineWidth', lw);
-    set(findobj(gcf, 'LineStyle', '--'), 'LineStyle', '-');
+    set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
 end
 
 function makeBarPlot(pts, clrs, lw)
     ms = mean(pts);
     bs = 2*std(pts)/sqrt(size(pts,1));
-    for ii = 1:size(pts,2)
+    for ii = 1:size(pts,2)        
+        bar(ii, ms(ii), 'EdgeColor', 'k', 'FaceColor', clrs(ii,:), ...
+            'LineWidth', lw);
+%         plot([ii-0.5 ii+0.5], [ms(ii) ms(ii)], '-', ...
+%             'Color', clrs(ii,:), 'LineWidth', 2*lw);
         plot([ii ii], [ms(ii)-bs(ii) ms(ii)+bs(ii)], '-', ...
             'Color', 'k', 'LineWidth', lw);
-        plot([ii-0.5 ii+0.5], [ms(ii) ms(ii)], '-', ...
-            'Color', clrs(ii,:), 'LineWidth', 2*lw);
     end
 end

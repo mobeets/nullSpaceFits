@@ -7,7 +7,7 @@ function grps = thetaGroup(xs, centers)
 
     grps = nan(size(xs,1),1);
     for ii = 1:size(bnds,1)
-        grps(io.isInRange(xs, bnds(ii,:))) = centers(ii);
+        grps(tools.isInRange(xs, bnds(ii,:))) = centers(ii);
     end
 
 end
