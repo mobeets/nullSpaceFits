@@ -26,7 +26,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     end
     
     % load scores
-    S = plot.loadScoresAndFits(fitsName);
+    S = io.loadScoresAndFits(fitsName);
     dts = {S.datestr};
     hypnms = {S(1).scores.name};
     hypDispNms = cellfun(@(h) plot.hypDisplayName(h, doAbbrev), ...
