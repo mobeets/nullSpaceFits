@@ -4,7 +4,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
     end
     defopts = struct('minType', 'baseline', ...
         'nanIfOutOfBounds', false, 'fitInLatent', false, ...
-        'obeyBounds', true, 'sigmaScale', 1.0);
+        'obeyBounds', true, 'sigmaScale', 1.0, 'addSpikeNoise', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     dispNm = ['minEnergyFit (' opts.minType ')'];
         
@@ -56,10 +56,7 @@ function [Z,U] = minEnergyFit(Tr, Te, dec, opts)
             c = 0;
             ut = normrnd(ut0, sigma);
             while (any(ut < 0) || any(ut > 2*maxSps)) && c < 10
-                ut = normrnd(ut0, sigma);
-                if strcmpi(opts.minType, 'minimum')
-                    ut = max(ut, 0);
-                end
+                ut = max(normrnd(ut0, sigma), 0);
                 c = c + 1;
             end
             if ~(any(ut < 0) || any(ut > 2*maxSps))

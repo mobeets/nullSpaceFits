@@ -1,14 +1,13 @@
-function plotAvgError(errs, nms, opts)
+function plotError(errs, nms, opts)
     if nargin < 2
         opts = struct();
     end
     defopts = struct('width', 6, 'height', 6, 'margin', 0.125, ...
-        'FontSize', 24, 'FontSizeTitle', 32, 'FontName', 'helvetica', ...
+        'FontSize', 24, 'FontSizeTitle', 28, 'FontName', 'helvetica', ...
         'doSave', false, 'saveDir', 'data/plots', 'filename', 'avgErr', ...
         'ext', 'pdf', 'title', '', 'clrs', [], ...
-        'ylbl', 'Avg. error', 'showStars', true, ...
-        'starBaseName', 'Constant-cloud', ...
-        'LineWidth', 2, 'ymax', nan);
+        'ylbl', 'Avg. error', 'starBaseName', '', ...
+        'LineWidth', 2, 'ymax', nan, 'TextNote', '');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
     % show plot
@@ -38,7 +37,7 @@ function plotAvgError(errs, nms, opts)
     end
     ylabel(opts.ylbl);
     
-    if opts.showStars
+    if ~isempty(opts.starBaseName)
         bInd = find(ismember(nms, opts.starBaseName));
         plot.addSignificanceStars(errs, bInd);
         ylim(yl);
@@ -50,7 +49,13 @@ function plotAvgError(errs, nms, opts)
     set(gca, 'TickLength', [0 0]);
     set(gca, 'LineWidth', opts.LineWidth);
     box off;
-    plot.setPrintSize(gcf, opts);    
+    plot.setPrintSize(gcf, opts);
+    
+    if ~isempty(opts.TextNote)
+        xl = xlim; yl = ylim;
+        text(0.65*xl(2), 0.95*yl(2), ...
+            opts.TextNote, 'FontSize', opts.FontSize);
+    end
         
     if opts.doSave
         export_fig(gcf, fullfile(opts.saveDir, ...
