@@ -22,6 +22,8 @@ function clr = hypColor(hypnm)
         clr = [0.8500    0.3250    0.0980];
     elseif strcmpi(hypnm, 'constant-cloud')
         clr = [0    0.4470    0.7410];
+    elseif strcmpi(hypnm, 'data')
+        clr = [0.5 0.5 0.5];
     else
         clr = [0 0 0];
     end
