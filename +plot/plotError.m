@@ -76,7 +76,23 @@ end
 
 function makeBoxPlot(pts, clrs, lw)
     bp = boxplot(pts, 'Colors', clrs, ...
-        'Symbol', '.', 'OutlierSize', 12);
+        'Symbol', '.', 'OutlierSize', 8, 'widths', 0.7);
+%     return;
+    h = findobj(gcf,'tag','Upper Adjacent Value');
+    for jj = 1:numel(h)
+        h(jj).Color = 'w';
+    end
+    h = findobj(gcf,'tag','Lower Adjacent Value');
+    for jj = 1:numel(h)
+        h(jj).Color = 'w';
+    end
+    
+    h = findobj(gcf,'tag','Box');
+    for jj = 1:numel(h)
+        patch(get(h(jj),'XData'), get(h(jj),'YData'), get(h(jj), 'Color'), ...
+            'FaceAlpha', 0.5, 'EdgeColor', 'none');
+    end
+    set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
     set(bp, 'LineWidth', lw);
     set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
 end

@@ -1,9 +1,9 @@
 
 doSave = false;
 
-fitName = 'Int2Int_nIme';
+% fitName = 'Int2Int_nIme';
 % fitName = 'Int2Pert_nIme';
-% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme';
 % fitName = 'Pert2Int_yIme';
 
 if strcmpi(fitName, 'Int2Int_nIme')
@@ -15,14 +15,20 @@ else
         'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
     errNms = {'meanError', 'covError', 'histError'};
 end
+mnkNms = io.getMonkeys;
 
 % errNms = {'meanError'};
 % mnkNms = {'Jeffy'};
-mnkNms = io.getMonkeys;
 close all;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
+        if strcmpi(errNms{ii}, 'covError') || ...
+                strcmpi(fitName, 'Int2Int_nIme')
+            doAbbrev = false;
+        else
+            doAbbrev = true;
+        end
         errs = plot.plotErrorFig(fitName, errNms{ii}, mnkNms{jj}, ...
-            hypsToShow, doSave, false);
+            hypsToShow, doSave, doAbbrev);
     end
 end

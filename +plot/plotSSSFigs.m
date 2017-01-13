@@ -4,7 +4,7 @@
 
 %% plot avgs
 
-doSave = false;
+doSave = true;
 mnkNm = '';
 
 hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
