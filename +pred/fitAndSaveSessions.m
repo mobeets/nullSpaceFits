@@ -16,8 +16,9 @@ function fitAndSaveSessions(saveDir, grpName, opts, hnms, dts, doOverwrite)
         error('Cannot fit because directory already exists.');
     elseif ~exist(saveDir, 'dir')
         mkdir(saveDir);
+        save(fullfile(saveDir, 'opts.mat'), ...
+            'grpName', 'opts', 'hyps', 'dts');
     end
-    save(fullfile(saveDir, 'opts.mat'), 'grpName', 'opts', 'hyps', 'dts');
 
     % fit sessions
     for ii = 1:numel(dts)
