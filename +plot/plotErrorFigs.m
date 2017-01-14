@@ -1,10 +1,10 @@
 
-doSave = false;
+doSave = true;
 
 % fitName = 'Int2Int_nIme';
 % fitName = 'Int2Pert_nIme';
-fitName = 'Int2Pert_yIme';
-% fitName = 'Pert2Int_yIme';
+% fitName = 'Int2Pert_yIme';
+fitName = 'Pert2Int_yIme';
 
 if strcmpi(fitName, 'Int2Int_nIme')
     hypsToShow = {'minimum', 'baseline', 'best-mean', ...
@@ -17,8 +17,8 @@ else
 end
 mnkNms = io.getMonkeys;
 
-% errNms = {'meanError'};
-% mnkNms = {'Jeffy'};
+% errNms = {'histError', 'covError'};
+% mnkNms = {'Lincoln'};
 close all;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
@@ -28,7 +28,12 @@ for ii = 1:numel(errNms)
         else
             doAbbrev = true;
         end
+        if strcmpi(mnkNms{jj}, 'Jeffy')
+            showYLabel = true;
+        else
+            showYLabel = false;
+        end
         errs = plot.plotErrorFig(fitName, errNms{ii}, mnkNms{jj}, ...
-            hypsToShow, doSave, doAbbrev);
+            hypsToShow, doSave, doAbbrev, showYLabel);
     end
 end

@@ -24,7 +24,7 @@ function plotError(errs, nms, opts)
         set(gca, 'XTick', 1:numel(nms));
         set(gca, 'XTickLabel', nms);    
         xlim([0.25 numel(nms)+0.75]);
-        if max(cellfun(@numel, nms)) > 3 % if longest name > 3 chars
+        if max(cellfun(@numel, nms)) > 1 % if longest name > 3 chars
             set(gca, 'XTickLabelRotation', 45);
         end
     end
@@ -55,7 +55,9 @@ function plotError(errs, nms, opts)
     end
     
     % format plot
-    title(opts.title, 'FontSize', opts.FontSizeTitle);
+    if ~isempty(opts.title)
+        title(opts.title, 'FontSize', opts.FontSizeTitle);
+    end
     set(gca, 'TickDir', 'out');
     set(gca, 'TickLength', [0 0]);
     set(gca, 'LineWidth', opts.LineWidth);

@@ -1,5 +1,5 @@
 function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
-    doSave, doAbbrev)
+    doSave, doAbbrev, showYLabel)
     if nargin < 3
         mnkNm = '';
     end
@@ -9,10 +9,11 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     if nargin < 5
         doSave = false;
     end
-    if nargin < 6
-        % abbreviate names
-        
-        doAbbrev = false;
+    if nargin < 6        
+        doAbbrev = false; % abbreviate x-axis names
+    end
+    if nargin < 7
+        showYLabel = true;
     end
     
     % if abbreviated, shorten figure
@@ -20,7 +21,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         hght = 4;
     else
         hght = 5.5;
-    end
+    end    
     
     % load scores
     S = plot.getScoresAndFits(fitName);
@@ -50,7 +51,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     errs = errs(~any(isinf(errs),2),:);
     if strcmpi(errNm, 'histError')
         errs = 100*errs;
-        ymax = 100;
+        ymax = 105;
         errDispNm = 'histograms (%)';
         lblDispNm = 'histograms (%)';
     elseif strcmpi(errNm, 'meanError')
@@ -62,17 +63,31 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         lblDispNm = 'covariance';
         ymax = 11;
     end
+    
+    % no ylabel, shrink figure
+    if ~showYLabel        
+        ylbl = '';
+        if doAbbrev
+            wdth = 3.7;
+        else
+            wdth = 4;
+        end
+    else
+        wdth = 4;
+        ylbl = ['Error in ' lblDispNm];
+    end
     mnkTitle = ['Monkey ' mnkNm(1)];
     % title = ['Error in ' errDispNm ', ' mnkTitle];
 %     ttl = [errDispNm ', ' mnkTitle];
-    ttl = ['Error in ' errDispNm];
+%     ttl = ['Error in ' errDispNm];
+    ttl = '';
     % title = mnkTitle;
     fnm = [errNm '_' fitName '_' mnkNm(1)];
     opts = struct('doSave', doSave, 'filename', fnm, ...
-        'width', 4, 'height', hght, ...
+        'width', wdth, 'height', hght, ...
         'doBox', true, ...
         'starBaseName', starBaseName, ...
-        'ylbl', ['Avg. error in ' lblDispNm], ...
+        'ylbl', ylbl, ...
         'title', ttl, 'ymax', ymax, ...
         'TextNote', ['Monkey ' mnkNm(1)], ...
         'clrs', hypClrs(hypInds,:));
