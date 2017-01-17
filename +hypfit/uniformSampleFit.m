@@ -1,4 +1,4 @@
-function Z = uniformSampleFit(Tr, Te, dec, opts)
+function [Z, E] = uniformSampleFit(Tr, Te, dec, opts)
     if nargin < 4
         opts = struct();
     end
@@ -35,6 +35,7 @@ function Z = uniformSampleFit(Tr, Te, dec, opts)
             Z(ixOob,:) = nan;
         end
     end
+    E = [];
 
 end
 

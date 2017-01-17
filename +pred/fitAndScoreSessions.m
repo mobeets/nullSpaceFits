@@ -1,4 +1,5 @@
-function fitAndSaveSessions(saveDir, grpName, opts, hnms, dts, doOverwrite)
+function fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, ...
+    doOverwrite)
     if nargin < 4
         hnms = {};
     end
@@ -12,6 +13,7 @@ function fitAndSaveSessions(saveDir, grpName, opts, hnms, dts, doOverwrite)
     hyps = pred.getDefaultHyps(hnms, grpName);
 
     % init saveDir and save opts
+    saveDir = fullfile('data', 'fits', saveDir);
     if ~doOverwrite && exist(saveDir, 'dir')
         error('Cannot fit because directory already exists.');
     elseif ~exist(saveDir, 'dir')

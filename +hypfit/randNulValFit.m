@@ -1,4 +1,4 @@
-function Z = randNulValFit(Tr, Te, dec, opts)
+function [Z, E] = randNulValFit(Tr, Te, dec, opts)
 % choose intuitive pt within thetaTol
     if nargin < 4
         opts = struct();
@@ -36,5 +36,6 @@ function Z = randNulValFit(Tr, Te, dec, opts)
             Z(ixOob,:) = nan;
         end
     end
+    E = [];
 
 end

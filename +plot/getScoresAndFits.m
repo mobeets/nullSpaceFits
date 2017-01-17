@@ -1,4 +1,4 @@
-function [S,F] = loadScoresAndFits(fitsName, dts)
+function [S,F] = getScoresAndFits(fitsName, dts)
 %
     if nargin < 2
         dts = {};

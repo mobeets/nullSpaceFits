@@ -1,4 +1,4 @@
-function Z = randNulValInGrpFit(Tr, Te, dec, opts)
+function [Z, E] = randNulValInGrpFit(Tr, Te, dec, opts)
 % choose intuitive pt within thetaTol
     if nargin < 4
         opts = struct();
@@ -46,6 +46,7 @@ function Z = randNulValInGrpFit(Tr, Te, dec, opts)
         disp([num2str(nErrs) ...
             ' habitual sample(s) had no neighbors within range.']);
     end
+    E = [];
 
 end
 
