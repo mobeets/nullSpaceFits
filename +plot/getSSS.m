@@ -1,4 +1,5 @@
-function [errs, C2s, C1s, dts, hypnms] = getSSS(fitsName, nCenters)
+function [errs, C2s, C1s, Ys, dts, hypnms] = getSSS(fitsName, nCenters, inds)
+% inds will return data at inds
     
     % load
     [~,Fs] = plot.getScoresAndFits(fitsName);
@@ -12,6 +13,7 @@ function [errs, C2s, C1s, dts, hypnms] = getSSS(fitsName, nCenters)
     errs = nan(numel(Fs), numel(grps), numel(Fs(1).fits)+1);
     C1s = cell(numel(Fs), numel(grps));
     C2s = cell(numel(Fs), numel(grps), numel(Fs(1).fits)+1);
+    Ys = cell(numel(Fs(1).fits)+1, 1);
     for ii = 1:numel(Fs)
         F = Fs(ii);
         Y1 = F.train.latents;
@@ -33,10 +35,17 @@ function [errs, C2s, C1s, dts, hypnms] = getSSS(fitsName, nCenters)
                 C2 = nancov(F.fits(kk).latents(ix2,:)*SSS);
                 C2s{ii,jj,kk} = C2;
                 errs(ii,jj,kk) = errFcn(C1, C2);
+                
+                if ii == inds(1) && jj == inds(2)
+                    Ys{kk} = F.fits(kk).latents(ix2,:)*SSS;
+                end
             end
             C2 = nancov(Y2(ix2,:)*SSS);
             C2s{ii,jj,end} = C2;
-            errs(ii,jj,end) = errFcn(C1, C2);        
+            errs(ii,jj,end) = errFcn(C1, C2);
+            if ii == inds(1) && jj == inds(2)
+                Ys{end} = Y2(ix2,:)*SSS;
+            end
         end
     end    
 end
