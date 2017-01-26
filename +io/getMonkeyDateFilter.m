@@ -1,6 +1,9 @@
 function ix = getMonkeyDateFilter(dts, mnks)
 % gets dts mask for all monkey names present in mnks
-    dts = cellfun(@str2num, dts);
+    
+    if isa(dts, 'cell') % if not already an array of numbers
+        dts = cellfun(@str2num, dts);
+    end
     ixJ = dts <= 20130101;
     ixL = ~ixJ & dts <= 20160101;
     ixN = ~ixJ & ~ixL;    

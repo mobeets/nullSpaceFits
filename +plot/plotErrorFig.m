@@ -76,20 +76,28 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         wdth = 4;
         ylbl = ['Error in ' lblDispNm];
     end
-    mnkTitle = ['Monkey ' mnkNm(1)];
+    if ~isempty(mnkNm)
+        mnkTitle = ['Monkey ' mnkNm(1)];
+    else
+        mnkTitle = '';
+    end
     % title = ['Error in ' errDispNm ', ' mnkTitle];
 %     ttl = [errDispNm ', ' mnkTitle];
 %     ttl = ['Error in ' errDispNm];
     ttl = '';
     % title = mnkTitle;
-    fnm = [errNm '_' fitName '_' mnkNm(1)];
+    if ~isempty(mnkNm)
+        fnm = [errNm '_' fitName '_' mnkNm(1)];
+    else
+        fnm = [errNm '_' fitName '_ALL'];
+    end
     opts = struct('doSave', doSave, 'filename', fnm, ...
         'width', wdth, 'height', hght, ...
         'doBox', true, ...
         'starBaseName', starBaseName, ...
         'ylbl', ylbl, ...
         'title', ttl, 'ymax', ymax, ...
-        'TextNote', ['Monkey ' mnkNm(1)], ...
+        'TextNote', mnkTitle, ...
         'clrs', hypClrs(hypInds,:));
     % close all;
     plot.plotError(errs, hypDispNms(hypInds), opts);

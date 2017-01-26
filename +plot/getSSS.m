@@ -1,4 +1,4 @@
-function [errs, C2s, C1s, dts, hypnms] = getSSS(fitsName)
+function [errs, C2s, C1s, dts, hypnms] = getSSS(fitsName, nCenters)
     
     % load
     [~,Fs] = plot.getScoresAndFits(fitsName);
@@ -8,7 +8,7 @@ function [errs, C2s, C1s, dts, hypnms] = getSSS(fitsName)
     % process
     covAreaFcn = @trace;
     errFcn = @(C, Ch) covAreaFcn(Ch)/covAreaFcn(C);
-    grps = tools.thetaCenters(16);
+    grps = tools.thetaCenters(nCenters);
     errs = nan(numel(Fs), numel(grps), numel(Fs(1).fits)+1);
     C1s = cell(numel(Fs), numel(grps));
     C2s = cell(numel(Fs), numel(grps), numel(Fs(1).fits)+1);
