@@ -1,5 +1,5 @@
 
-doSave = true;
+doSave = false;
 
 % fitName = 'Int2Int_nIme';
 % fitName = 'Int2Pert_nIme';
@@ -16,9 +16,10 @@ else
     errNms = {'meanError', 'covError', 'histError'};
 end
 mnkNms = io.getMonkeys;
-% mnkNms = {'ALL'};
+mnkNms = {'ALL'};
 
-% errNms = {'histError'};
+errNms = {'histError'};
+% hypsToShow = {'habitual-corrected'};
 close all;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)

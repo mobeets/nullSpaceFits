@@ -5,7 +5,7 @@ exInds = [1 1];
 
 %% plot avgs
 
-doSave = false;
+doSave = true;
 mnkNm = '';
 
 hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
@@ -22,7 +22,7 @@ hypToCompare = 'constant-cloud';
 hypInd = strcmpi(hypnms, hypToCompare);
 hypClrs = [plot.hypColor('data'); plot.hypColor(hypToCompare)];
 opts = struct('clrs', hypClrs, 'doSave', doSave, ...
-    'width', 12, 'height', 3, 'dstep', 6, 'dts', cellfun(@str2double, dts));
+    'width', 13, 'height', 3, 'dstep', 6, 'dts', cellfun(@str2double, dts));
 plot.plotSSSEllipseFig(C2s(:,:,end), C2s(:,:,hypInd), opts);
 
 %%

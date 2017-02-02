@@ -10,7 +10,7 @@ function plotHist(H0, Hs, Xs, opts)
         'ext', 'pdf', 'title', '', 'clrs', [], ...
         'xlbl', 'Activity (spikes/timebin)', 'ylbl', 'Selection frequency', ...
         'ymax', 1.0, 'LineWidth', 3, 'TextNote', '', 'grpNms', [], ...
-        'LabelFontSize', 16, ...
+        'LabelFontSize', 16, 'backClr', [0.8 0.8 0.8], ...
         'grpInds', [], 'dimInds', [], 'panelMargins', [2.0 0.2]);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
@@ -31,8 +31,8 @@ function plotHist(H0, Hs, Xs, opts)
             dimInd = opts.dimInds(jj);
             xs = Xs{grpInd}(:,dimInd);
             xs = xs + (jj-1)*xgap;
-            
-            ys0 = H0{grpInd}(:,dimInd) + (ii-1)*ygap;
+            ys0 = H0{grpInd}(:,dimInd) + (ii-1)*ygap;            
+
             plotSingleHist(xs, ys0, ...
                 opts.LineWidth, opts.clrs(1,:), '-');
             for kk = 1:numel(Hs)
@@ -54,11 +54,20 @@ function plotHist(H0, Hs, Xs, opts)
                     [' Output-null\newline      dim. ' num2str(dimInd)], ...
                     'FontSize', opts.TinyFontSize);
             end
-            if jj == 1 && ~isempty(opts.grpNms) && notSinglePanel
-                text(min(xs)-3, (ii-1)*ygap + opts.ymax/3, ...
-                    [num2str(opts.grpNms(grpInd)) '^\circ'], ...
-                    'FontSize', opts.TinyFontSize, 'Rotation', 90);
+            if ii == numel(opts.grpInds) && jj == 1 && notSinglePanel
+                hght = max([0.6*ygap max(ys1)-min(ys1)]);
+%                 [0.6*ygap max(ys1)-min(ys1)]
+                rpos = [min(xs) min(ys1) max(xs)-min(xs) hght];
+                % 0.712 instead of 0.6 if SinglePanel
+                rectangle('Position', rpos, 'EdgeColor', opts.backClr, ...
+                    'LineWidth', opts.LineWidth);
+%                     'FaceColor', opts.backClr);
             end
+%             if jj == 1 && ~isempty(opts.grpNms) && notSinglePanel
+%                 text(min(xs)-3, (ii-1)*ygap + opts.ymax/3, ...
+%                     [num2str(opts.grpNms(grpInd)) '^\circ'], ...
+%                     'FontSize', opts.TinyFontSize, 'Rotation', 90);
+%             end
         end
     end
     if true%numel(opts.grpInds) == 1 && numel(opts.dimInds) == 1
@@ -75,10 +84,11 @@ function plotHist(H0, Hs, Xs, opts)
     set(gca, 'LineWidth', max(opts.LineWidth-1,1));
     box off;
     if numel(opts.grpInds) ~= 1 || numel(opts.dimInds) ~= 1
-        axis off;
+        axis off;        
     else
         xlabel(opts.xlbl, 'FontSize', opts.LabelFontSize);
         ylabel(opts.ylbl, 'FontSize', opts.LabelFontSize);
+%         set(gca, 'Color', opts.backClr); % gray background
         
 %         xmu = (xmn+xmx)/2; % xmn is zero, so subtract from that
 %         set(gca, 'XTick', [xmu]);
@@ -91,7 +101,7 @@ function plotHist(H0, Hs, Xs, opts)
     
     if ~isempty(opts.TextNote)
         xl = xlim; yl = ylim;
-        text(xl(1), 0.95*yl(2), ...
+        text(xl(1), 0.94*yl(2), ...
             opts.TextNote, 'FontSize', opts.TextNoteFontSize, ...
             'Color', [0.3 0.3 0.3]);
     end

@@ -28,9 +28,9 @@ function plotHistFig(fitName, dt, hypNms, doPca, opts)
     hypClrs = cell2mat(cellfun(@plot.hypColor, hypnms, 'uni', 0)');
     
     if numel(opts.grpInds) == 1 && numel(opts.dimInds) == 1        
-        ttl = [' Output-null dim. ' num2str(opts.dimInds(1))];
-        ttl = [ttl ', Cursor dir. ' ...
-            num2str(S.grps(opts.grpInds(1))) '^\circ'];
+        ttl = ['            Output-null dim. ' num2str(opts.dimInds(1))];
+%         ttl = [ttl ', Cursor dir. ' ...
+%             num2str(S.grps(opts.grpInds(1))) '^\circ'];
 %         ttl = [ttl '\newline    Cursor dir. ' ...
 %             num2str(S.grps(opts.grpInds(1))) '^\circ'];
         
