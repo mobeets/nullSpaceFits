@@ -14,6 +14,9 @@ function [Z, E] = uniformSampleFit(Tr, Te, dec, opts)
     Zn = getSamples(Z1*NB, nt);
     Z = Zr + Zn*NB';
     
+    warning('ending early');
+    E = []; return;
+    
     if opts.obeyBounds
         % resample invalid points
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
@@ -45,9 +48,9 @@ function Zsamp = getSamples(Z, n)
 %   with the samples obeying the empirical
 %   upper/lower bounds observed in Z
 %
-    mn = min(Z);
-    mx = max(Z);
-    Zsamp = rand(n, size(Z,2));
+    mn = floor(min(Z));
+    mx = ceil(max(Z));
+    Zsamp = rand(n, size(Z,2)); % rand between 0 and 1
     Zsamp = bsxfun(@plus, mn, bsxfun(@times, (mx-mn), Zsamp));
     
 end

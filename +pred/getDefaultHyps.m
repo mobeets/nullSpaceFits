@@ -60,6 +60,15 @@ function hyps = getDefaultHyps(hnms, grpName)
         'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.bestMeanFit;
     hyps = [hyps hyp];
+    
+    % best-mean-per-target
+    clear hyp;
+    hyp.name = 'best-mean-per-target';
+    hyp.opts = struct('grpName', grpName, ...
+        'addNoise', addNoise, ...
+        'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.bestMeanPerTargetFit;
+    hyps = [hyps hyp];
 
     % uncontrolled-uniform
     clear hyp;

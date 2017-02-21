@@ -19,8 +19,8 @@ mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
 
 errNms = {'histError'};
-% hypsToShow = {'habitual-corrected'};
-close all;
+hypsToShow = {'best-mean', 'uncontrolled-empirical', 'constant-cloud'};
+% close all;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
         if strcmpi(errNms{ii}, 'covError') || ...

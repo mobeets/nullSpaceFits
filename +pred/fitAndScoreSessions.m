@@ -30,8 +30,9 @@ function fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, ...
             [F,~] = pred.fitSession(dts{ii}, hyps, grpName, opts);
             S = score.scoreAll(F, grpName); % score each hyp
             toc;
-        catch
-            warning(['Error for ' dts{ii} '.']);
+        catch exception
+            msgText = getReport(exception, 'basic'); % no stack trace
+            warning(['Error for ' dts{ii} ': ' msgText]);
             continue;
         end
 

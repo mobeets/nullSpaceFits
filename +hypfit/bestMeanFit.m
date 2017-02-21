@@ -55,7 +55,6 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
     end
     
     Z = Z*(NB2*NB2') + Zr; % maintain same output-potent value
-
 end
 
 function mu = findBestMean(Z, NB, gs, sps_min, sps_max)

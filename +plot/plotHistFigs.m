@@ -1,6 +1,7 @@
 
-doSave = true;
+doSave = false;
 dt = '20131205';
+% fitName = 'Int2Pert_yIme';
 fitName = 'Int2Pert_yIme';
 
 if strcmpi(fitName, 'Int2Int_nIme')
@@ -13,9 +14,11 @@ else
 end
 
 close all;
-% hypsToShow = {'uncontrolled-uniform', 'uncontrolled-empirical'};
-hypsToShow = {'minimum', 'baseline'};
+hypsToShow = {'uncontrolled-uniform', 'uncontrolled-empirical'};
+% hypsToShow = {'minimum', 'baseline'};
+% hypsToShow = {'baseline'};
 % hypsToShow = {'constant-cloud', 'habitual-corrected'};
+% hypsToShow = {'uncontrolled-empirical'};
  
 % show singleton
 opts = struct('grpInds', 1, 'dimInds', 1, 'doSave', doSave);
@@ -29,9 +32,11 @@ for ii = 1:numel(hypsToShow)
     plot.plotHistFig(fitName, dt, hypsToShow(ii), doPca, opts);
 end
 
+%%
+
 % show all
 opts = struct('grpInds', 1:8, 'dimInds', 1:3, 'doSave', doSave);
-doPca = true;
+doPca = false;
 for ii = 1:numel(hypsToShow)
     if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline')
         opts.ymax = 1.3;

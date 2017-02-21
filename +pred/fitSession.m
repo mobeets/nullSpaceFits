@@ -5,7 +5,7 @@ function [F,D] = fitSession(dtstr, hyps, grpName, opts)
     if nargin < 4
         opts = struct();
     end
-    if ~isfield('fieldsToAdd', opts) || ~ismember(grpName, opts.fieldsToAdd)
+    if ~isfield(opts, 'fieldsToAdd') || ~ismember(grpName, opts.fieldsToAdd)
         opts.fieldsToAdd = {grpName};
     end
     

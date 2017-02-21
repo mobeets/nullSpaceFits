@@ -110,18 +110,22 @@ function plotHist(H0, Hs, Xs, opts)
     if ~notSinglePanel && ~opts.HideText
         xl = xlim; yl = ylim;
         
-%         [~,ix] = max(ys0);
-%         xsc = xs(ix)-0.5;
-%         ysc = ys0(ix);
-        xsc = mean(xl) - 0.1*diff(xl);
-        ysc = mean(yl);
+%         xsc = mean(xl) - 0.1*diff(xl);
+%         ysc = mean(yl);
+        xsc = mean(xl) - 0.0*diff(xl);
+        ysc = mean(yl) + 0.1*diff(yl);
+%         xsc = mean(xl) + 0.3*diff(xl);
+%         ysc = mean(yl) - 0.25*diff(yl);
         text(xsc, ysc, 'Data', 'Color', opts.clrs(1,:), ...
             'FontSize', opts.FontSize);
-%         [~,ix] = max(ys1);
-%         xsc = xs(ix)-0.5;
-%         ysc = ys1(ix);
-        xsc = mean(xl) - 0.1*diff(xl);
-        ysc = mean(yl) + 0.1*diff(yl);
+
+        
+%         xsc = mean(xl) - 0.13*diff(xl);
+%         ysc = mean(yl) + 0.1*diff(yl);
+        xsc = mean(xl) - 0.4*diff(xl);
+        ysc = mean(yl) - 0.1*diff(yl);
+%         xsc = mean(xl) + 0.2*diff(xl);
+%         ysc = mean(yl) - 0.1*diff(yl);
         text(xsc, ysc, 'Prediction', 'Color', opts.clrs(2,:), ...
             'FontSize', opts.FontSize);
     end    

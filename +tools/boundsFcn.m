@@ -28,7 +28,7 @@ function [isOutOfBoundsFcn, whereOutOfBounds] = boundsFcn(Y, kind, dec, inSpikes
         
         if inSpikes
             % in spike space already
-            whereOutOfBounds = @(u) u < minSps | u > maxSps;
+            whereOutOfBounds = @(u) round(u) < minSps | round(u) > maxSps;
             isOutOfBoundsFcn = @(u) any(whereOutOfBounds(u),2);
             return;
         end
