@@ -1,11 +1,15 @@
 function nm = hypDisplayName(nm, doAbbrev)
     if ~doAbbrev
         if strcmpi(nm, 'minimum')
-            nm = 'minimal firing';
+            nm = 'Minimal Firing';
         elseif strcmpi(nm, 'baseline')
-            nm = 'baseline firing';
+            nm = 'Baseline Firing';
         elseif strcmpi(nm, 'best-mean')
-            nm = 'best-mean firing';
+            nm = 'Minimal Deviation';
+        elseif strcmpi(nm, 'habitual-corrected')
+            nm = 'Habitual Corrected';
+        elseif strcmpi(nm, 'constant-cloud')
+            nm = 'Fixed Repertoire';
         end
         nm(1) = upper(nm(1));
     else
@@ -13,6 +17,8 @@ function nm = hypDisplayName(nm, doAbbrev)
             nm = 'MF';
         elseif strcmpi(nm, 'baseline')
             nm = 'BF';
+        elseif strcmpi(nm, 'best-mean')
+            nm = 'MD';
         elseif strcmpi(nm, 'uncontrolled-uniform')
             nm = 'UU';
         elseif strcmpi(nm, 'uncontrolled-empirical')
