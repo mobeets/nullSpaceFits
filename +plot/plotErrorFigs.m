@@ -3,24 +3,27 @@ doSave = false;
 
 % fitName = 'Int2Int_nIme';
 % fitName = 'Int2Pert_nIme';
-fitName = 'Int2Pert_yIme';
 % fitName = 'Pert2Int_yIme';
+% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_cloud_spds';
 
 if strcmpi(fitName, 'Int2Int_nIme')
     hypsToShow = {'minimum', 'baseline', 'best-mean', ...
         'uncontrolled-uniform'};
     errNms = {'histError'};
 else
-    hypsToShow = {'minimum', 'baseline', 'uncontrolled-uniform', ...
+    hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
         'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
     errNms = {'meanError', 'covError', 'histError'};
 end
-mnkNms = io.getMonkeys;
+% mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
 
-errNms = {'histError'};
-hypsToShow = {'best-mean', 'uncontrolled-empirical', 'constant-cloud'};
-% close all;
+% fitName = 'tmmmmm2';
+% errNms = {'histError'};
+% hypsToShow = {'minimum', 'best-mean', 'baseline'};
+hypsToShow = {'constant-cloud', 'constant-cloud-fast', 'constant-cloud-slow', 'habitual-corrected'};
+close all;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
         if strcmpi(errNms{ii}, 'covError') || ...

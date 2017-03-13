@@ -62,7 +62,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         errDispNm = 'covariance';
         lblDispNm = 'covariance';
         ymax = 11;
-        ymax = 70;
+%         ymax = 70;
     end
     
     % no ylabel, shrink figure

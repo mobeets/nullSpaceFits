@@ -1,4 +1,4 @@
-function [Z, E] = randNulValInGrpFit(Tr, Te, dec, opts)
+function [Z, inds] = randNulValInGrpFit(Tr, Te, dec, opts)
 % choose intuitive pt within thetaTol
     if nargin < 4
         opts = struct();
@@ -16,7 +16,7 @@ function [Z, E] = randNulValInGrpFit(Tr, Te, dec, opts)
     
     dsThs = pdist2(ths2, ths1, @tools.angleDistance);
     ix = dsThs <= opts.thetaTol;
-    [Zsamp, nErrs] = getSamples(Z1, ix);
+    [Zsamp, nErrs, inds] = getSamples(Z1, ix);
     
     Zr = Z2*(RB2*RB2');
     Z = Zr + Zsamp*(NB2*NB2');
@@ -29,7 +29,8 @@ function [Z, E] = randNulValInGrpFit(Tr, Te, dec, opts)
         maxC = 10;
         c = 0;        
         while sum(ixOob) > 0 && c < maxC
-            [Zsamp, nErrs] = getSamples(Z1, ix(ixOob,:));
+            [Zsamp, nErrs, newInds] = getSamples(Z1, ix(ixOob,:));
+            inds(ixOob) = newInds;
             Z(ixOob,:) = Zr(ixOob,:) + Zsamp*(NB2*NB2');
             ixOob = isOutOfBounds(Z);
             c = c + 1;
@@ -46,21 +47,23 @@ function [Z, E] = randNulValInGrpFit(Tr, Te, dec, opts)
         disp([num2str(nErrs) ...
             ' habitual sample(s) had no neighbors within range.']);
     end
-    E = [];
-
 end
 
-function [Zsamp, nZero] = getSamples(Z1, ix)
+function [Zsamp, nZero, indsChosen] = getSamples(Z1, ix)
     nt = size(ix,1);
     nix = sum(ix,2);
     
     % if nothing is in range, sample from anything
     nZero = sum(nix == 0);
     ix(nix == 0,:) = true;
-    nix(nix == 0) = size(ix,2);
     
     nums = 1:size(ix,2);
-    inds = arrayfun(@(t) nums(ix(t,:)), 1:nt, 'uni', 0);
-    Zsamp = cell2mat(arrayfun(@(t) Z1(inds{t}(randi(nix(t))),:), ...
-        1:nt, 'uni', 0)');
+    indsChosen = nan(nt,1);
+    for t = 1:nt
+        curInds = nums(ix(t,:));
+        chosenInd = randi(numel(curInds),1);
+        indsChosen(t) = curInds(chosenInd);
+        assert(ix(t,indsChosen(t)));
+    end
+    Zsamp = Z1(indsChosen,:);
 end

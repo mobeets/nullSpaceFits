@@ -73,6 +73,31 @@ function mu = findBestMean(Z, NB, gs, sps_min, sps_max)
     mu = fmincon(obj, mu0, A, b, Aeq, beq, lb, ub, [], options);
 end
 
+function mu = findBestMean0(Z, NB, gs, sps_min, sps_max)
+    grps = sort(unique(gs));
+    ZN = Z*NB;
+    nd = size(ZN,2);
+    mu = nan(numel(grps), nd);
+    for ii = 1:numel(grps)
+        mu(ii,:) = nanmean(ZN(gs == grps(ii),:));
+    end    
+    % objective now for prediction muh is:
+    %   sum_i || muh - mu(ii,:) ||^2
+    % = sum_i 0.5*muh'*muh - muh'*mu(ii,:) + const
+    % = (nd/2)*muh'*muh - sum_i muh'*mu(ii,:)
+    % = (nd/2)*muh'*muh - muh'*sum(mu);
+    % -> quadprog
+    
+    f = -sum(mu);
+    H = eye(nd);
+    A = []; b = []; Aeq = []; beq = [];
+    lb = 0.8*min(Z); ub = 1.2*max(Z);
+    options = optimset('Display', 'iter');
+    [mu, ~, exitflag] = quadprog(H, f, A, b, Aeq, beq, ...
+            lb, ub, [], options);
+    assert(~exitflag);
+end
+
 function [A, b] = getSpikeBounds(dec, nd, sps_min, sps_max)
     if isfield(dec.FactorAnalysisParams, 'spikeRot')
         R = dec.FactorAnalysisParams.spikeRot;

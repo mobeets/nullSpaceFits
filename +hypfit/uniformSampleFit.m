@@ -14,9 +14,6 @@ function [Z, E] = uniformSampleFit(Tr, Te, dec, opts)
     Zn = getSamples(Z1*NB, nt);
     Z = Zr + Zn*NB';
     
-    warning('ending early');
-    E = []; return;
-    
     if opts.obeyBounds
         % resample invalid points
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);

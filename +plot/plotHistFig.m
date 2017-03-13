@@ -10,15 +10,20 @@ function plotHistFig(fitName, dt, hypNms, doPca, opts)
     [S,F] = plot.getScoresAndFits(fitName, {dt});    
     NB = F.test.NB;
     Y0 = F.test.latents;
+%     mu = nanmean(Y0);
     if doPca
+%         Yc = bsxfun(@minus, Y0, mu);
         [~,~,v] = svd(Y0*NB, 'econ');
         NB = NB*v;
     end
     ix = ~isnan(S.gs);
+%     YN0 = bsxfun(@minus, Y0(ix,:), mu)*NB;
     YN0 = Y0(ix,:)*NB;
     YNc = cell(numel(hypNms),1);    
     for ii = 1:numel(hypNms)
-        YNc{ii} = F.fits(strcmp({F.fits.name}, hypNms{ii})).latents(ix,:)*NB;
+        Yc = F.fits(strcmp({F.fits.name}, hypNms{ii})).latents(ix,:);
+%         Yc = bsxfun(@minus, Yc, mu);
+        YNc{ii} = Yc*NB;
     end
 
     [Hs, Xs, nbins] = score.histsFcn([YN0; YNc], ...

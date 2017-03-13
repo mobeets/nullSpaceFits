@@ -14,8 +14,9 @@ else
 end
 
 close all;
-hypsToShow = {'uncontrolled-uniform', 'uncontrolled-empirical'};
-% hypsToShow = {'minimum', 'baseline'};
+% hypsToShow = {'best-mean'};
+hypsToShow = {'minimum'};
+% hypsToShow = {'minimum', 'best-mean'};
 % hypsToShow = {'baseline'};
 % hypsToShow = {'constant-cloud', 'habitual-corrected'};
 % hypsToShow = {'uncontrolled-empirical'};
@@ -24,22 +25,20 @@ hypsToShow = {'uncontrolled-uniform', 'uncontrolled-empirical'};
 opts = struct('grpInds', 1, 'dimInds', 1, 'doSave', doSave);
 doPca = true;
 for ii = 1:numel(hypsToShow)
-    if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline')
-        opts.ymax = 1.3;
+    if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline') || strcmpi(hypsToShow{ii}, 'best-mean')
+        opts.ymax = 1.0;
     elseif isfield(opts, 'ymax')
         opts = rmfield(opts, 'ymax');
     end
     plot.plotHistFig(fitName, dt, hypsToShow(ii), doPca, opts);
 end
 
-%%
-
 % show all
 opts = struct('grpInds', 1:8, 'dimInds', 1:3, 'doSave', doSave);
-doPca = false;
+doPca = true;
 for ii = 1:numel(hypsToShow)
-    if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline')
-        opts.ymax = 1.3;
+    if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline')  || strcmpi(hypsToShow{ii}, 'best-mean')
+        opts.ymax = 1.0;
     elseif isfield(opts, 'ymax')
         opts = rmfield(opts, 'ymax');
     end

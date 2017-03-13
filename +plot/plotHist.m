@@ -55,10 +55,13 @@ function plotHist(H0, Hs, Xs, opts)
                     'FontSize', opts.TinyFontSize);
             end
             if ii == numel(opts.grpInds) && jj == 1 && notSinglePanel
-                hght = max([0.6*ygap max(ys1)-min(ys1)]);
+                hght = max([0.6*ygap 1.0*(max(ys1)-min(ys1))]);
+                hght = 0.72;
+                % was 1.0 instead of 0.9 for all but best-mean
 %                 [0.6*ygap max(ys1)-min(ys1)]
                 rpos = [min(xs) min(ys1) max(xs)-min(xs) hght];
                 % 0.712 instead of 0.6 if SinglePanel
+%                 hght
                 rectangle('Position', rpos, 'EdgeColor', opts.backClr, ...
                     'LineWidth', opts.LineWidth);
 %                     'FaceColor', opts.backClr);
@@ -113,19 +116,24 @@ function plotHist(H0, Hs, Xs, opts)
 %         xsc = mean(xl) - 0.1*diff(xl);
 %         ysc = mean(yl);
         xsc = mean(xl) - 0.0*diff(xl);
-        ysc = mean(yl) + 0.1*diff(yl);
-%         xsc = mean(xl) + 0.3*diff(xl);
+%         ysc = mean(yl) + 0.1*diff(yl);
 %         ysc = mean(yl) - 0.25*diff(yl);
+%         xsc = mean(xl) + 0.3*diff(xl); % best-mean
+        ysc = mean(yl) - 0.2*diff(yl); % best-mean, minimum
         text(xsc, ysc, 'Data', 'Color', opts.clrs(1,:), ...
             'FontSize', opts.FontSize);
 
         
 %         xsc = mean(xl) - 0.13*diff(xl);
 %         ysc = mean(yl) + 0.1*diff(yl);
-        xsc = mean(xl) - 0.4*diff(xl);
-        ysc = mean(yl) - 0.1*diff(yl);
+%         xsc = mean(xl) - 0.4*diff(xl);
+%         ysc = mean(yl) - 0.1*diff(yl);
 %         xsc = mean(xl) + 0.2*diff(xl);
 %         ysc = mean(yl) - 0.1*diff(yl);
+        xsc = mean(xl) + 0.1*diff(xl); % minimum
+        ysc = mean(yl) + 0.0*diff(yl); % minimum
+%         xsc = mean(xl) - 0.3*diff(xl); % best-mean
+%         ysc = mean(yl) - 0.1*diff(yl); % best-mean
         text(xsc, ysc, 'Prediction', 'Color', opts.clrs(2,:), ...
             'FontSize', opts.FontSize);
     end    

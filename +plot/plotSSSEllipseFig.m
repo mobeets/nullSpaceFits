@@ -30,6 +30,12 @@ function plotSSSEllipseFig(CA, CB, opts)
     for ii = 1:nexps
         for jj = 1:ngrps
     %         [bpA, ~, ~] = plot.gauss2dcirc([], sigMult, C1s{ii,jj});
+            if any(isnan(CA{ii,jj}(:))) || any(isnan(CB{ii,jj}(:)))
+                continue;
+            end
+            if numel(CA{ii,jj}) <= 1 || numel(CB{ii,jj}) <= 1
+                continue;
+            end
             [bpA, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CA{ii,jj});
             [bpB, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CB{ii,jj});
             bpA(1,:) = bpA(1,:) + (ii-1)*opts.dstep;
@@ -57,7 +63,7 @@ function plotSSSEllipseFig(CA, CB, opts)
                 text(xc, yc, cstr, 'FontSize', opts.TinyFontSize, 'Rotation', 45);
             end
         end
-        if any(inds == ii)
+        if any(inds == ii) && exist('bpA', 'var')
             mnkNm = mnks{inds == ii};
             mnkNm = ['Monkey ' mnkNm(1) ' '];
             xc = min([bpA(1,:) bpB(1,:)]);
@@ -69,7 +75,7 @@ function plotSSSEllipseFig(CA, CB, opts)
     end
 
     xt = minx - 2.2*opts.dstep; yt = miny; pad = 2;
-    text(xt, yt + opts.dstep + pad, 'Output-potent angle', 'Rotation', 90, ...
+    text(xt, yt + opts.dstep + pad, 'Cursor-target angle', 'Rotation', 90, ...
         'FontSize', opts.FontSize);
     text(xt + (numel(dts)/2)*opts.dstep, yt - opts.dstep, 'Sessions', ...
         'FontSize', opts.FontSize);

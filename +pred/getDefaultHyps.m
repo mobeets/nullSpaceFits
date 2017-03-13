@@ -31,6 +31,17 @@ function hyps = getDefaultHyps(hnms, grpName)
         'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
     hyp.fitFcn = @hypfit.minEnergyFit;
     hyps = [hyps hyp];
+    
+    % best-mean
+    clear hyp;
+    hyp.name = 'best-mean';
+    hyp.opts = struct('minType', 'best', ...
+        'grpName', grpName, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds, ...
+        'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
+        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
+    hyp.fitFcn = @hypfit.minEnergyFit;
+    hyps = [hyps hyp];
 
 %     % minimum-sample
 %     clear hyp;
@@ -52,23 +63,14 @@ function hyps = getDefaultHyps(hnms, grpName)
 %     hyp.fitFcn = @hypfit.minEnergySampleFit;
 %     hyps = [hyps hyp];
     
-    % best-mean
-    clear hyp;
-    hyp.name = 'best-mean';
-    hyp.opts = struct('grpName', grpName, ...
-        'addNoise', addNoise, ...
-        'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.bestMeanFit;
-    hyps = [hyps hyp];
-    
-    % best-mean-per-target
-    clear hyp;
-    hyp.name = 'best-mean-per-target';
-    hyp.opts = struct('grpName', grpName, ...
-        'addNoise', addNoise, ...
-        'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.bestMeanPerTargetFit;
-    hyps = [hyps hyp];
+%     % best-mean
+%     clear hyp;
+%     hyp.name = 'best-mean';
+%     hyp.opts = struct('grpName', grpName, ...
+%         'addNoise', addNoise, ...
+%         'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
+%     hyp.fitFcn = @hypfit.bestMeanFit;
+%     hyps = [hyps hyp];
 
     % uncontrolled-uniform
     clear hyp;
@@ -100,6 +102,34 @@ function hyps = getDefaultHyps(hnms, grpName)
     hyp.opts = struct('kNN', nan);
     hyp.fitFcn = @hypfit.closestRowValFit;
     hyps = [hyps hyp];
+    
+%     % constant-cloud, slow speeds
+%     clear hyp;
+%     hyp.name = 'constant-cloud-slow';
+%     hyp.opts = struct('kNN', nan, 'filterSpeed', true);
+%     hyp.fitFcn = @hypfit.closestRowValFit;
+%     hyps = [hyps hyp];
+%     
+%     % constant-cloud, fast speeds
+%     clear hyp;
+%     hyp.name = 'constant-cloud-fast';
+%     hyp.opts = struct('kNN', nan, 'filterSpeed', false);
+%     hyp.fitFcn = @hypfit.closestRowValFit;
+%     hyps = [hyps hyp];
+
+%     % constant-cloud-vel-slow
+%     clear hyp;
+%     hyp.name = 'constant-cloud-vel-slow';
+%     hyp.opts = struct('kNN', nan, 'velFilter', 10', 'velLessThan', true);
+%     hyp.fitFcn = @hypfit.closestRowValFit;
+%     hyps = [hyps hyp];
+    
+%     % constant-cloud-swap
+%     clear hyp;
+%     hyp.name = 'constant-cloud-swap';
+%     hyp.opts = struct('kNN', nan, 'swap', true);
+%     hyp.fitFcn = @hypfit.closestRowValFit;
+%     hyps = [hyps hyp];
     
     % filter out unwanted hyps
     if ~isempty(hnms)

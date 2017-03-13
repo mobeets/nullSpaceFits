@@ -1,7 +1,7 @@
-function plotSSSErrorFig(errs, hypnms, dts, mnkNm, hypsToShow, ...
+function plotSSSErrorFig(errs, hypnms, dts, mnkNms, hypsToShow, ...
     doSave, doAbbrev)
     if nargin < 4
-        mnkNm = '';
+        mnkNms = {};
     end
     if nargin < 5
         hypsToShow = {};
@@ -18,8 +18,8 @@ function plotSSSErrorFig(errs, hypnms, dts, mnkNm, hypsToShow, ...
     hypClrs = cell2mat(cellfun(@plot.hypColor, hypnms, 'uni', 0)');
 
     % plot avg error
-    if ~isempty(mnkNm)
-        dtInds = io.getMonkeyDateFilter(dts, {mnkNm});
+    if ~isempty(mnkNms)
+        dtInds = io.getMonkeyDateFilter(dts, mnkNms);
         errs = errs(dtInds,:);
     end
     if ~isempty(hypsToShow)
@@ -30,7 +30,7 @@ function plotSSSErrorFig(errs, hypnms, dts, mnkNm, hypsToShow, ...
     end
 
     opts = struct('clrs', hypClrs, 'showZeroBoundary', true, ...
-        'ylbl', ['      Change in variance' char(10) ...
+        'ylbl', ['      Change in variance (log ratio)' char(10) ...
         '      \leftarrow Decrease   Increase \rightarrow'], ...
         'doBox', false, 'starBaseName', '', 'ymin', nan, ...
         'doSave', doSave, 'filename', 'SSS_avg');
