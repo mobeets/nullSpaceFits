@@ -19,12 +19,13 @@ function [errs, C2s, C1s, Ys, dts, hypnms] = getSSS(fitsName, nCenters, inds)
         F = Fs(ii);
         Y1 = F.train.latents;
         Y2 = F.test.latents;
-        RB = F.train.RB;
-        NB = F.test.NB;
+        RB1 = F.train.RB;
+        RB2 = F.test.RB;
+        NB1 = F.test.NB;
+        NB2 = F.test.NB;        
 
-        SS0 = (NB*NB')*RB; % when activity became irrelevant
+        SS0 = (NB2*NB2')*RB1; % when activity became irrelevant
         [SSS,s,v] = svd(SS0, 'econ');
-%         SSS = NB;
         
         % find velocity through intuitive mapping for binning
         % under the assumption that v_{t-1} = v_t
@@ -55,10 +56,9 @@ function [errs, C2s, C1s, Ys, dts, hypnms] = getSSS(fitsName, nCenters, inds)
 %         gs1 = F.train.thetaActualImeGrps;
 %         gs2 = F.test.thetaActualImeGrps;
         
-%         grps = unique(gs1);
-        RB = F.test.RB;
-        gs1 = tools.thetaGroup(tools.computeAngles(Y1*RB), grps);
-        gs2 = tools.thetaGroup(tools.computeAngles(Y2*RB), grps);
+%         grps = unique(gs1);        
+        gs1 = tools.thetaGroup(tools.computeAngles(Y1*RB2), grps);
+        gs2 = tools.thetaGroup(tools.computeAngles(Y2*RB2), grps);
 
         for jj = 1:numel(grps)
             ix1 = gs1 == grps(jj);
