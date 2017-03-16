@@ -60,7 +60,9 @@ function [mu, Aeq, beqs] = makeConstraints(mu, Blk, fitInLatent, dec, nd)
         % update Aeq,beq so that our spike solutions, after 
         % converting to inferred latents, satisfy the kinematics 
         % constraints under the mapping in latents
-        [~, beta] = tools.convertRawSpikesToRawLatents(dec, zeros(1,nd));
+        makeOrthogonal = false;
+        [~, beta] = tools.convertRawSpikesToRawLatents(dec, ...
+            zeros(1,nd), makeOrthogonal);
         muGlob = dec.spikeCountMean;
         Aeq = Aeq*beta;
         beqs = bsxfun(@plus, beqs, Aeq*muGlob');
@@ -86,7 +88,7 @@ function Zs = minL1Norm(mu, Aeq, beqs, lb, ub)
         %    min_x f'*x --> sum(w)
         %       s.t.        Ax <= b   --> w <= x - b, w >= x - b
         %                Aeq*x  = beq
-        %                   lb <= ub
+        %                lb <= x <= ub
         %
         [Zs(t,:), ~, exitflag] = linprog(f, A, b, Aeq, beqs(:,t), ...
             lb_, ub_, [], options);
@@ -117,7 +119,7 @@ function [Zs, isRelaxed] = minL2Norm(mu, Aeq, beqs, lb, ub, doNonNeg)
         if mod(t, 500) == 0
             disp([num2str(t) ' of ' num2str(nt)]);
         end
-        [z, ~, exitflag] = quadprog(H, mu, A, b, Aeq, beqs(:,t), ...
+        [z, ~, exitflag] = quadprog(H, -mu, A, b, Aeq, beqs(:,t), ...
             lb, ub, [], options);
         if ~exitflag
             warning('linprog optimization incomplete, but stopped.');

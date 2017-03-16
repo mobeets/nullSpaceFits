@@ -2,7 +2,7 @@
 doSave = false;
 dt = '20131205';
 fitName = 'Int2Pert_yIme';
-fitName = 'minEnergy_noBounds2';
+fitName = 'minEnergy_L1';
 
 if strcmpi(fitName, 'Int2Int_nIme')
     hypsToShow = {'minimum', 'baseline', ...
@@ -15,9 +15,9 @@ end
 
 % close all;
 % hypsToShow = {'best-mean'};
-hypsToShow = {'minimum'};
+hypsToShow = {'baseline', 'baseline-L1'};
 % hypsToShow = {'minimum', 'best-mean'};
-% hypsToShow = {'baseline'};
+hypsToShow = {'baseline'};
 % hypsToShow = {'constant-cloud', 'habitual-corrected'};
 % hypsToShow = {'uncontrolled-empirical'};
  
@@ -34,7 +34,7 @@ for ii = 1:numel(hypsToShow)
 end
 
 % show all
-opts = struct('grpInds', 1:8, 'dimInds', 1:8, 'doSave', doSave);
+opts = struct('grpInds', 1:8, 'dimInds', 1:3, 'doSave', doSave);
 doPca = false;
 for ii = 1:numel(hypsToShow)
     if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline')  || strcmpi(hypsToShow{ii}, 'best-mean')

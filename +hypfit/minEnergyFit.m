@@ -29,6 +29,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     elseif strcmpi(opts.minType, 'minimum') && ~opts.fitInLatent
         mu = [];
     elseif strcmpi(opts.minType, 'best')
+        assert(opts.pNorm == 2, 'best-mean assumed to use L2 norm');
         assert(~opts.fitInLatent);
 %         mu_lts = [];
 %         mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName), true);
@@ -43,7 +44,6 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         assert(false, ['Invalid minType for ' dispNm]);
     end
     sigma = opts.sigmaScale*dec.spikeCountStd;
-    maxSps = 2*max(Tr.spikes(:));
     
     % set upper and lower bounds
     if opts.obeyBounds
@@ -157,7 +157,8 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
             U(ixOob,:) = nan;
         end
         out.U = U;
-        Z = tools.convertRawSpikesToRawLatents(dec, U');
+        makeOrthogonal = false; % orthogonal projection to preserve NB
+        Z = tools.convertRawSpikesToRawLatents(dec, U', makeOrthogonal);
     end
     
     NB2 = Te.NB;

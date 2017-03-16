@@ -9,16 +9,16 @@ doOverwrite = false;
 dts = {'20131205'};
 doOverwrite = true;
 
-saveDir = 'minEnergy_noBounds2';
+saveDir = 'minEnergy_L1';
 grpName = 'thetaActualImeGrps';
 opts = struct('useIme', true, 'trainBlk', 1, 'testBlk', 2);
 pred.fitAndScoreSessions(saveDir, grpName, opts, ...
-    {'minimum'}, ...
+    {'baseline', 'baseline-L1'}, ...
     dts, doOverwrite);
 
 %%
 
-saveDir = 'Int2Pert_yIme_v2';
+saveDir = 'Int2Pert_yIme_v3';
 grpName = 'thetaActualImeGrps';
 opts = struct('useIme', true, 'trainBlk', 1, 'testBlk', 2);
 pred.fitAndScoreSessions(saveDir, grpName, opts, {}, dts, doOverwrite);

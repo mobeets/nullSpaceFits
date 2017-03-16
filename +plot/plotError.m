@@ -11,6 +11,10 @@ function plotError(errs, nms, opts)
         'LineWidth', 2, 'ymin', 0, 'ymax', nan, 'TextNote', '');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
+    if numel(errs) == numel(nms)
+        error('Must provide multiple errors per hyp.');
+    end
+    
     % show plot
     plot.init(opts.FontSize, opts.FontName);
     if opts.doBox
@@ -32,15 +36,16 @@ function plotError(errs, nms, opts)
     % format y-axis
     yl = ylim;
     if ~isnan(opts.ymax)
-        yl = ylim;
-        yl = [yl(1) opts.ymax];
-        ylim(yl);
+        ymx = opts.ymax;
+    else
+        ymx = yl(2);
     end
     if ~isnan(opts.ymin)
-        yl = ylim;
-        yl = [opts.ymin yl(2)];
-        ylim(yl);
+        ymn = opts.ymin;
+    else
+        ymn = yl(1);
     end
+    ylim(yl);
     h = ylabel(opts.ylbl);
     set(h, 'interpreter', 'tex'); % funky bug somehow caused by boxplot
 

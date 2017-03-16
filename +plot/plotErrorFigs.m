@@ -6,7 +6,7 @@ doSave = false;
 % fitName = 'Pert2Int_yIme';
 % fitName = 'Int2Pert_yIme';
 % fitName = 'Int2Pert_yIme_cloud_spds';
-fitName = 'minEnergy_noBounds';
+fitName = 'minEnergy_L1';
 
 if strcmpi(fitName, 'Int2Int_nIme')
     hypsToShow = {'minimum', 'baseline', 'best-mean', ...
@@ -24,7 +24,7 @@ mnkNms = {'ALL'};
 % errNms = {'histError'};
 % hypsToShow = {'minimum', 'best-mean', 'baseline'};
 % hypsToShow = {'constant-cloud', 'constant-cloud-fast', 'constant-cloud-slow', 'habitual-corrected'};
-hypsToShow = {'baseline'};
+hypsToShow = {'baseline', 'baseline-L1'};
 close all;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
