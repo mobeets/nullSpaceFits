@@ -1,8 +1,8 @@
 %% load
 
 fitName = 'Int2Pert_yIme';
-exInds = [3 1];
-[errs, C2s, C1s, Ys, dts, hypnms] = plot.getSSS(fitName, 8, exInds);
+exInds = [1 1];
+[errs, C2s, C1s, Ys, dts, hypnms] = plot.getSSS(fitName, 1, exInds);
 
 %% plot avgs
 
@@ -57,7 +57,7 @@ plot.init; imagesc(Ch'); axis off; colormap(cm); caxis([-2 2]); title('hab');
 
 %%
 
-doSave = false;
+doSave = true;
 hypInd = strcmpi(hypnms, hypToCompare);
 hypClrs = [plot.hypColor('data'); plot.hypColor(hypToCompare)];
 

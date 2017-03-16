@@ -19,6 +19,8 @@ function [latents, beta] = convertRawSpikesToRawLatents(decoder, spikes)
     end
     beta = L'/(L*L'+diag(ph)); % See Eqn. 5 of DAP.pdf
     beta = R'*beta*sigmainv';
+%     [beta,~,~] = svd(beta', 'econ'); beta = beta';
+%     warning('orthonormalizing betas');
     u = bsxfun(@plus, spikes, -mu); % normalize
-    latents = (beta*u)';
+    latents = u'*beta';
 end

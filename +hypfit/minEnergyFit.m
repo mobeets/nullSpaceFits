@@ -5,24 +5,17 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     defopts = struct('minType', 'baseline', ...
         'nanIfOutOfBounds', false, 'fitInLatent', false, ...
         'grpName', 'thetaActualGrps', ...
-        'noiseDistribution', 'poisson', ...
+        'noiseDistribution', 'poisson', 'pNorm', 2, ...
         'obeyBounds', true, 'sigmaScale', 1.0, 'addSpikeNoise', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     dispNm = ['minEnergyFit (' opts.minType ')'];
-        
+    
     if opts.fitInLatent
         Y1 = Tr.latents;
         Y2 = Te.latents;
     else
         Y1 = Tr.spikes;
         Y2 = Te.spikes;
-    end
-
-    % set upper and lower bounds
-    if opts.obeyBounds
-        lb = 0.8*min(Y1); ub = 1.2*max(Y1);
-    else
-        lb = []; ub = [];
     end
     
     % set minimum, in latent or spike space
@@ -37,12 +30,10 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         mu = [];
     elseif strcmpi(opts.minType, 'best')
         assert(~opts.fitInLatent);
-        mu_lts = [];
-        mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName), true);
-        
-%         mu_lts = findBestMean(Tr.latents, Tr.NB, Tr.(opts.grpName), false);
-%         mu = tools.latentsToSpikes(mu_lts, dec, false, true);
-        
+%         mu_lts = [];
+%         mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName), true);
+        mu_lts = findBestMean(Tr.latents, Tr.NB, Tr.(opts.grpName), false);
+        mu = tools.latentsToSpikes(mu_lts, dec, false, true);
         out.bestMean_lts = mu_lts;
         out.bestMean = mu;
         if any(mu < 0)
@@ -53,50 +44,105 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     end
     sigma = opts.sigmaScale*dec.spikeCountStd;
     maxSps = 2*max(Tr.spikes(:));
-
+    
+    % set upper and lower bounds
+    if opts.obeyBounds
+        lb = 0.8*min(Y1); ub = 1.2*max(Y1);
+    else
+        lb = []; ub = [];
+    end
+    
+    % solve minimization for each timepoint
     [nt, nu] = size(Y2);
-    U = nan(nt,nu);
-    nrs = 0; nlbs = 0; nubs = 0; nis = 1;
-    for t = 1:nt        
-        if mod(t, 500) == 0
-            disp([dispNm ': ' num2str(t) ' of ' num2str(nt)]);
+    [U, isRelaxed] = hypfit.findAllMinNormFiring(Te, mu, ...
+        lb, ub, dec, nu, opts.fitInLatent, opts.pNorm);
+    nrs = sum(isRelaxed);
+    if nrs > 0
+        disp([dispNm ' relaxed non-negativity constraints ' ...
+            'and bounds for ' num2str(nrs) ' timepoint(s).']);
+    end
+
+    % add noise
+    nis = 0;
+    if ~opts.fitInLatent && opts.addSpikeNoise
+        U0 = U;
+        if strcmpi(opts.noiseDistribution, 'gaussian')
+            U = normrnd(U0, repmat(sigma, nt, 1));
+        elseif strcmpi(opts.noiseDistribution, 'poisson')
+            U = poissrnd(max(U0,0));
+        else
+            error('Invalid noise distribution');
         end
-        [U(t,:), isRelaxed] = hypfit.quadFireFit(Te, t, -mu, ...
-            opts.fitInLatent, lb, ub, dec);
-        nrs = nrs + isRelaxed;
+        if numel(lb) == 0
+            lb = -inf(1, nu);
+        end
+        if numel(ub) == 0
+            ub = inf(1, nu);
+        end
+        lbs = repmat(lb, nt, 1);
+        ubs = repmat(ub, nt, 1);
         
-        if ~opts.fitInLatent && opts.addSpikeNoise
-            ut0 = U(t,:);
-            c = 0;
+        c = 0;
+        ixBad = any(U < lbs, 2) | any(U > ubs, 2);
+        while sum(ixBad) > 0 && c < 10
+            nBad = sum(ixBad);
             if strcmpi(opts.noiseDistribution, 'gaussian')
-                ut = normrnd(ut0, sigma);
+                U(ixBad,:) = normrnd(U0(ixBad,:), repmat(sigma, nBad, 1));
             elseif strcmpi(opts.noiseDistribution, 'poisson')
-                ut = poissrnd(ut0);
-            else
-                error('Invalid noise distribution');
+                U(ixBad,:) = poissrnd(max(U0(ixBad,:),0));
             end
-            while (any(ut < 0) || any(ut > 2*maxSps)) && c < 10
-                if strcmpi(opts.noiseDistribution, 'gaussian')
-                    ut = max(normrnd(ut0, sigma), 0);
-                elseif strcmpi(opts.noiseDistribution, 'poisson')
-                    ut = poissrnd(ut0);
-                end
-                c = c + 1;
-            end
-            if ~(any(ut < 0) || any(ut > 2*maxSps))
-                U(t,:) = ut;
-            else
-                nis = nis + 1;
-            end
+            ixBad = any(U < lbs, 2) | any(U > ubs, 2);
         end
-        
-        if numel(lb) > 0 && any(U(t,:) < lb - 1e-5)
-            nlbs = nlbs + 1;
-        end
-        if numel(ub) > 0 && any(U(t,:) > ub + 1e-5)
-            nubs = nubs + 1;
-        end
-    end    
+        nis = sum(ixBad);
+    end
+    
+%     nis = 0;
+%     if ~opts.fitInLatent && opts.addSpikeNoise
+%         for t = 1:nt
+%             ut0 = U(t,:);
+%             c = 0;
+%             if strcmpi(opts.noiseDistribution, 'gaussian')
+%                 ut = normrnd(ut0, sigma);
+%             elseif strcmpi(opts.noiseDistribution, 'poisson')
+%                 ut = poissrnd(max(ut0,0));
+%             else
+%                 error('Invalid noise distribution');
+%             end
+%             while numel(lb) > 0 && numel(ub) > 0 && ...
+%                     (any(ut < lb) || any(ut > ub)) && c < 10
+%                 if strcmpi(opts.noiseDistribution, 'gaussian')
+%                     ut = max(normrnd(ut0, sigma), 0);
+%                 elseif strcmpi(opts.noiseDistribution, 'poisson')
+%                     ut = poissrnd(ut0);
+%                 end
+%                 c = c + 1;
+%             end
+%             if numel(lb) == 0 || numel(ub) == 0 || ...
+%                     ~(any(ut < lb) || any(ut > ub))
+%                 U(t,:) = ut;
+%             else
+%                 nis = nis + 1;
+%             end
+%         end
+%     end
+    if nis > 0
+        disp([dispNm ' could not add noise to ' num2str(nis) ...
+            ' timepoint(s)']);
+    end 
+    
+    % count points out of bounds
+    nlbs = 0; nubs = 0;
+    if numel(lb) > 0
+        nlbs = sum(any(U < repmat(lb, nt, 1), 2));
+    end
+    if numel(ub) > 0
+        nubs = sum(any(U > repmat(ub, nt, 1), 2));
+    end
+    if nlbs > 0 || nubs > 0
+        disp([dispNm ' hit lower bounds ' num2str(nlbs) ...
+            ' time(s) and upper bounds ' num2str(nubs) ' time(s).']);
+    end
+    
     if opts.fitInLatent        
         Z = U;
         if opts.addSpikeNoise
@@ -112,39 +158,13 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         end
         out.U = U;
         Z = tools.convertRawSpikesToRawLatents(dec, U');
-%         Z = Z/Dc.FactorAnalysisParams.spikeRot;
     end
     
     NB2 = Te.NB;
     RB2 = Te.RB;
     Zr = Te.latents*(RB2*RB2');
     Z = Z*(NB2*NB2') + Zr;
-    
-    if nrs > 0
-        disp([dispNm ' relaxed non-negativity constraints ' ...
-            'and bounds for ' num2str(nrs) ' timepoint(s).']);
-    end
-    if nlbs > 0 || nubs > 0
-        disp([dispNm ' hit lower bounds ' num2str(nlbs) ...
-            ' time(s) and upper bounds ' num2str(nubs) ' time(s).']);
-    end
-    if nis > 0
-        disp([dispNm ' could not add noise to ' num2str(nis) ...
-            ' timepoint(s)']);
-    end    
-end
-
-
-function mu = findBestMean0(U, NB, gs)
-    % ZNc is prediction with constant mean, which we're searching over
-    [nt, nd] = size(U);
-    obj = @(mu) score.meanErrorFcn(repmat(mu, nt, 1)*NB, U*NB, gs);
-    
-    A = []; b = []; Aeq = []; beq = []; lb = 0.8*min(U); ub = 1.2*max(U);
-    options = optimset('Display', 'off');
-%     mu0 = zeros(1,nd);
-    mu0 = mean(U);
-    mu = fmincon(obj, mu0, A, b, Aeq, beq, lb, ub, [], options);
+       
 end
 
 function mu = findBestMean(Z, NB, gs, isInSpikes)

@@ -26,8 +26,9 @@ function plotHistFig(fitName, dt, hypNms, doPca, opts)
         YNc{ii} = Yc*NB;
     end
 
+    useDataOnlyForRange = false; % false -> use data and preds to set range
     [Hs, Xs, nbins] = score.histsFcn([YN0; YNc], ...
-        S.gs(ix), true);
+        S.gs(ix), useDataOnlyForRange);
     H0 = Hs{1}; Hs = Hs(2:end);
     hypnms = ['data' hypNms];
     hypClrs = cell2mat(cellfun(@plot.hypColor, hypnms, 'uni', 0)');

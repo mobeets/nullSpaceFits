@@ -120,6 +120,9 @@ function plotHist(H0, Hs, Xs, opts)
 %         ysc = mean(yl) - 0.25*diff(yl);
 %         xsc = mean(xl) + 0.3*diff(xl); % best-mean
         ysc = mean(yl) - 0.2*diff(yl); % best-mean, minimum
+        
+        xsc = mean(xl) - 0.2*diff(xl);
+        ysc = mean(yl) - 0.15*diff(yl);
         text(xsc, ysc, 'Data', 'Color', opts.clrs(1,:), ...
             'FontSize', opts.FontSize);
 
@@ -130,10 +133,13 @@ function plotHist(H0, Hs, Xs, opts)
 %         ysc = mean(yl) - 0.1*diff(yl);
 %         xsc = mean(xl) + 0.2*diff(xl);
 %         ysc = mean(yl) - 0.1*diff(yl);
-        xsc = mean(xl) + 0.1*diff(xl); % minimum
-        ysc = mean(yl) + 0.0*diff(yl); % minimum
+        xsc = mean(xl) + 0.1*diff(xl);
+        ysc = mean(yl) + 0.0*diff(yl);
 %         xsc = mean(xl) - 0.3*diff(xl); % best-mean
 %         ysc = mean(yl) - 0.1*diff(yl); % best-mean
+
+        xsc = mean(xl) - 0.2*diff(xl);
+        ysc = mean(yl);
         text(xsc, ysc, 'Prediction', 'Color', opts.clrs(2,:), ...
             'FontSize', opts.FontSize);
     end    
