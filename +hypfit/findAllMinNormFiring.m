@@ -1,5 +1,5 @@
 function [Zs, isRelaxed] = findAllMinNormFiring(Blk, mu, lb, ub, ...
-    dec, nd, fitInLatent, pNorm)
+    dec, nd, fitInLatent, pNorm, makeFAOrthogonal)
 % 
 % Each u(t) in U is solution (using quadprog) to:
 %   min_u || u - mu ||_pNorm
@@ -26,17 +26,19 @@ function [Zs, isRelaxed] = findAllMinNormFiring(Blk, mu, lb, ub, ...
         pNorm = 2; % default: L2 norm
     end
     
-    [mu, Aeq, beqs] = makeConstraints(mu, Blk, fitInLatent, dec, nd);
+    [mu, Aeq, beqs] = makeConstraints(mu, Blk, fitInLatent, dec, nd, ...
+        makeFAOrthogonal);
     
     if pNorm == 1            
         Zs = minL1Norm(mu, Aeq, beqs, lb, ub);
         isRelaxed = false(size(Zs,1),1);
     else
-        [Zs, isRelaxed] = minL2Norm(mu, Aeq, beqs, lb, ub, fitInLatent);
+        [Zs, isRelaxed] = minL2Norm(mu, Aeq, beqs, lb, ub);
     end
 end
 
-function [mu, Aeq, beqs] = makeConstraints(mu, Blk, fitInLatent, dec, nd)
+function [mu, Aeq, beqs] = makeConstraints(mu, Blk, fitInLatent, dec, ...
+    nd, makeFAOrthogonal)
 
 %     x0 = Blk.vel(t,:)';
 %     x1 = Blk.velNext(t,:)';
@@ -60,9 +62,8 @@ function [mu, Aeq, beqs] = makeConstraints(mu, Blk, fitInLatent, dec, nd)
         % update Aeq,beq so that our spike solutions, after 
         % converting to inferred latents, satisfy the kinematics 
         % constraints under the mapping in latents
-        makeOrthogonal = false;
         [~, beta] = tools.convertRawSpikesToRawLatents(dec, ...
-            zeros(1,nd), makeOrthogonal);
+            zeros(1,nd), makeFAOrthogonal);
         muGlob = dec.spikeCountMean;
         Aeq = Aeq*beta;
         beqs = bsxfun(@plus, beqs, Aeq*muGlob');
@@ -98,23 +99,16 @@ function Zs = minL1Norm(mu, Aeq, beqs, lb, ub)
     end     
 end
 
-function [Zs, isRelaxed] = minL2Norm(mu, Aeq, beqs, lb, ub, doNonNeg)
+function [Zs, isRelaxed] = minL2Norm(mu, Aeq, beqs, lb, ub)
     nd = numel(mu);
     H = eye(nd);
-    if doNonNeg
-        % A,b enforce non-negativity of solution (e.g., for spikes)
-        A = -eye(nd);
-        b = zeros(nd,1);
-    else
-        A = []; b = [];
-    end
     options = optimset('Algorithm', 'interior-point-convex', ...
         'Display', 'off');
+    A = []; b = [];
     
     nt = size(beqs,2);
     Zs = nan(nt, nd);
     isRelaxed = false(nt, 1);
-    tic; tms = [];
     for t = 1:nt        
         if mod(t, 500) == 0
             disp([num2str(t) ' of ' num2str(nt)]);

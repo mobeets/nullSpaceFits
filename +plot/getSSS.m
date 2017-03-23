@@ -56,9 +56,13 @@ function [errs, C2s, C1s, Ys, dts, hypnms] = getSSS(fitsName, nCenters, inds)
 %         gs1 = F.train.thetaActualImeGrps;
 %         gs2 = F.test.thetaActualImeGrps;
         
-%         grps = unique(gs1);        
-        gs1 = tools.thetaGroup(tools.computeAngles(Y1*RB2), grps);
-        gs2 = tools.thetaGroup(tools.computeAngles(Y2*RB2), grps);
+        if numel(grps) > 1
+            gs1 = tools.thetaGroup(tools.computeAngles(Y1*RB2), grps);
+            gs2 = tools.thetaGroup(tools.computeAngles(Y2*RB2), grps);
+        else
+            gs1 = grps*ones(size(Y1,1),1);
+            gs2 = grps*ones(size(Y2,1),1);
+        end
 
         for jj = 1:numel(grps)
             ix1 = gs1 == grps(jj);

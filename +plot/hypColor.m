@@ -51,6 +51,6 @@ function clr = hypColor(hypnm)
 %         clr = [0.5 0.5 0.5];
         clr = [0 0 0];
     else
-        clr = [0 0 0];
+        clr = [0.5 0.5 0.5];
     end
 end

@@ -1,4 +1,7 @@
 function nm = hypDisplayName(nm, doAbbrev)
+    if nargin < 2
+        doAbbrev = false;
+    end
     if ~doAbbrev
         if strcmpi(nm, 'minimum')
             nm = 'Minimal Firing';

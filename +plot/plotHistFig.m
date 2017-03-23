@@ -10,24 +10,23 @@ function plotHistFig(fitName, dt, hypNms, doPca, opts)
     [S,F] = plot.getScoresAndFits(fitName, {dt});    
     NB = F.test.NB;
     Y0 = F.test.latents;
-%     mu = nanmean(Y0);
+    mu = nanmean(Y0*NB);
     if doPca
-%         Yc = bsxfun(@minus, Y0, mu);
-        [~,~,v] = svd(Y0*NB, 'econ');
-        NB = NB*v;
+        [coeff, ~] = pca(Y0*NB);
+    else
+        coeff = eye(size(mu,2));
     end
+    
     ix = ~isnan(S.gs);
-%     YN0 = bsxfun(@minus, Y0(ix,:), mu)*NB;
-    YN0 = Y0(ix,:)*NB;
+    YN0 = bsxfun(@plus, bsxfun(@minus, Y0(ix,:)*NB, mu)*coeff, mu);
     YNc = cell(numel(hypNms),1);    
     for ii = 1:numel(hypNms)
         Yc = F.fits(strcmp({F.fits.name}, hypNms{ii})).latents(ix,:);
-%         Yc = bsxfun(@minus, Yc, mu);
-        YNc{ii} = Yc*NB;
+        YNc{ii} = bsxfun(@plus, bsxfun(@minus, Yc*NB, mu)*coeff, mu);
     end
 
     useDataOnlyForRange = false; % false -> use data and preds to set range
-    [Hs, Xs, nbins] = score.histsFcn([YN0; YNc], ...
+    [Hs, Xs, ~] = score.histsFcn([YN0; YNc], ...
         S.gs(ix), useDataOnlyForRange);
     H0 = Hs{1}; Hs = Hs(2:end);
     hypnms = ['data' hypNms];
@@ -35,11 +34,6 @@ function plotHistFig(fitName, dt, hypNms, doPca, opts)
     
     if numel(opts.grpInds) == 1 && numel(opts.dimInds) == 1        
         ttl = ['            Output-null dim. ' num2str(opts.dimInds(1))];
-%         ttl = [ttl ', Cursor dir. ' ...
-%             num2str(S.grps(opts.grpInds(1))) '^\circ'];
-%         ttl = [ttl '\newline    Cursor dir. ' ...
-%             num2str(S.grps(opts.grpInds(1))) '^\circ'];
-        
         txtnt = ttl;
         ttl = '';
         lw = 3;

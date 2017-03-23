@@ -1,4 +1,5 @@
-function [latents, beta] = convertRawSpikesToRawLatents(dec, sps, makeOrthogonal)
+function [latents, beta] = convertRawSpikesToRawLatents(dec, sps, ...
+    makeOrthogonal)
 % Convert spikes to latents
 
     if nargin < 3
@@ -11,8 +12,7 @@ function [latents, beta] = convertRawSpikesToRawLatents(dec, sps, makeOrthogonal
 
     % FA params
     L = dec.FactorAnalysisParams.L;
-    ph = dec.FactorAnalysisParams.ph;
-    mu = dec.spikeCountMean';
+    ph = dec.FactorAnalysisParams.ph;    
     sigmainv = diag(1./dec.spikeCountStd');
     if isfield(dec.FactorAnalysisParams, 'spikeRot')
         % rotate, if necessary, from orthonormalization
@@ -27,6 +27,7 @@ function [latents, beta] = convertRawSpikesToRawLatents(dec, sps, makeOrthogonal
         [beta,~,~] = svd(beta', 'econ');
         beta = beta';
     end
+    mu = dec.spikeCountMean';
     u = bsxfun(@plus, sps, -mu); % normalize
     latents = u'*beta';
 end

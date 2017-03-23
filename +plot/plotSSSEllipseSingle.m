@@ -44,19 +44,19 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     xlim([minx-pad maxx+pad]);
     ylim([miny-pad maxy+pad]);
 
-    xlabel('Activity, dim. 1 (spikes/timebin)');
-    ylabel('Activity, dim. 2 (spikes/timebin)');
-    set(gca, 'XTick', [0]);
-    set(gca, 'YTick', [0]);
+    xlabel({'Mean-centered activity,', 'dim. 1 (spikes/timebin)'});
+    ylabel({'Mean-centered activity,', 'dim. 2 (spikes/timebin)'});
+    set(gca, 'XTick', [-1.5 0 1.5]);
+    set(gca, 'YTick', [-1.5 0 1.5]);
     set(gca, 'TickDir', 'out');
     set(gca, 'LineWidth', max(opts.LineWidth-1,1));
     box off;
     axis equal;
 
     xl = xlim; yl = ylim;
-    text(0.3*xl(2), 0.95*yl(2), 'Data', 'Color', opts.clrs(1,:), ...
+    text(xl(1)+0.1, 0.9*yl(2), 'Data', 'Color', opts.clrs(1,:), ...
         'FontSize', opts.TextNoteFontSize);
-    text(0.3*xl(2), 0.95*yl(2) - 0.3, opts.TextNote, 'Color', opts.clrs(2,:), ...
+    text(xl(1)+0.1, 0.9*yl(2) - 0.3, opts.TextNote, 'Color', opts.clrs(2,:), ...
         'FontSize', opts.TextNoteFontSize);
 
     plot.setPrintSize(fig, opts);

@@ -8,6 +8,7 @@ function plotSSSEllipseFig(CA, CB, opts)
         'doSave', false, 'saveDir', 'data/plots', ...
         'filename', 'SSS_ellipses', 'ext', 'pdf', ...
         'grps', tools.thetaCenters, 'dts', [], ...
+        'indsToMark', [], 'boxClr', [0.5 0.5 0.5], ...
         'clrs', [], 'sigMult', 2, 'dstep', 5.5);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     fig = plot.init(opts.FontSize, opts.FontName);
@@ -61,6 +62,23 @@ function plotSSSEllipseFig(CA, CB, opts)
                 end
                 cstr = [num2str(opts.grps(jj)) '^\circ'];
                 text(xc, yc, cstr, 'FontSize', opts.TinyFontSize, 'Rotation', 45);
+            end
+            
+            if ~isempty(opts.indsToMark)
+                if ii == opts.indsToMark(1) && jj == opts.indsToMark(2)
+                    vs = [bpA bpB]'; mns = min(vs); mxs = max(vs);
+                    x1 = mns(1); y1 = mns(2);
+                    x2 = mxs(1); y2 = mxs(2);
+                    
+                    x1 = (ii-1)*opts.dstep - opts.dstep/2;
+                    x2 = ii*opts.dstep - opts.dstep/2;
+                    y1 = -jj*opts.dstep + opts.dstep/2;
+                    y2 = -(jj-1)*opts.dstep + opts.dstep/2;
+                    plot([x1 x1], [y1 y2], '-', 'Color', opts.boxClr);
+                    plot([x2 x2], [y1 y2], '-', 'Color', opts.boxClr);
+                    plot([x1 x2], [y1 y1], '-', 'Color', opts.boxClr);
+                    plot([x1 x2], [y2 y2], '-', 'Color', opts.boxClr);
+                end
             end
         end
         if any(inds == ii) && exist('bpA', 'var')

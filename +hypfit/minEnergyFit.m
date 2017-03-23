@@ -4,7 +4,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     end
     defopts = struct('minType', 'baseline', ...
         'nanIfOutOfBounds', false, 'fitInLatent', false, ...
-        'grpName', 'thetaActualGrps', ...
+        'grpName', 'thetaActualGrps', 'makeFAOrthogonal', true, ...
         'noiseDistribution', 'poisson', 'pNorm', 2, ...
         'obeyBounds', true, 'sigmaScale', 1.0, 'addSpikeNoise', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
@@ -55,7 +55,8 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     % solve minimization for each timepoint
     [nt, nu] = size(Y2);
     [U, isRelaxed] = hypfit.findAllMinNormFiring(Te, mu, ...
-        lb, ub, dec, nu, opts.fitInLatent, opts.pNorm);
+        lb, ub, dec, nu, opts.fitInLatent, ...
+        opts.pNorm, opts.makeFAOrthogonal);
     nrs = sum(isRelaxed);
     if nrs > 0
         disp([dispNm ' relaxed non-negativity constraints ' ...
@@ -157,8 +158,8 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
             U(ixOob,:) = nan;
         end
         out.U = U;
-        makeOrthogonal = false; % orthogonal projection to preserve NB
-        Z = tools.convertRawSpikesToRawLatents(dec, U', makeOrthogonal);
+        Z = tools.convertRawSpikesToRawLatents(dec, U', ...
+                opts.makeFAOrthogonal);
     end
     
     NB2 = Te.NB;
