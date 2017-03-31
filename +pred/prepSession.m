@@ -65,9 +65,14 @@ function C = prepToFit(B, ix, blkInd, opts)
     C.M0 = curMpg.M0;
     C.M1 = curMpg.M1;
     C.M2 = curMpg.M2;
+    C.M0_spikes = B.(opts.mapNm_spikes).M0;
+    C.M1_spikes = B.(opts.mapNm_spikes).M1;
+    C.M2_spikes = B.(opts.mapNm_spikes).M2;
     C.NB_spikes = B.(opts.mapNm_spikes).NulM2;
     C.RB_spikes = B.(opts.mapNm_spikes).RowM2;
     
+    C.time = B.time(ix);
+    C.trial_index = B.trial_index(ix);
     C.blkInd = blkInd;
     C.ix = ix;
     

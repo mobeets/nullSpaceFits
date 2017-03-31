@@ -6,6 +6,8 @@ function hyps = getDefaultHyps(hnms, grpName)
         grpName = 'thetaActualGrps';
     end
     hyps = [];
+    
+    % params (most are for min-energy hyps only)
     fitInLatent = false;    
     addNoise = true;
     obeyBounds = true;

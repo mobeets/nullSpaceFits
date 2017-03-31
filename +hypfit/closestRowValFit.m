@@ -4,7 +4,7 @@ function [Z, inds] = closestRowValFit(Tr, Te, ~, opts)
     if nargin < 4
         opts = struct();
     end
-    defopts = struct('kNN', nan, 'filterSpeed', nan);
+    defopts = struct('kNN', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     NB2 = Te.NB;
@@ -12,20 +12,7 @@ function [Z, inds] = closestRowValFit(Tr, Te, ~, opts)
     Z1 = Tr.latents;
     Z2 = Te.latents;
     
-%     warning('filtering speed');
-%     spd = arrayfun(@(ii) norm(Tr.vel(ii,:)), 1:size(Tr.vel,1));
-%     if ~isnan(opts.filterSpeed)
-%         if opts.filterSpeed
-%             ix = spd <= nanmedian(spd);
-%         else
-%             ix = spd > nanmedian(spd);
-%         end
-%         Z1 = Z1(ix,:);
-%     else
-%         Z1 = Z1(~isnan(spd),:);
-%     end
-    
-    ds = pdist2(Z2*RB2, Z1*RB2);
+    ds = pdist2(Z2*RB2, Z1*RB2); % nz2 x nz1
     if isnan(opts.kNN)
         [~, inds] = min(ds, [], 2);
     else
