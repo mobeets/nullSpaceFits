@@ -13,26 +13,44 @@ function D = addImeDecoders(D)
         else
             ime_ii = ii;
         end
-        dec = D.ime(ime_ii);
-        dec.M0 = dec.b0*dt;
-        dec.M1 = dec.A;
-        dec.M2 = dec.B*dt;
-        [dec.NulM2, dec.RowM2] = io.getNulRowBasis(dec.M2);
-        D.blocks(ii).nImeDecoder = dec;
+        % load spike/factor decoder
+        dc1 = D.ime(ime_ii);
+        dc1.M0 = dc1.b0*dt;
+        dc1.M1 = dc1.A;
+        dc1.M2 = dc1.B*dt;
         
-        % convert to factor decoder
-        fdec = io.spikeDecoderToFactorDecoder(dec, ...
-            D.simpleData.nullDecoder);
-        [fdec.NulM2, fdec.RowM2] = io.getNulRowBasis(fdec.M2);
-        D.blocks(ii).fImeDecoder = fdec;
+        % convert to the other decoder
+        if size(dc1.B, 2) == 10
+            ogImeIsLatent = true;
+            dc2 = io.factorDecoderToSpikeDecoder(dc1, ...
+                D.simpleData.nullDecoder);
+        else
+            ogImeIsLatent = false;
+            dc2 = io.spikeDecoderToFactorDecoder(dc1, ...
+                D.simpleData.nullDecoder, ...
+                D.blocks(ii).spikes, D.blocks(ii).latents);
+        end
         
-        [pos_ime, vel_ime, vel_ime2] = io.cursorIme(D.blocks(ii), D.ime(ime_ii));
+        % make bases and add decoders to blocks
+        [dc1.NulM2, dc1.RowM2] = io.getNulRowBasis(dc1.M2);
+        [dc2.NulM2, dc2.RowM2] = io.getNulRowBasis(dc2.M2);
+        if ogImeIsLatent
+            D.blocks(ii).fImeDecoder = dc1;
+            D.blocks(ii).nImeDecoder = dc2;
+        else
+            D.blocks(ii).nImeDecoder = dc1;
+            D.blocks(ii).fImeDecoder = dc2;
+        end
+        
+        % load various stats
+        [pos_ime, vel_ime, vel_ime2] = io.cursorIme(D.blocks(ii), ...
+            D.ime(ime_ii), ogImeIsLatent);
         [ths_ime, angErr_ime, thsact_ime, prog_ime] = addImeStats(...
             D.blocks(ii), pos_ime, vel_ime);
         D.blocks(ii).posIme = pos_ime;
         D.blocks(ii).velIme = vel_ime;
         D.blocks(ii).velNextIme = [vel_ime(2:end,:); [nan nan]];
-        D.blocks(ii).velNextIme2 = [vel_ime2(2:end,:); [nan nan]];
+%         D.blocks(ii).velNextIme2 = [vel_ime2(2:end,:); [nan nan]];
         D.blocks(ii).velPrevIme = vel_ime2;
         D.blocks(ii).thetasIme = ths_ime;
         D.blocks(ii).thetaActualsIme = thsact_ime;

@@ -1,31 +1,37 @@
-function everythingIsGonnaBeOkay(Blk, dec)
-% confirm all things are as they should be    
+function isOk = everythingIsGonnaBeOkay(Blk, dec, useIme)
+% confirm all things are as they should be
     
     matSum = @(A) max(sum(A.^2,2));
     mapAngle = @(a, b) rad2deg(subspace(a, b));
     
     % confirm Nul and Row bases are orthogonal
-    assertAndPrint(matSum(Blk.NB'*Blk.RB), 'NB orth RB');
-    assertAndPrint(matSum(Blk.NB_spikes'*Blk.RB_spikes), ...
+    v1 = assertAndPrint(matSum(Blk.NB'*Blk.RB), 'NB orth RB');
+    v2 = assertAndPrint(matSum(Blk.NB_spikes'*Blk.RB_spikes), ...
         'NBs orth RBs');
     
     % confirm decoder matches Row basis
-    assertAndPrint(mapAngle(orth(Blk.M2'), Blk.RB), 'M2 RB angle', 0);
-    assertAndPrint(mapAngle(orth(Blk.M2'), Blk.NB), 'M2 NB angle', 90);
-    assertAndPrint(mapAngle(Blk.RB, Blk.NB), 'RB NB angle', 90);
+    v3 = assertAndPrint(mapAngle(orth(Blk.M2'), Blk.RB), 'M2 RB angle', 0);
+    v4 = assertAndPrint(mapAngle(orth(Blk.M2'), Blk.NB), 'M2 NB angle', 90);
+    v5 = assertAndPrint(mapAngle(Blk.RB, Blk.NB), 'RB NB angle', 90);
     
     % check spike and latent space bases are consistent
     [~,beta] = tools.convertRawSpikesToRawLatents(dec, 0, false);
-    assertAndPrint(mapAngle(beta'*Blk.RB, Blk.RB_spikes), ...
+    v6 = assertAndPrint(mapAngle(beta'*Blk.RB, Blk.RB_spikes), ...
         'bRB RBs angle', 0);
-    assertAndPrint(mapAngle(beta'*Blk.RB, Blk.NB_spikes), ...
+    v7 = assertAndPrint(mapAngle(beta'*Blk.RB, Blk.NB_spikes), ...
         'bRB NBs angle', 90);
     
     % confirm decoder produces velocities
-    errs = checkDecoderVelocities(Blk, Blk.latents);
-    assertAndPrint(matSum(errs), 'latent decoder errors', 0);
-    errs = checkDecoderVelocities(Blk, Blk.spikes);
-    assertAndPrint(matSum(errs), 'spikes decoder errors', 0);
+    if ~useIme
+        errs = checkDecoderVelocities(Blk, Blk.latents);
+        v8 = assertAndPrint(matSum(errs), 'latent decoder errors', 0);
+        errs = checkDecoderVelocities(Blk, Blk.spikes);
+        v9 = assertAndPrint(matSum(errs), 'spikes decoder errors', 0);
+    else
+        % IME velocities are not as easily verified... :(
+        v8 = true; v9 = true;
+    end
+    isOk = all([v1 v2 v3 v4 v5 v6 v7 v8 v9]);
     
 end
 
@@ -63,14 +69,16 @@ function errs = checkDecoderVelocities(Blk, Y)
     errs = cell2mat(errs);
 end
 
-function assertAndPrint(val, msg, goal, tol)
+function isOk = assertAndPrint(val, msg, goal, tol)
     if nargin < 4
         tol = 1e-5;
     end
     if nargin < 3
         goal = 0;
     end
+    isOk = true;
     if abs(val - goal) > tol
-        warning([msg ' (goal: ' num2str(goal) ' val: ' num2str(val) ')']);
+        isOk = false;
+        warning([msg ' (goal: ' num2str(goal) ', val: ' num2str(val) ')']);
     end
 end

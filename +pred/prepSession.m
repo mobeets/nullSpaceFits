@@ -24,6 +24,14 @@ function D = prepSession(D, opts)
     end
     D.train = prepToFit(Tr, ixTr, opts.trainBlk, opts);
     D.test = prepToFit(Te, ixTe, opts.testBlk, opts);
+    
+    % verify
+    dec = D.simpleData.nullDecoder;
+    isOk1 = tools.everythingIsGonnaBeOkay(D.train, dec, opts.useIme);
+    isOk2 = tools.everythingIsGonnaBeOkay(D.test, dec, opts.useIme);
+    if ~isOk1 || ~isOk2
+        error(['Something is not right with ' D.datestr]);
+    end
 
 end
 

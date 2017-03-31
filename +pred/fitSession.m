@@ -11,11 +11,7 @@ function [F,D] = fitSession(dtstr, hyps, grpName, opts)
     
     % load
     D = pred.loadSession(dtstr); % load preprocessed session data
-    D = pred.prepSession(D, opts); % split into train/test
-    
-    % verify
-    tools.everythingIsGonnaBeOkay(D.train, D.simpleData.nullDecoder);
-    tools.everythingIsGonnaBeOkay(D.test, D.simpleData.nullDecoder);
+    D = pred.prepSession(D, opts); % split into train/test    
     
     % fit
     F = pred.fitHyps(D, hyps); % make predictions with each hyp
