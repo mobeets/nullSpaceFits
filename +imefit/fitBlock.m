@@ -13,13 +13,13 @@ function [estParams, LL, stats] = fitBlock(Blk, opts)
         BlkTrain = Blk; BlkTest = Blk;
     end
     [U, Y, Xtarget] = imefit.prep(BlkTrain, opts.doLatents, true);
-    basedir = pwd;
-    cd('velime_codepack_v1.0/');
+%     basedir = pwd;
+%     cd('velime_codepack_v1.0/');
     [estParams,LL] = velime_fit(U, Y, Xtarget, opts.TAU,...
         'INIT_METHOD', opts.init_method,...
         'verbose', opts.verbose,...
         'max_iters', opts.max_iters);
-    cd(basedir);
+%     cd(basedir);
     stats = imefit.imeStats(BlkTest, estParams, opts);
 
 %     D.ime(bind) = estParams;

@@ -9,7 +9,8 @@ function makePreprocessed(dts, saveDir, doOverwrite)
             continue;
         end
         dts{ii}
-        D = io.quickLoadByDate(dts{ii});
+%         D = io.quickLoadByDate(dts{ii});
+        D = io.loadRawDataByDate(dts{ii});
         save(fnm, 'D');
     end
 end

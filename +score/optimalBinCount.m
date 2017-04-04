@@ -25,7 +25,11 @@ function h = optimalBinCount(Y, gs, minBinSz)
     sc = nan(numel(grps), numel(hs));
     for ii = 1:numel(grps)
         ix = grps(ii) == gs;
-        Yc = Y(ix,:);
+        if sum(ix) == 1
+            warning('Only one instance of group. Skipping in optimalBinCount.');
+            continue;
+        end
+        Yc = Y(ix,:);        
         [nt, nd] = size(Yc);
         mny = min(Yc(:)); mxy = max(Yc(:));
         rng = mxy - mny;
@@ -39,7 +43,7 @@ function h = optimalBinCount(Y, gs, minBinSz)
         end
         sc(ii,:) = median(zscore(scs),2);
     end
-    sc = median(sc);
+    sc = nanmedian(sc);
     [~,ix] = min(sc);
     h = hs(ix);
     if ~isnan(minBinSz)

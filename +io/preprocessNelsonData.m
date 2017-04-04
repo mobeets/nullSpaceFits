@@ -41,5 +41,5 @@ function angs = addAngles(locs)
     ym = median(unique(locs(:,2)));
     locs(:,1) = locs(:,1) - xm;
     locs(:,2) = locs(:,2) - ym;
-    angs = io.computeAngles(locs);
+    angs = tools.computeAngles(locs);
 end

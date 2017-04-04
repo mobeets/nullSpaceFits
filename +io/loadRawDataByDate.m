@@ -4,7 +4,8 @@ function D = loadRawDataByDate(dtstr)
     mnkNm = '';
     mnkNms = io.getMonkeys();    
     for ii = 1:numel(mnkNms)
-        [fs, dr] = getFolders(DATADIR, mnkNms{ii}, dtstr);
+        [fs, dr] = getFolders(fullfile(DATADIR, 'sessions'), ...
+            mnkNms{ii}, dtstr);
         if numel(fs) > 0
             mnkNm = mnkNms{ii};
             break;

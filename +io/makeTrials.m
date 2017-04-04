@@ -38,13 +38,15 @@ function trials = makeTrials(D)
     
     trials.thetas = mod(trials.thetas, 360);
     trials.thetaActuals = mod(trials.thetaActuals, 360);
-    trials.thetaGrps = io.thetaGroup(trials.thetas, ...
-        io.thetaCenters(8));
+    trials.thetaGrps = tools.thetaGroup(trials.thetas, ...
+        tools.thetaCenters(8));
 
     % add latents
     trials.latents = tools.convertRawSpikesToRawLatents(...
         D.simpleData.nullDecoder, trials.spikes');
 	
+    % add other stuff
+    trials = addExtraFields(trials);
 end
 
 function trial = addNewFields(trial, D)
@@ -74,10 +76,10 @@ function trial = addNewFields(trial, D)
         vec2trg = trial.vec2target(t,:);
         movVec = trial.movementVector(t,:);
         r = norm(vec2trg);
-        theta = io.computeAngle(vec2trg, [1; 0]);
-        thetaActual = io.computeAngle(movVec, [1; 0]);
+        theta = tools.computeAngle(vec2trg, [1; 0]);
+        thetaActual = tools.computeAngle(movVec, [1; 0]);
         prog = movVec*vec2trg'/norm(vec2trg);
-        angErr = io.computeAngle(movVec, vec2trg);
+        angErr = tools.computeAngle(movVec, vec2trg);
         velStar = D.params.IDEAL_SPEED*vec2trg/norm(vec2trg);
         if t > 1
             velPrev = trial.vel(t-1,:);
@@ -96,3 +98,25 @@ function trial = addNewFields(trial, D)
 
 end
 
+function trials = addExtraFields(trials)
+    trials.angErrorAbs = abs(trials.angError);
+    trials.thetaActualGrps = tools.thetaGroup(trials.thetaActuals, ...
+        tools.thetaCenters(8));
+    trials.thetaActualGrps16 = tools.thetaGroup(trials.thetaActuals, ...
+        tools.thetaCenters(16));
+    trials.thetaGrps16 = tools.thetaGroup(trials.thetas, ...
+        tools.thetaCenters(16));
+    trials.progressOrth = addProgressOrth(trials);
+end
+
+function progOrth = addProgressOrth(trials)
+
+    progOrth = nan(size(trials.progress));
+    for t = 1:numel(trials.progress)
+        vec2trg = trials.vec2target(t,:);
+        vec2trgOrth(1) = vec2trg(2);
+        vec2trgOrth(2) = -vec2trg(1);
+        movVec = trials.movementVector(t,:);
+        progOrth(t) = -(movVec*vec2trgOrth'/norm(vec2trg));
+    end
+end

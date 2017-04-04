@@ -2,7 +2,7 @@ function [pos_ime, vel_ime, vel_ime2] = cursorIme(B, ime, doLatents)
 % cursor movement using ime decoder
 
     dt = 0.045;
-    [U, Y, Xtarget, ~] = io.prepIme(B, doLatents, false, true);
+    [U, Y, Xtarget, ~] = imefit.prep(B, doLatents, false, true);
     [E_P, V_P] = velime_extract_prior_whiskers(U, Y, Xtarget, ime);
     % n.b. E_P{t} always has at least T_START cols, but Y{t} may have fewer
     pos_ime = arrayfun(@(t) E_P{t}(end-1:end,1:size(Y{t},2)), ...

@@ -75,8 +75,9 @@ function Zs = minL1Norm(mu, Aeq, beqs, lb, ub)
     f = [zeros(nd,1); ones(nd,1)]; % f'*x = sum(w)
     A = [eye(nd) -eye(nd); -eye(nd) eye(nd)];
     b = [mu; -mu]; % Ax <= b --> u - w <= mu, -u + w <= -mu
-    lb_ = [lb; -inf(nd,1)]; ub_ = [ub; inf(nd,1)]; % lb <= u <= ub
-    options = optimset('Algorithm', 'interior-point-convex', ...
+    lb_ = [lb -inf(1,nd)]; ub_ = [ub inf(1,nd)]; % lb <= u <= ub
+    Aeq_ = [Aeq zeros(2,nd)];
+    options = optimset('Algorithm', 'interior-point', ...
         'Display', 'off');
     
     nt = size(beqs,2);
@@ -87,12 +88,13 @@ function Zs = minL1Norm(mu, Aeq, beqs, lb, ub)
         end
         % linprog:
         %    min_x f'*x --> sum(w)
-        %       s.t.        Ax <= b   --> w <= x - b, w >= x - b
-        %                Aeq*x  = beq
-        %                lb <= x <= ub
+        %       s.t. Ax <= b   --> w <= x - b, w >= x - b
+        %            Aeq*x  = beq
+        %            lb <= x <= ub
         %
-        [Zs(t,:), ~, exitflag] = linprog(f, A, b, Aeq, beqs(:,t), ...
+        [zc, ~, exitflag] = linprog(f, A, b, Aeq_, beqs(:,t), ...
             lb_, ub_, [], options);
+        Zs(t,:) = zc(1:nd);
         if ~exitflag
             warning('linprog optimization incomplete, but stopped.');
         end
