@@ -14,17 +14,17 @@ function df = spikeDecoderToFactorDecoder(dn, dec, sps, lts)
     df.M1 = dn.M1;
     df.M0 = dn.M0 + dn.M2*mu';
     
-    spsE = tools.latentsToSpikes(lts, dec, false, true);
-    Yr = sps*dn.M2';
-    Yrh = spsE*dn.M2';
-    
-    RB = orth(df.M2');
-    RBs = orth(dn.M2');
-    NBs = null(dn.M2);
-    mapAngle = @(a, b) rad2deg(subspace(a, b));
-    mapAngle(beta'*df.M2', dn.M2')
-    [mapAngle(beta'*df.M2', RBs) mapAngle(beta'*df.M2', NBs)]
-    [mapAngle(beta'*RB, RBs) mapAngle(beta'*RB, NBs)]
+%     spsE = tools.latentsToSpikes(lts, dec, false, true);
+%     Yr = sps*dn.M2';
+%     Yrh = spsE*dn.M2';
+%     
+%     RB = orth(df.M2');
+%     RBs = orth(dn.M2');
+%     NBs = null(dn.M2);
+%     mapAngle = @(a, b) rad2deg(subspace(a, b));
+%     mapAngle(beta'*df.M2', dn.M2')
+%     [mapAngle(beta'*df.M2', RBs) mapAngle(beta'*df.M2', NBs)]
+%     [mapAngle(beta'*RB, RBs) mapAngle(beta'*RB, NBs)]
     
 end
 

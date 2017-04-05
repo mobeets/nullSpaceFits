@@ -1,6 +1,6 @@
 function D = rotateLatentsUpdateDecoders(D, doStretch)
     if nargin < 2
-        doStretch = false;
+        doStretch = true;
     end
 
     L = D.simpleData.nullDecoder.FactorAnalysisParams.L;

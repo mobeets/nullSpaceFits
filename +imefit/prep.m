@@ -61,7 +61,7 @@ function [U, Y, T, trs] = prep(B, doLatents, doWarn, keepIncorrects)
         if any(isnan(cU(:)))
             ixNan = any(isnan(cU));
             indFirstNan = find(ixNan, 1, 'first');
-            numNonNans = sum(~ixNan(indFirstNan:end));
+%             numNonNans = sum(~ixNan(indFirstNan:end));
 %             assert(numNonNans == 0);
             cU = cU(:,1:indFirstNan-1);
             cY = cY(:,1:indFirstNan-1);

@@ -50,7 +50,6 @@ function D = addImeDecoders(D)
         D.blocks(ii).posIme = pos_ime;
         D.blocks(ii).velIme = vel_ime;
         D.blocks(ii).velNextIme = [vel_ime(2:end,:); [nan nan]];
-%         D.blocks(ii).velNextIme2 = [vel_ime2(2:end,:); [nan nan]];
         D.blocks(ii).velPrevIme = vel_ime2;
         D.blocks(ii).thetasIme = ths_ime;
         D.blocks(ii).thetaActualsIme = thsact_ime;

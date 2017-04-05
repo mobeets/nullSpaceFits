@@ -12,8 +12,8 @@ function [D, Stats, LLs] = fitSession(dtstr, opts)
         params = io.updateParams(params, ...
             io.setBlockStartTrials(dtstr), true);
     end
-    popts = struct('doRotate', false);
-    D = io.quickLoadByDate(dtstr, params, popts);
+    doRotate = false;
+    D = io.quickLoadByDate(dtstr, params, doRotate);
     fnm = io.pathToIme(dtstr);
 
     LLs = cell(3,1);

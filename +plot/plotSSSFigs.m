@@ -1,6 +1,7 @@
 %% load
 
-fitName = 'Int2Pert_yIme';
+% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_v2';
 exInds = [24 4]; % from exInd, below
 [errs, C2s, C1s, Ys, dts, hypnms] = plot.getSSS(fitName, 8, exInds);
 
@@ -29,7 +30,7 @@ plot.plotSSSErrorFig(cerrs, hypnms, dtsc, mnkNms, hypsToShow, doSave, false);
 
 %% plot ellipses
 
-doSave = true;
+doSave = false;
 hypToCompare = 'constant-cloud';
 % hypToCompare = 'habitual-corrected';
 
@@ -43,7 +44,7 @@ plot.plotSSSEllipseFig(C2s(:,:,end), C2s(:,:,hypInd), opts);
 
 %% plot example ellipse
 
-doSave = true;
+doSave = false;
 hypInd = strcmpi(hypnms, hypToCompare);
 hypClrs = [plot.hypColor('data'); plot.hypColor(hypToCompare)];
 

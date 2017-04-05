@@ -10,7 +10,8 @@ function [F,D] = fitSession(dtstr, hyps, grpName, opts)
     end
     
     % load
-    D = pred.loadSession(dtstr); % load preprocessed session data
+%     D = pred.loadSession(dtstr); % load preprocessed session data
+    D = io.quickLoadByDate(dtstr);
     D = pred.prepSession(D, opts); % split into train/test    
     
     % fit

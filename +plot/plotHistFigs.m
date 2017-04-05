@@ -1,7 +1,8 @@
 
 doSave = false;
 dt = '20131205';
-fitName = 'Int2Pert_yIme';
+% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_v2';
 
 hypsToShow = {'minimum' 'best-mean', 'uncontrolled-uniform', ...
         'uncontrolled-empirical', 'habitual-corrected', ...

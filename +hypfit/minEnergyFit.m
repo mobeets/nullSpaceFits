@@ -31,11 +31,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     elseif strcmpi(opts.minType, 'best')
         assert(opts.pNorm == 2, 'best-mean assumed to use L2 norm');
         assert(~opts.fitInLatent);
-%         mu_lts = [];
-%         mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName), true);
-        mu_lts = findBestMean(Tr.latents, Tr.NB, Tr.(opts.grpName), false);
-        mu = tools.latentsToSpikes(mu_lts, dec, false, true);
-        out.bestMean_lts = mu_lts;
+        mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName));
         out.bestMean = mu;
         if any(mu < 0)
             warning(['Best mean has negative rates: ' num2str(mu)]);
@@ -96,36 +92,6 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         end
         nis = sum(ixBad);
     end
-    
-%     nis = 0;
-%     if ~opts.fitInLatent && opts.addSpikeNoise
-%         for t = 1:nt
-%             ut0 = U(t,:);
-%             c = 0;
-%             if strcmpi(opts.noiseDistribution, 'gaussian')
-%                 ut = normrnd(ut0, sigma);
-%             elseif strcmpi(opts.noiseDistribution, 'poisson')
-%                 ut = poissrnd(max(ut0,0));
-%             else
-%                 error('Invalid noise distribution');
-%             end
-%             while numel(lb) > 0 && numel(ub) > 0 && ...
-%                     (any(ut < lb) || any(ut > ub)) && c < 10
-%                 if strcmpi(opts.noiseDistribution, 'gaussian')
-%                     ut = max(normrnd(ut0, sigma), 0);
-%                 elseif strcmpi(opts.noiseDistribution, 'poisson')
-%                     ut = poissrnd(ut0);
-%                 end
-%                 c = c + 1;
-%             end
-%             if numel(lb) == 0 || numel(ub) == 0 || ...
-%                     ~(any(ut < lb) || any(ut > ub))
-%                 U(t,:) = ut;
-%             else
-%                 nis = nis + 1;
-%             end
-%         end
-%     end
     if nis > 0
         disp([dispNm ' could not add noise to ' num2str(nis) ...
             ' timepoint(s)']);
@@ -169,33 +135,35 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
        
 end
 
-function mu = findBestMean(Z, NB, gs, isInSpikes)
-    grps = sort(unique(gs));
-    ZN = Z*NB;
-    nd = size(ZN,2);
-    mu = nan(numel(grps), nd);
-    for ii = 1:numel(grps)
-        mu(ii,:) = nanmean(ZN(gs == grps(ii),:));
-    end    
-    % objective now for prediction muh is:
-    % = sum_i || muh - mu(ii,:) ||^2
-    % = sum_i 0.5*muh'*muh - muh'*mu(ii,:) + const
-    % = (nd/2)*muh'*muh - sum_i muh'*mu(ii,:)
-    % = (nd/2)*muh'*muh - muh'*sum(mu);
-    % -> quadprog
-    
-    f = -nansum(mu);
-    H = eye(nd);
-    A = []; b = []; Aeq = []; beq = [];
-    if isInSpikes
-        % A,b enforce non-negativity of spike solution
-        A = -eye(nd);
-        b = zeros(nd,1);
+function m = findBestMean(Z, NB, gs, enforceNonneg)
+% we want to minimize the mean null space error across groups
+% to solve this, we calculate the mean null space activity per group, M
+% and then find the closest null space mean, n, as follows:
+%   n := argmin_n sum_i || n - M(i) ||_2
+%          (sum is over grps)
+%        = argmin_n sum_i n'*n - 2*n'*M(i) + const
+%        = argmin_n = d*n'*n - 2*n'*sum(M)
+%        = argmin_n = sum_j d*n_j^2 - 2*n_j*sum(M)_j
+%      so this problem can be solved separately for each n_j
+%        and setting the derivative equal to zero yields:
+%            2*d*n_j - 2*sum(M)_j = 0 -> n_j = sum(M)_j/d
+%     
+    if nargin < 4
+        enforceNonneg = true;
     end
-    lb = 0.8*min(ZN); ub = 1.2*max(ZN);
-    options = optimset('Display', 'off');
-    [mu, ~, exitflag] = quadprog(H, f, A, b, Aeq, beq, ...
-            lb, ub, [], options);
-    assert(exitflag == 1);
-    mu = mu'*NB'; % project null-space value back up to latent/spike space
+    ZN = Z*NB;
+    d = size(ZN,2);
+    grps = sort(unique(gs));
+    M = nan(numel(grps), d);
+    for ii = 1:numel(grps)
+        M(ii,:) = nanmean(ZN(gs == grps(ii),:));
+    end
+    n = sum(M)/d;
+    m = n*NB'; % project null-space value back up to spike space
+    if enforceNonneg
+        % if we're in spike space, we also want NB*n >= 0
+        % n.b. the below is not optimal, but in practice, the solution 
+        % tends to obey our constraint anyway
+        m = max(m, 0);
+    end
 end
