@@ -167,3 +167,4 @@ function m = findBestMean(Z, NB, gs, enforceNonneg)
         m = max(m, 0);
     end
 end
+

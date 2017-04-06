@@ -9,14 +9,14 @@ function [Hs, Xs, nbins] = histsFcn(Ys, gs, useFirstForRange)
         useFirstForRange = false;
     end
     nbins = score.optimalBinCount(Ys{1}, gs);
-    Xs = getHistRange(Ys, nbins, gs, useFirstForRange);
+    [Xs, rng] = getHistRange(Ys, nbins, gs, useFirstForRange);
     Hs = cell(numel(Ys),1);
     for ii = 1:numel(Ys)
         Hs{ii} = score.marginalHist(Ys{ii}, gs, Xs);
     end
 end
 
-function Xs = getHistRange(Ys, nbins, gs, useFirstForRange)
+function [Xs, rng] = getHistRange(Ys, nbins, gs, useFirstForRange)
     grps = sort(unique(gs));
     ngrps = numel(grps);
     ndims = size(Ys{1},2);
@@ -25,13 +25,13 @@ function Xs = getHistRange(Ys, nbins, gs, useFirstForRange)
     mns = min(min(Ys{1}));
     mxs = max(max(Ys{1})); % mns/mxs were the bounds used to choose nbins
     xs = linspace(mns, mxs, nbins);
+    binspace = mode(diff(xs));
     if ~useFirstForRange
         for ii = 2:numel(Ys)
             mns = min(mns, min(min(Ys{ii})));
             mxs = max(mxs, max(max(Ys{ii})));
         end
-        % must now increase xs to account for expanded range
-        binspace = mode(diff(xs));
+        % must now increase xs to account for expanded range        
         while min(xs) > mns
             xs = [min(xs)-binspace xs];
         end
@@ -39,6 +39,7 @@ function Xs = getHistRange(Ys, nbins, gs, useFirstForRange)
             xs = [xs max(xs)+binspace];
         end
     end
+    rng = binspace*(numel(xs)-1); % range of bins
     
     % make cell array of bins repeated for each grp and dim
     Xs = cell(ngrps,1);

@@ -1,50 +1,100 @@
-
-doSave = false;
-dt = '20131205';
-% fitName = 'Int2Pert_yIme';
-fitName = 'Int2Pert_yIme_v2';
-
-hypsToShow = {'minimum' 'best-mean', 'uncontrolled-uniform', ...
-        'uncontrolled-empirical', 'habitual-corrected', ...
-        'constant-cloud'};
-
-% hypsToShow = {'best-mean'};
-% hypsToShow = {'minimum', 'minimum-L1'};
-% hypsToShow = {'minimum', 'best-mean'};
-% hypsToShow = {'constant-cloud'};
-% hypsToShow = {'constant-cloud', 'habitual-corrected'};
-% hypsToShow = {'uncontrolled-empirical'};
-
-% show all
-opts = struct('grpInds', 1:8, 'dimInds', 1:3, 'doSave', doSave);
-doPca = true;
-for ii = 1:numel(hypsToShow)
-    if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline')  || strcmpi(hypsToShow{ii}, 'best-mean')
-        opts.ymax = 1.0;
-    elseif isfield(opts, 'ymax')
-        opts = rmfield(opts, 'ymax');
+function plotHistFigs(fitName, dt, hypNms, opts)
+    if nargin < 4
+        opts = struct();
     end
-    plot.plotHistFig(fitName, dt, hypsToShow(ii), doPca, opts);
-end
+    defopts = struct('doSave', false, 'saveDir', 'data/plots', ...
+        'saveExt', 'pdf', 'ymax', nan, ...
+        'doPca', true, 'grpInds', 1:8, 'dimInds', 1:3);
+    opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
-%%
-
-% show singleton
-opts = struct('grpInds', 1, 'dimInds', 1, 'doSave', doSave);
-doPca = true;
-for ii = 1:numel(hypsToShow)
-    if strcmpi(hypsToShow{ii}, 'minimum') || strcmpi(hypsToShow{ii}, 'baseline') || strcmpi(hypsToShow{ii}, 'best-mean')
-        opts.ymax = 1.0;
-    elseif isfield(opts, 'ymax')
-        opts = rmfield(opts, 'ymax');
+    % load output-null activity
+    [S,F] = plot.getScoresAndFits(fitName, {dt});    
+    NB = F.test.NB;
+    Y0 = F.test.latents;
+    mu = nanmean(Y0*NB);
+    if opts.doPca
+        [coeff, ~] = pca(Y0*NB);
+    else
+        coeff = eye(size(mu,2));
     end
-    plot.plotHistFig(fitName, dt, hypsToShow(ii), doPca, opts);
+    
+    ix = ~isnan(S.gs);
+    YN0 = bsxfun(@plus, bsxfun(@minus, Y0(ix,:)*NB, mu)*coeff, mu);
+    YNc = cell(numel(hypNms),1);    
+    for ii = 1:numel(hypNms)
+        Yc = F.fits(strcmp({F.fits.name}, hypNms{ii})).latents(ix,:);
+        YNc{ii} = bsxfun(@plus, bsxfun(@minus, Yc*NB, mu)*coeff, mu);
+    end
+
+    useDataOnlyForRange = false; % false -> use data and preds to set range
+    [Hs, Xs, ~] = score.histsFcn([YN0; YNc], ...
+        S.gs(ix), useDataOnlyForRange);
+    H0 = Hs{1}; Hs = Hs(2:end);
+    [H0, Hs, xs, ymx] = filterHists(H0, Hs, Xs, opts);
+    if isnan(opts.ymax)
+        opts.ymax = ymx;
+    end
+
+    if numel(opts.grpInds) == 1 && numel(opts.dimInds) == 1
+        plotSingleton(H0, Hs, xs, hypNms, fitName, opts);
+    else
+        plotGrid(H0, Hs, xs, hypNms, fitName, opts);
+    end
 end
 
-%% make wedges
+function plotGrid(H0, Hs, xs, hypNms, fitName, opts)
 
-doSave = true;
-close all;
-for ii = 1:8
-    plot.plotWedge(ii, struct('doSave', doSave));
+    % plot hists
+    opts.clr1 = plot.hypColor('data');
+    for jj = 1:numel(Hs)        
+        Hc = Hs{jj};
+        opts.clr2 = plot.hypColor(hypNms{jj});
+        plot.plotGridHistFig(H0, Hc, xs, opts);
+        if opts.doSave
+            fnm = ['margHist_' hypNms{jj} '_' fitName];
+            export_fig(gcf, fullfile(opts.saveDir, ...
+                [fnm '.' opts.saveExt]));
+        end
+    end
 end
+
+function plotSingleton(hs1, Hs, xs, hypNms, fitName, opts)
+    
+    % plot and save all hists
+    opts.clr1 = plot.hypColor('data');
+    opts.title = ['Output-null dim. ' num2str(opts.dimInds)];
+    for ii = 1:numel(Hs)
+        hs2 = Hs{ii};
+        opts.clr2 = plot.hypColor(hypNms{ii});
+        plot.plotSingleHistFig(hs1, hs2, xs, opts);        
+        if opts.doSave
+            fnm = ['margHistSingle_' hypNms{ii} '_' fitName];
+            export_fig(gcf, fullfile(opts.saveDir, ...
+                [fnm '.' opts.saveExt]));
+        end
+    end
+end
+
+function [H0a, Hsa, xs, ymx] = filterHists(H0, Hs, Xs, opts)
+    xs = Xs{1}(:,1); % xs is the same everywhere anyway
+    nx = numel(xs);
+
+    % init to empty
+    H0a = nan(numel(opts.grpInds), nx, numel(opts.dimInds));
+    Hsa = cell(numel(Hs), 1);
+    for jj = 1:numel(Hs)
+        Hsa{jj} = H0a;
+    end
+
+    % fill with filtered hists
+    ymx = -inf;
+    for ii = 1:numel(opts.grpInds)
+        H0a(ii,:,:) = H0{opts.grpInds(ii)}(:,opts.dimInds);
+        ymx = max(ymx, nanmax(H0a(:)));
+        for jj = 1:numel(Hs)
+            Hsa{jj}(ii,:,:) = Hs{jj}{opts.grpInds(ii)}(:,opts.dimInds);
+            ymx = max(ymx, nanmax(Hsa{jj}(:)));
+        end
+    end
+end
+
