@@ -5,6 +5,7 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
     defopts = struct('clr1', [0 0 0], 'clr2', [0.5 0.5 0.5], ...
         'width', 3, 'height', 3, 'margin', 0.125, ...
         'FontSize', 16, 'title', '', ...
+        'xMult', 7, 'yMult', 0.6, ...
         'LineWidth', 3, 'LineStyle', 'k-', 'ymax', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
@@ -20,8 +21,8 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
         yl = ylim;
         ylim([yl(1) opts.ymax]);
     end
-    xscale = 10*mode(diff(xs));
-    yscale = 0.6*opts.ymax;
+    xscale = opts.xMult*mode(diff(xs));
+    yscale = opts.yMult*opts.ymax;
     xmrg = xscale/5;
     minx = min(xs) - xmrg;
     maxx = max(xs);
@@ -50,14 +51,9 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
     if ~isempty(opts.title)
         xt = min(xs) + 0.2*range(xs);
         yl = ylim;
-        yt = yl(2) + 2*ytxtoffset;
+        yt = yl(2) - 2*ytxtoffset;
         text(xt, yt, opts.title, 'FontSize', opts.FontSize, ...
             'Color', [0.5 0.5 0.5]);
-    end
-    % reset ylim to include title
-    if ~isnan(opts.ymax)
-        yl = ylim;
-        ylim([yl(1) yt]);
     end
 
     axis off;

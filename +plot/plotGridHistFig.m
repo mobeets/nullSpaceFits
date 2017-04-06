@@ -5,6 +5,7 @@ function plotGridHistFig(H1, H2, xs, opts)
     defopts = struct('clr1', [0 0 0], 'clr2', [0.5 0.5 0.5], ...
         'width', 4, 'height', 6, 'margin', 0.125, ...
         'FontSize', 12, 'title', '', ...
+        'xMult', 7, 'yMult', 0.6, ...
         'LineWidth', 2, 'LineStyle', 'k-', 'ymax', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
@@ -14,8 +15,15 @@ function plotGridHistFig(H1, H2, xs, opts)
     % plot hists in grid with specified gaps
     plot.init;
     [nrows,~,ncols] = size(H1);
-    for ii = 1:nrows
+    for ii = 1:nrows        
         for jj = 1:ncols
+            if ii == nrows
+                colTitle = {'Output-null', ['     dim. ' num2str(jj)]};
+                x = min(xs) + (jj-1)*xgap;
+                y = ygap + (ii-1)*ygap;
+                text(x, y, colTitle, 'FontSize', opts.FontSize, ...
+                    'Color', [0.5 0.5 0.5]);
+            end
             hs1 = squeeze(H1(ii,:,jj)) + (ii-1)*ygap;
             hs2 = squeeze(H2(ii,:,jj)) + (ii-1)*ygap;
             xsc = xs + (jj-1)*xgap;
@@ -27,8 +35,8 @@ function plotGridHistFig(H1, H2, xs, opts)
     end
 
     % plot scale bars
-    xscale = 10*mode(diff(xs));
-    yscale = 0.6*opts.ymax;
+    xscale = opts.xMult*mode(diff(xs));
+    yscale = opts.yMult*opts.ymax;
     x1 = min(xs) - 0.5*xscale;
     y1 = -0.3*yscale;
     x = min(xs); y = 0;

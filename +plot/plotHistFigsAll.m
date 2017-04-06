@@ -18,6 +18,7 @@ plot.plotHistFigs(fitName, dt, hypsToShow, opts);
 
 %% plot singleton hists
 
+doSave = true;
 opts = struct('grpInds', 8, 'dimInds', 1, 'doSave', doSave, 'doPca', true);
 opts.ymax = 0.7931;
 plot.plotHistFigs(fitName, dt, hypsToShow, opts);
