@@ -38,17 +38,19 @@ function plotHistFigs(fitName, dt, hypNms, opts)
     if numel(opts.grpInds) == 1 && numel(opts.dimInds) == 1
         plotSingleton(H0, Hs, xs, hypNms, fitName, opts);
     else
-        plotGrid(H0, Hs, xs, hypNms, fitName, opts);
+        plotGrid(H0, Hs, xs, hypNms, fitName, S, opts);
     end
 end
 
-function plotGrid(H0, Hs, xs, hypNms, fitName, opts)
+function plotGrid(H0, Hs, xs, hypNms, fitName, S, opts)
 
     % plot hists
     opts.clr1 = plot.hypColor('data');
     for jj = 1:numel(Hs)        
         Hc = Hs{jj};
         opts.clr2 = plot.hypColor(hypNms{jj});
+        ix = strcmp(hypNms{jj}, {S.scores.name});
+        opts.histError = 100*S.scores(ix).histError;
         plot.plotGridHistFig(H0, Hc, xs, opts);
         if opts.doSave
             fnm = ['margHist_' hypNms{jj} '_' fitName];
