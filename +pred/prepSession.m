@@ -27,8 +27,8 @@ function D = prepSession(D, opts)
     
     % verify
     dec = D.simpleData.nullDecoder;
-    isOk1 = tools.everythingIsGonnaBeOkay(D.train, dec, opts.useIme);
-    isOk2 = tools.everythingIsGonnaBeOkay(D.test, dec, opts.useIme);
+    isOk1 = pred.everythingIsGonnaBeOkay(D.train, dec, opts.useIme);
+    isOk2 = pred.everythingIsGonnaBeOkay(D.test, dec, opts.useIme);
     if ~isOk1 || ~isOk2
         error(['Something is not right with ' D.datestr]);
     end
