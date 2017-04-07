@@ -1,11 +1,11 @@
-function [isGood, ixs, xsb, ysb, ysv, opts] = assessBehavior(D, opts)
+function [isGood, ixs, xsb, ysb, ysv, opts, ysv2, ysv3] = assessBehavior(D, opts)
     if nargin < 2
         opts = struct();
     end
     defopts = struct('muThresh', 0.5, 'varThresh', 0.5, ...
         'trialsInARow', 10, 'groupEvalFcn', @numel, ...
         'blockIndex', 2, 'xName', 'trial_index', ...
-        'minGroupSize', 100, 'meanBinSz', 150, 'varMeanBinSz', 150, ...
+        'minGroupSize', 100, 'smoothBinSz', 150, ...
         'varBinSz', 100, 'behavNm', 'trial_length');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
@@ -19,25 +19,25 @@ function [isGood, ixs, xsb, ysb, ysv, opts] = assessBehavior(D, opts)
     
     % get mean value per trial
     xsb = unique(xs);
-    ysb = grpstats(ys, xs);
-    if numel(ysb) < opts.meanBinSz
-        warning('Not enough trials: meanBinSz is too large.');
+    ysb0 = grpstats(ys, xs);
+    if numel(ysb0) < opts.smoothBinSz
+        warning('Not enough trials to smooth.');
         isGood = []; ixs = {}; xsb = []; ysb = []; ysv = []; return;
     end
     
     % get smoothed mean and smoothed running var
-    ysb0 = ysb;
-    ysb = smooth(xsb, ysb, opts.meanBinSz);
+    ysb = smooth(xsb, ysb0, opts.smoothBinSz);
+    ysv = runningVar(ysb, opts.varBinSz);
+    
+    % normalize mean and var to be in [0,1]
     ymn = nanmin(ysb(26:end-10));
     ymx = max(ysb(1:25));
-    ysb2 = smooth(xsb, ysb0, opts.varMeanBinSz);
-    ysv = runningVar(ysb2, opts.varBinSz);
-    
-    % normalize mean and var to be in [0,1]    
     ysb = normToZeroOne(ysb, ymn, ymx);
     vmn = nanmin(ysv);
     vmx = nanmax(ysv(1:ceil(numel(ysv)/2)));
     ysv = normToZeroOne(ysv, vmn, vmx);
+    ysv2 = runningVar(ysb, opts.varBinSz);
+    ysv3 = runningVar(ysb0, opts.smoothBinSz);
     
     % find best set of consecutive trials below threshold for mean and var
     ix1 = ysb <= opts.muThresh;
@@ -55,6 +55,29 @@ function [isGood, ixs, xsb, ysb, ysv, opts] = assessBehavior(D, opts)
         isGood(3) = false;
     else
         isGood(3) = max(xsb(ix))-min(xsb(ix)) >= opts.minGroupSize;
+    end
+    
+%     ms = runningCalc(ysb0, opts.smoothBinSz, @nanmean);
+%     msl = runningCalc(ysb0, opts.smoothBinSz, @(v) prctile(v, 25));
+%     msu = runningCalc(ysb0, opts.smoothBinSz, @(v) prctile(v, 75));
+%     plot.init;
+%     plot(xsb, smooth(xsb, ysb0, opts.smoothBinSz));
+%     plot(xsb, ysb0, '.');
+%     plot(xsb, ms, 'k-');
+%     plot(xsb, msl, 'k-');
+%     plot(xsb, msu, 'k-');
+%     ylim([0 1.2*ceil(max(msu))]);
+%     yl = ylim;
+%     plot([min(xsb(ix)) max(xsb(ix))], [yl(2) yl(2)], ...
+%         'r-', 'LineWidth', 2);
+%     
+end
+
+function vs = runningCalc(x, m, fcn)
+    vs = nan(numel(x),1);
+    d = floor(m/2);
+    for ii = d:numel(x)-d
+        vs(ii) = fcn(x(ii-d+1:ii+d));
     end
 end
 
