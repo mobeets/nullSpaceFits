@@ -15,10 +15,10 @@ pred.fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, doOverwrite);
 %%
 
 doOverwrite = true;
-saveDir = 'Int2Pert_nIme';
+saveDir = 'Int2Pert_nIme_v3';
 grpName = 'thetaActualGrps';
 opts = struct('useIme', false, 'trainBlk', 1, 'testBlk', 2);
-hnms = {'habitual-corrected', 'constant-cloud', 'constant-cloud-50'};
+hnms = {'habitual-corrected', 'constant-cloud'};
 % hnms = {};
 pred.fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, doOverwrite);
 

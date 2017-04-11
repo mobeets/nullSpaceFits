@@ -1,10 +1,22 @@
-function D = loadRawDataByDate(dtstr)
-
+function D = loadRawDataByDate(dtstr, tryToLoadExisting)
+    if nargin < 2
+        tryToLoadExisting = false;
+    end
     DATADIR = getpref('factorSpace', 'data_directory');
+    fnm = fullfile(DATADIR, 'sessions', 'checkpoints', [dtstr '.mat']);
+    if tryToLoadExisting && ~exist(fnm, 'file')
+        warning(['Preprocessed data for ' dtstr ...
+            ' does not exist. Loading raw.']);
+    elseif tryToLoadExisting
+        data = load(fnm);
+        D = data.D;
+        return;
+    end
+
     mnkNm = '';
     mnkNms = io.getMonkeys();    
     for ii = 1:numel(mnkNms)
-        [fs, dr] = getFolders(fullfile(DATADIR, 'sessions'), ...
+        [fs, dr] = getFolders(fullfile(DATADIR, 'raw'), ...
             mnkNms{ii}, dtstr);
         if numel(fs) > 0
             mnkNm = mnkNms{ii};

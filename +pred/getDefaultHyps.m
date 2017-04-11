@@ -15,14 +15,14 @@ function hyps = getDefaultHyps(hnms, grpName)
     % n.b. minimum-sample and baseline-sample ignore nanIfOutOfBounds
     
     % minimum (L1 norm)
-    clear hyp;
-    hyp.name = 'minimum-L1';
-    hyp.opts = struct('minType', 'minimum', ...
-        'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 1, ...
-        'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
-        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
-    hyp.fitFcn = @hypfit.minEnergyFit;
-    hyps = [hyps hyp];
+%     clear hyp;
+%     hyp.name = 'minimum-L1';
+%     hyp.opts = struct('minType', 'minimum', ...
+%         'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 1, ...
+%         'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
+%         'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
+%     hyp.fitFcn = @hypfit.minEnergyFit;
+%     hyps = [hyps hyp];
     
     % minimum (L2 norm)
     clear hyp;
@@ -136,12 +136,12 @@ function hyps = getDefaultHyps(hnms, grpName)
     hyp.fitFcn = @hypfit.closestRowValFit;
     hyps = [hyps hyp];
     
-    % constant-cloud-200
-    clear hyp;
-    hyp.name = 'constant-cloud-50';
-    hyp.opts = struct('kNN', 50, 'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.closestRowValFit;
-    hyps = [hyps hyp];
+%     % constant-cloud-200
+%     clear hyp;
+%     hyp.name = 'constant-cloud-50';
+%     hyp.opts = struct('kNN', 50, 'nanIfOutOfBounds', nanIfOutOfBounds);
+%     hyp.fitFcn = @hypfit.closestRowValFit;
+%     hyps = [hyps hyp];
     
     % filter out unwanted hyps
     if ~isempty(hnms)

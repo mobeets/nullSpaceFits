@@ -2,6 +2,7 @@ function isOk = everythingIsGonnaBeOkay(Blk, dec, useIme)
 % confirm all things are as they should be
     
     matSum = @(A) max(sum(A.^2,2));
+    trMeanTooHigh = @(A) cellfun(@(a) nanmean(a.^2), A) > 1e-5;
     mapAngle = @(a, b) rad2deg(subspace(a, b));
     
     % confirm Nul and Row bases are orthogonal
@@ -24,9 +25,11 @@ function isOk = everythingIsGonnaBeOkay(Blk, dec, useIme)
     % confirm decoder produces velocities
     if ~useIme
         errs = checkDecoderVelocities(Blk, Blk.latents);
-        v8 = assertAndPrint(matSum(errs), 'latent decoder errors', 0);
+        v8 = assertAndPrint(sum(trMeanTooHigh(errs)), ...
+            'latent decoder errors', 0, 2);
         errs = checkDecoderVelocities(Blk, Blk.spikes);
-        v9 = assertAndPrint(matSum(errs), 'spikes decoder errors', 0);
+        v9 = assertAndPrint(sum(trMeanTooHigh(errs)), ...
+            'spike decoder errors', 0, 2);
     else
         % IME velocities are not as easily verified... :(
         v8 = true; v9 = true;
@@ -66,7 +69,7 @@ function errs = checkDecoderVelocities(Blk, Y)
             errs{ii}(jj) = norm(x1_h - x1);
         end
     end
-    errs = cell2mat(errs);
+%     errs = cell2mat(errs);
 end
 
 function isOk = assertAndPrint(val, msg, goal, tol)

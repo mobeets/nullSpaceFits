@@ -24,7 +24,6 @@ function [inds, lvls] = getSignificantDifferences(errs, baseCol, alphas)
         alphas = [0.05 1e-2 1e-3];
     end
     nd = size(errs,2);
-    alphas = alphas/(nd-1); % Bonferroni correction
     inds = {};
     lvls = [];
     for ii = 1:nd
@@ -32,7 +31,7 @@ function [inds, lvls] = getSignificantDifferences(errs, baseCol, alphas)
             continue;
         end
         [H, lvl] = isSignificantlyDifferent(errs(:,ii), ...
-            errs(:,baseCol), alphas);
+            errs(:,baseCol), alphas, nd-1);
         if H
             inds = [inds [ii baseCol]];
             lvls = [lvls lvl];
@@ -40,13 +39,15 @@ function [inds, lvls] = getSignificantDifferences(errs, baseCol, alphas)
     end
 end
 
-function [lH, lAlph] = isSignificantlyDifferent(errsA, errsB, alphas)
+function [lH, lAlph] = isSignificantlyDifferent(errsA, errsB, alphas, nt)
     alphas = sort(alphas, 'descend');
     lH = false; lAlph = nan;
     for ii = 1:numel(alphas)
         alpha = alphas(ii);
-        [P, H] = signrank(errsA, errsB, 'alpha', alpha, 'tail', 'right');
+        % alpha adjusted with Bonferroni correction
+        [P, H] = signrank(errsA, errsB, 'alpha', alpha/nt, 'tail', 'right');
         if ~H
+            'here'
             return;
         else
             lH = H;
