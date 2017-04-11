@@ -1,5 +1,4 @@
 function D = prepSession(D, opts)
-%
     if nargin < 2
         opts = struct();
     end
@@ -27,8 +26,9 @@ function D = prepSession(D, opts)
     
     % verify
     dec = D.simpleData.nullDecoder;
-    isOk1 = pred.everythingIsGonnaBeOkay(D.train, dec, opts.useIme);
-    isOk2 = pred.everythingIsGonnaBeOkay(D.test, dec, opts.useIme);
+    isOk1 = pred.everythingIsGonnaBeOkay(D.train, dec, true); % opts.useIme);
+    isOk2 = pred.everythingIsGonnaBeOkay(D.test, dec, true); % opts.useIme);
+    warning('Not checking decoder for now.');
     if ~isOk1 || ~isOk2
         error(['Something is not right with ' D.datestr]);
     end

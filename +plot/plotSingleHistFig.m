@@ -27,7 +27,7 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
     minx = min(xs) - xmrg;
     maxx = max(xs);
     xlim([minx maxx]);
-    ymrg = yscale/5;
+    ymrg = 0.4*yscale;
     yl = ylim; ylim([yl(1)-ymrg yl(2)]);
 
     % plot scale bars
@@ -37,8 +37,12 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
     xtxtoffset = 0.2*xscale;
     ytxtoffset = 0.2*yscale;
     % xlabel
-    plot([x x+xscale], [y1 y1], 'k-', 'LineWidth', opts.LineWidth-1);
-    text(x, y1 - ytxtoffset, ...
+    plot([x x+xscale], [y - 1.2*ytxtoffset y - 1.2*ytxtoffset], ...
+        'k-', 'LineWidth', opts.LineWidth-1);
+    text(x, y - 0.5*ytxtoffset, ...
+        'Activity (spikes/timestep)', ...
+        'FontSize', opts.FontSize);
+    text(x, y - 1.7*ytxtoffset, ...
         [num2str(xscale, '%0.0f') ' spikes/timestep'], ...
         'FontSize', opts.FontSize);
     % ylabel

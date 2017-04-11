@@ -5,7 +5,7 @@ function plotBehavMeanAndVar(D, opts, popts)
     if nargin < 3
         popts = struct();
     end
-    defpopts = struct('width', 6, 'height', 6, 'margin', 0.125, ...
+    defpopts = struct('width', 6, 'height', 4, 'margin', 0.125, ...
         'FontSize', 26, 'LineWidth', 3, 'saveDir', 'data/plots', ...
         'doSave', false);
     popts = tools.setDefaultOptsWhenNecessary(popts, defpopts);
@@ -19,6 +19,7 @@ function plotBehavMeanAndVar(D, opts, popts)
     behNm = opts.behavNm;
     if strcmp(opts.behavNm, 'trial_length')
         behNm = 'acquisition time (normalized)';
+        behNm = 'Acq. time, normalized';
     elseif strcmp(opts.behavNm, 'angErrorAbs')
         behNm = 'Abs. angular cursor error';
     end
@@ -32,7 +33,7 @@ function plotBehavMeanAndVar(D, opts, popts)
     plot([min(xsb(ix)) max(xsb(ix))], [yl(2) yl(2)], ...
         'r-', 'LineWidth', popts.LineWidth);
     xlabel('trial #');
-    ylabel(['Mean of ' behNm]);
+    ylabel(behNm);
     ylim(yl);
     % xlim([min(xs) max(xs)]);
     set(gca, 'YTick', [0 0.5 1.0]);
@@ -40,7 +41,8 @@ function plotBehavMeanAndVar(D, opts, popts)
 
     plot.setPrintSize(gcf, popts);
     if popts.doSave
-        export_fig(gcf, fullfile(popts.saveDir, [dtstr '_mean.pdf']));
+        export_fig(gcf, fullfile(popts.saveDir, ...
+            ['lrnCritMean_' D.datestr '.pdf']));
     end
 
     plot.init(popts.FontSize);
@@ -50,7 +52,7 @@ function plotBehavMeanAndVar(D, opts, popts)
     plot([min(xsb(ix)) max(xsb(ix))], [yl(2) yl(2)], ...
         'r-', 'LineWidth', popts.LineWidth);
     xlabel('trial #');
-    ylabel(['Var of ' behNm]);
+    ylabel(['Var. of ' behNm]);
     ylim(yl);
     % xlim([min(xs) max(xs)]);
     set(gca, 'YTick', [0 0.5 1.0]);
@@ -58,6 +60,7 @@ function plotBehavMeanAndVar(D, opts, popts)
 
     plot.setPrintSize(gcf, popts);
     if popts.doSave
-        export_fig(gcf, fullfile(popts.saveDir, [dtstr '_var.pdf']));
+        export_fig(gcf, fullfile(popts.saveDir, ...
+            ['lrnCritVar_' D.datestr '.pdf']));
     end
 end

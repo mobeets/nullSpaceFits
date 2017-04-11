@@ -4,7 +4,7 @@ function plotSSSEllipseFig(CA, CB, opts)
     end
     defopts = struct('width', 8, 'height', 6, 'margin', 0.125, ...
         'FontSize', 16, 'FontName', 'Helvetica', ...
-        'TinyFontSize', 10, ...
+        'TinyFontSize', 10, 'XRotation', 0, ...
         'doSave', false, 'saveDir', 'data/plots', ...
         'filename', 'SSS_ellipses', 'ext', 'pdf', ...
         'grps', tools.thetaCenters, 'dts', [], ...
@@ -85,8 +85,14 @@ function plotSSSEllipseFig(CA, CB, opts)
             mnkNm = mnks{inds == ii};
             mnkNm = ['Monkey ' mnkNm(1) ' '];
             xc = min([bpA(1,:) bpB(1,:)]);
+            if opts.XRotation == 180
+                xct = xc + 2.5*opts.dstep;
+            else
+                xct = xc;
+            end
             yc = min([bpA(2,:) bpB(2,:)]) - 0.7*opts.dstep;
-            text(xc, yc, mnkNm, 'FontSize', opts.TinyFontSize);
+            text(xct, yc, mnkNm, 'FontSize', opts.TinyFontSize, ...
+                'Rotation', opts.XRotation);
             yl = ylim;
             plot([xc xc] - 0.2*opts.dstep, [yl(1) maxy], 'k-');
         end
@@ -96,7 +102,7 @@ function plotSSSEllipseFig(CA, CB, opts)
     text(xt, yt + opts.dstep + pad, 'Cursor-target angle', 'Rotation', 90, ...
         'FontSize', opts.FontSize);
     text(xt + (numel(dts)/2)*opts.dstep, yt - opts.dstep, 'Sessions', ...
-        'FontSize', opts.FontSize);
+        'FontSize', opts.FontSize, 'Rotation', opts.XRotation);
 
     box off; axis off;
     plot.setPrintSize(fig, opts);

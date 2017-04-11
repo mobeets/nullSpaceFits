@@ -45,7 +45,7 @@ function plotError(errs, nms, opts)
     else
         ymn = yl(1);
     end
-    ylim(yl);
+    ylim([ymn ymx]);
     h = ylabel(opts.ylbl);
     set(h, 'interpreter', 'tex'); % funky bug somehow caused by boxplot
 
@@ -68,6 +68,7 @@ function plotError(errs, nms, opts)
     set(gca, 'LineWidth', opts.LineWidth);
     box off;
     plot.setPrintSize(gcf, opts);
+    ylim([ymn ymx]);
     
     if ~isempty(opts.TextNote)
         xl = xlim; yl = ylim;

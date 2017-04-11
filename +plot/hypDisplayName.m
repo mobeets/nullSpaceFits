@@ -13,6 +13,10 @@ function nm = hypDisplayName(nm, doAbbrev)
             nm = 'Habitual Corrected';
         elseif strcmpi(nm, 'constant-cloud')
             nm = 'Fixed Repertoire';
+        elseif strcmpi(nm, 'int-data')
+            nm = 'Data, first mapping';
+        elseif strcmpi(nm, 'pert-data')
+            nm = 'Data, second mapping';
         end
         nm(1) = upper(nm(1));
     else

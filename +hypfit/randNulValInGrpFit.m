@@ -39,6 +39,10 @@ function [Z, inds] = randNulValInGrpFit(Tr, Te, dec, opts)
             disp(['Corrected ' num2str(n0 - sum(ixOob)) ...
                 ' habitual sample(s) to lie within bounds']);
         end
+        if sum(ixOob) > 0
+            disp([num2str(sum(ixOob)) ' habitual sample(s) ' ...
+                'still out-of-bounds']);
+        end
         if opts.nanIfOutOfBounds
             Z(ixOob,:) = nan;
         end

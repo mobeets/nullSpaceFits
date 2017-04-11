@@ -1,5 +1,5 @@
 function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
-    doSave, doAbbrev, showYLabel)
+    doSave, doAbbrev, showYLabel, showMnkNm)
     if nargin < 3
         mnkNm = '';
     end
@@ -14,6 +14,9 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     end
     if nargin < 7
         showYLabel = true;
+    end
+    if nargin < 8
+        showMnkNm = true; 
     end
     
     % if abbreviated, shorten figure
@@ -77,7 +80,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         wdth = 4;
         ylbl = ['Error in ' lblDispNm];
     end
-    if ~isempty(mnkNm)
+    if ~isempty(mnkNm) && showMnkNm
         mnkTitle = ['Monkey ' mnkNm(1)];
     else
         mnkTitle = '';

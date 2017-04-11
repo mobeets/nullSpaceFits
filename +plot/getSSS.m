@@ -14,7 +14,7 @@ function [errs, C2s, C1s, Ys, dts, hypnms] = getSSS(fitsName, nCenters, inds)
     errs = nan(numel(Fs), numel(grps), numel(Fs(1).fits)+1);
     C1s = cell(numel(Fs), numel(grps));
     C2s = cell(numel(Fs), numel(grps), numel(Fs(1).fits)+1);
-    Ys = cell(numel(Fs(1).fits)+1, 1);
+    Ys = cell(numel(Fs(1).fits)+2, 1); % last two are data
     for ii = 1:numel(Fs)
         F = Fs(ii);
         Y1 = F.train.latents;
@@ -103,6 +103,7 @@ function [errs, C2s, C1s, Ys, dts, hypnms] = getSSS(fitsName, nCenters, inds)
 %             errs(ii,jj,end) = err_bootstrap(Y1(ix1,:)*SSS, ...
 %                 Y2(ix2,:)*SSS, errFcn, rs1, rs2);
             if ii == inds(1) && jj == inds(2)
+                Ys{end-1} = Y1(ix1,:)*SSS;
                 Ys{end} = Y2(ix2,:)*SSS;
             end
         end

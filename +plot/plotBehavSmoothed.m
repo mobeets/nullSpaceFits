@@ -2,8 +2,8 @@ function plotBehavSmoothed(D, opts)
     if nargin < 2
         opts = struct();
     end
-    defopts = struct('width', 4, 'height', 6, 'margin', 0.125, ...
-        'LineWidth', 3, 'FontSize', 22, ...
+    defopts = struct('width', 6, 'height', 6, 'margin', 0.125, ...
+        'LineWidth', 3, 'FontSize', 26, ...
         'behavNm', 'isCorrect', 'binSz', 150, ...
         'saveDir', 'data/plots', 'doSave', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
@@ -50,6 +50,7 @@ function plotBehavSmoothed(D, opts)
         ylabel('Percent correct');
         yl = ylim;
         ylim([ymn 100]);
+        set(gca, 'YTick', ymn:10:100);
     end
     set(gca, 'Ticklength', [0 0]);
     set(gca, 'LineWidth', opts.LineWidth);
@@ -57,6 +58,6 @@ function plotBehavSmoothed(D, opts)
     plot.setPrintSize(gcf, opts);
     if opts.doSave
         export_fig(gcf, fullfile(opts.saveDir, ...
-            ['lrnByTrial_' opts.behavNm '_' dtstr '.pdf']));
+            ['lrnByTrial_' opts.behavNm '_' D.datestr '.pdf']));
     end
 end

@@ -132,37 +132,16 @@ function hyps = getDefaultHyps(hnms, grpName)
     % constant-cloud
     clear hyp;
     hyp.name = 'constant-cloud';
-    hyp.opts = struct('kNN', nan);
+    hyp.opts = struct('kNN', nan, 'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.closestRowValFit;
     hyps = [hyps hyp];
     
-%     % constant-cloud, slow speeds
-%     clear hyp;
-%     hyp.name = 'constant-cloud-slow';
-%     hyp.opts = struct('kNN', nan, 'filterSpeed', true);
-%     hyp.fitFcn = @hypfit.closestRowValFit;
-%     hyps = [hyps hyp];
-%     
-%     % constant-cloud, fast speeds
-%     clear hyp;
-%     hyp.name = 'constant-cloud-fast';
-%     hyp.opts = struct('kNN', nan, 'filterSpeed', false);
-%     hyp.fitFcn = @hypfit.closestRowValFit;
-%     hyps = [hyps hyp];
-
-%     % constant-cloud-vel-slow
-%     clear hyp;
-%     hyp.name = 'constant-cloud-vel-slow';
-%     hyp.opts = struct('kNN', nan, 'velFilter', 10', 'velLessThan', true);
-%     hyp.fitFcn = @hypfit.closestRowValFit;
-%     hyps = [hyps hyp];
-    
-%     % constant-cloud-swap
-%     clear hyp;
-%     hyp.name = 'constant-cloud-swap';
-%     hyp.opts = struct('kNN', nan, 'swap', true);
-%     hyp.fitFcn = @hypfit.closestRowValFit;
-%     hyps = [hyps hyp];
+    % constant-cloud-200
+    clear hyp;
+    hyp.name = 'constant-cloud-50';
+    hyp.opts = struct('kNN', 50, 'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.closestRowValFit;
+    hyps = [hyps hyp];
     
     % filter out unwanted hyps
     if ~isempty(hnms)

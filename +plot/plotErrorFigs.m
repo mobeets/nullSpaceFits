@@ -1,42 +1,34 @@
 
 doSave = false;
 
-% fitName = 'Int2Int_nIme';
-% fitName = 'Int2Pert_nIme';
+fitName = 'Int2Pert_nIme';
 % fitName = 'Pert2Int_yIme';
 % fitName = 'Int2Pert_yIme';
-fitName = 'Int2Pert_yIme_v2';
 
-if strcmpi(fitName, 'Int2Int_nIme')
-    hypsToShow = {'minimum', 'baseline', 'best-mean', ...
-        'uncontrolled-uniform'};
-    errNms = {'histError'};
-else
-    hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
-        'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
-    errNms = {'meanError', 'covError', 'histError'};
-end
+hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
+    'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
+
+hypsToShow = {};%'constant-cloud-50', 'constant-cloud'};
+errNms = {'meanError', 'covError', 'histError'};
 % mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
+% errNms = {'covError'};
 
-% fitName = 'tmmmmm2';
-% errNms = {'histError'};
-% hypsToShow = {'minimum', 'best-mean', 'baseline'};
-% hypsToShow = {'uncontrolled-empirical', 'constant-cloud', 'habitual-corrected'};
-% hypsToShow = {};
 close all;
+showYLabel = true;
+showMnkNm = false;
+doAbbrev = false;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
-        if strcmpi(errNms{ii}, 'covError') || ...
-                strcmpi(fitName, 'Int2Int_nIme')
+        if strcmpi(errNms{ii}, 'histError')
+            showMnkNm = true;
+        else
+            showMnkNm = false;
+        end
+        if strcmpi(mnkNms{jj}, 'Nelson')
             doAbbrev = false;
         else
             doAbbrev = true;
-        end
-        if strcmpi(mnkNms{jj}, 'Jeffy')
-            showYLabel = true;
-        else
-            showYLabel = false;
         end
         if strcmpi(mnkNms{jj}, 'ALL')
             mnkNm = '';
@@ -46,6 +38,6 @@ for ii = 1:numel(errNms)
             mnkNm = mnkNms{jj};
         end
         errs = plot.plotErrorFig(fitName, errNms{ii}, mnkNm, ...
-            hypsToShow, doSave, doAbbrev, showYLabel);
+            hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm);
     end
 end
