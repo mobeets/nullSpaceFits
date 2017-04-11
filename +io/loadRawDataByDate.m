@@ -29,7 +29,9 @@ function D = loadRawDataByDate(dtstr)
     load(fullfile(dr, fs{2}));
     if strcmp(mnkNm, 'Nelson')
         tm = load(fullfile(dr, fs{3}));
-        D.kalmanInitParamsPert = tm.kalmanInitParams;
+        D.kalmanInitParamsPert = kalmanInitParams;
+        kalmanInitParams = tm.kalmanInitParams;
+%         D.kalmanInitParamsInt = tm.kalmanInitParams;
     end
 
     D.datestr = dtstr;

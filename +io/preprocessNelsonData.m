@@ -7,7 +7,7 @@ function D = preprocessNelsonData(D)
     end
     if ~isfield(D.simpleData.shuffles, 'rawSpikes')
         D.simpleData.shuffles.rawSpikes = addRawSpikesShuffleDecoder(D);
-    end    
+    end
 end
 
 function dec = addNullDecoder(D)
