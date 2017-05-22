@@ -1,18 +1,20 @@
 
 doSave = false;
 
-fitName = 'Int2Pert_nIme_v2';
+% fitName = 'Int2Pert_nIme_v3';
 % fitName = 'Pert2Int_yIme';
-% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme';
 
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
 
-hypsToShow = {'habitual-corrected', 'constant-cloud'};
+% hypsToShow = {'habitual-corrected', 'constant-cloud'};
+% hypsToShow = {'minimum'};
+
 errNms = {'meanError', 'covError', 'histError'};
 % mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
-errNms = {'covError'};
+% errNms = {'covError'};
 
 % close all;
 showYLabel = true;
@@ -21,7 +23,7 @@ doAbbrev = false;
 for ii = 1:numel(errNms)
     for jj = 1:numel(mnkNms)
         if strcmpi(errNms{ii}, 'histError')
-            showMnkNm = true;
+            showMnkNm = false;
         else
             showMnkNm = false;
         end

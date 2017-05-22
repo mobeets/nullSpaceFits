@@ -2,6 +2,8 @@ function D = loadRawDataByDate(dtstr, tryToLoadExisting)
     if nargin < 2
         tryToLoadExisting = false;
     end
+    
+    % try to load existing, if requested
     DATADIR = getpref('factorSpace', 'data_directory');
     fnm = fullfile(DATADIR, 'sessions', 'checkpoints', [dtstr '.mat']);
     if tryToLoadExisting && ~exist(fnm, 'file')
@@ -13,10 +15,11 @@ function D = loadRawDataByDate(dtstr, tryToLoadExisting)
         return;
     end
 
+    % find raw files
     mnkNm = '';
     mnkNms = io.getMonkeys();    
     for ii = 1:numel(mnkNms)
-        [fs, dr] = getFolders(fullfile(DATADIR, 'raw'), ...
+        [fs, dr] = getFolders(fullfile(DATADIR, 'sessions', 'raw'), ...
             mnkNms{ii}, dtstr);
         if numel(fs) > 0
             mnkNm = mnkNms{ii};
@@ -24,6 +27,7 @@ function D = loadRawDataByDate(dtstr, tryToLoadExisting)
         end
     end
     
+    % load and verify files
     if numel(fs) == 0
         error('Date not found.');
         return;
@@ -46,6 +50,7 @@ function D = loadRawDataByDate(dtstr, tryToLoadExisting)
 %         D.kalmanInitParamsInt = tm.kalmanInitParams;
     end
 
+    % combine files and make trials
     D.datestr = dtstr;
     D.kalmanInitParams = kalmanInitParams;
     D.simpleData = simpleData;
@@ -63,17 +68,3 @@ function [fldrs, dr] = getFolders(datadir, mnkname, dtstr)
     fs0 = dir(fullfile(dr, '*.mat'));
     fldrs = {fs0(~[fs0.isdir]).name};
 end
-
-%%
-
-% DATADIR = getpref('factorSpace', 'data_directory');
-% mnkNm = 'Lincoln';
-% basedir = fullfile(DATADIR, mnkNm);
-% drs = dir(fullfile(basedir, '*simpleData*'));
-% tmp = arrayfun(@(ii) strsplit(drs(ii).name, 'simple'), ...
-%     1:numel(drs), 'uni', 0);
-% dtc = cellfun(@(d) d{1}, tmp, 'uni', 0);
-% for ii = 1:numel(dtc)
-%     drnm = fullfile(basedir, dtc{ii})
-%     mkdir(drnm);
-% end

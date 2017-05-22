@@ -3,64 +3,52 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
         opts = struct();
     end
     defopts = struct('clr1', [0 0 0], 'clr2', [0.5 0.5 0.5], ...
-        'width', 3, 'height', 3, 'margin', 0.125, ...
+        'width', 3, 'height', 2.5, 'margin', 0.125, ...
         'FontSize', 16, 'title', '', ...
-        'xMult', 7, 'yMult', 0.6, ...
+        'xMult', 7, 'yMult', 0.6, 'dimScale', 1.0, ...
         'LineWidth', 3, 'LineStyle', 'k-', 'ymax', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
+    
+%     xs = xs*opts.dimScale;
 
     % plot hists
-    plot.init;
+    plot.init(opts.FontSize);
     plotSingleHist(xs, hs1, ...
         opts.LineWidth, opts.clr1, opts.LineStyle);
     plotSingleHist(xs, hs2, ...
         opts.LineWidth, opts.clr2, opts.LineStyle);
-
-    % manage axes, set scale
-    if ~isnan(opts.ymax)
-        yl = ylim;
-        ylim([yl(1) opts.ymax]);
-    end
+    
+    % manage x axis
     xscale = opts.xMult*mode(diff(xs));
-    yscale = opts.yMult*opts.ymax;
     xmrg = xscale/5;
     minx = min(xs) - xmrg;
     maxx = max(xs);
     xlim([minx maxx]);
-    ymrg = 0.4*yscale;
-    yl = ylim; ylim([yl(1)-ymrg yl(2)]);
 
-    % plot scale bars
-    x = xlim; x1 = x(1);
-    y = ylim; y1 = y(1);
-    x = min(xs); y = 0;
-    xtxtoffset = 0.2*xscale;
-    ytxtoffset = 0.2*yscale;
-    % xlabel
-    plot([x x+xscale], [y - 1.2*ytxtoffset y - 1.2*ytxtoffset], ...
-        'k-', 'LineWidth', opts.LineWidth-1);
-    text(x, y - 0.5*ytxtoffset, ...
-        'Activity (spikes/timestep)', ...
-        'FontSize', opts.FontSize);
-    text(x, y - 1.7*ytxtoffset, ...
-        [num2str(xscale, '%0.0f') ' spikes/timestep'], ...
-        'FontSize', opts.FontSize);
-    % ylabel
-    plot([x1 x1], [y y+yscale], 'k-', 'LineWidth', opts.LineWidth-1);
-    text(x1 - xtxtoffset, y, ...
-        'Frequency', 'Rotation', 90, ...
-        'FontSize', opts.FontSize);
-
-    % plot title
-    if ~isempty(opts.title)
-        xt = min(xs) + 0.2*range(xs);
-        yl = ylim;
-        yt = yl(2) - 2*ytxtoffset;
-        text(xt, yt, opts.title, 'FontSize', opts.FontSize, ...
-            'Color', [0.5 0.5 0.5]);
+    text(opts.lbl1(1), opts.lbl1(2), 'Data', ...
+        'FontSize', opts.FontSize, 'Color', opts.clr1);    
+    text(opts.lbl2(1), opts.lbl2(2), 'Predicted', ...
+        'FontSize', opts.FontSize, 'Color', opts.clr2);
+    
+    title(opts.title, 'FontSize', opts.FontSize, ...
+        'Color', [0.5 0.5 0.5], 'FontWeight', 'Normal');
+    
+    if ~isnan(opts.ymax)
+        ylim([0 opts.ymax]);
     end
+    
+    xtick = xscale;%ceil(xscale);
+    set(gca, 'XTick', [-2*xtick 0 2*xtick]);
+    set(gca, 'XTickLabel', round(opts.dimScale*[-2*xtick 0 2*xtick]/10)*10);
+    xlabel('Spikes/s, rel. to baseline', 'FontSize', opts.FontSize);
+    
+    set(gca, 'YTick', []);
+    ylabel('# Occurrences', 'FontSize', opts.FontSize);
+    
+    set(gca, 'TickDir', 'out');
+    set(gca, 'LineWidth', opts.LineWidth-1);
 
-    axis off;
+%     axis off;
     box off;
     plot.setPrintSize(gcf, opts);
 

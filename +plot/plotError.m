@@ -7,7 +7,7 @@ function plotError(errs, nms, opts)
         'doSave', false, 'saveDir', 'data/plots', 'filename', 'avgErr', ...
         'ext', 'pdf', 'title', '', 'clrs', [], 'doBox', true, ...
         'ylbl', 'Avg. error', 'starBaseName', '', ...
-        'showZeroBoundary', false, ...
+        'showZeroBoundary', false, 'nSEs', 1, ...
         'LineWidth', 2, 'ymin', 0, 'ymax', nan, 'TextNote', '');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
@@ -20,7 +20,7 @@ function plotError(errs, nms, opts)
     if opts.doBox
         makeBoxPlot(errs, opts.clrs, opts.LineWidth);
     else
-        makeBarPlot(errs, opts.clrs, opts.LineWidth);
+        makeBarPlot(errs, opts.clrs, opts.LineWidth, opts.nSEs);
     end
     
     % format x-axis
@@ -105,9 +105,9 @@ function makeBoxPlot(pts, clrs, lw)
     set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
 end
 
-function makeBarPlot(pts, clrs, lw)
+function makeBarPlot(pts, clrs, lw, nSEs)
     ms = mean(pts);
-    bs = 2*std(pts)/sqrt(size(pts,1));
+    bs = nSEs*std(pts)/sqrt(size(pts,1));
     for ii = 1:size(pts,2)        
         bar(ii, ms(ii), 'EdgeColor', 'k', 'FaceColor', clrs(ii,:), ...
             'LineWidth', lw);

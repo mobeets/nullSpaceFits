@@ -6,10 +6,10 @@ doOverwrite = false;
 
 %%
 
-saveDir = 'Int2Pert_yIme_v2';
+saveDir = 'Int2Pert_yIme_v3';
 grpName = 'thetaActualImeGrps';
 opts = struct('useIme', true, 'trainBlk', 1, 'testBlk', 2);
-hnms = {};
+hnms = {'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
 pred.fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, doOverwrite);
 
 %%
@@ -18,7 +18,7 @@ doOverwrite = true;
 saveDir = 'Int2Pert_nIme_v3';
 grpName = 'thetaActualGrps';
 opts = struct('useIme', false, 'trainBlk', 1, 'testBlk', 2);
-hnms = {'habitual-corrected', 'constant-cloud'};
+hnms = {'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
 % hnms = {};
 pred.fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, doOverwrite);
 

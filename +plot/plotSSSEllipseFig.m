@@ -48,7 +48,10 @@ function plotSSSEllipseFig(CA, CB, opts)
             maxy = max([bpA(2,:) bpB(2,:) maxy]);
 
             plot(bpA(1,:), bpA(2,:), '-', 'Color', opts.clrs(1,:));
-            plot(bpB(1,:), bpB(2,:), '-', 'Color', opts.clrs(2,:));
+%             plot(bpB(1,:), bpB(2,:), '-', 'Color', opts.clrs(2,:));
+            h = patch(bpB(1,:), bpB(2,:), opts.clrs(2,:));
+            h.FaceAlpha = 0.5;
+            h.EdgeColor = 'none';
             
             if ii == 1 && ~isempty(opts.grps)
                 % label cursor directions

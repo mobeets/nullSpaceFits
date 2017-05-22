@@ -86,7 +86,7 @@ function [ths_ime, angErr_ime, thsact_ime, prog_ime] = addImeStats(...
 %     thsact_ime = [thsact_ime; nan]; % for last time step
     thsact_ime = mod(thsact_ime, 360);
     
-    prog_ime = diag(movVec*vec2trg')./sqrt(sum(vec2trg.^2,2));
+    prog_ime = nan(size(thsact_ime));%diag(movVec*vec2trg')./sqrt(sum(vec2trg.^2,2));
 
     % thsact_ime needs to change at the or of the below;
     % (because time and trial changes have already been filtered out,

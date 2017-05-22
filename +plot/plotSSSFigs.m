@@ -1,7 +1,7 @@
 %% load
 
-% fitName = 'Int2Pert_yIme';
-exInds = [24 4]; % from exInd, below
+fitName = 'Int2Pert_yIme';
+exInds = [14 1]; % from exInd, below
 [errs, C2s, C1s, Ys, dts, hypnms] = plot.getSSS(fitName, 8, exInds);
 
 %% plot avgs
@@ -14,7 +14,7 @@ mnkNms = {};
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud', ...
     'data'};
-hypsToShow = hypnms;
+% hypsToShow = hypnms;
 cerrs = squeeze(nanmean(log(errs),2));
 dtsc = dts(~all(isnan(cerrs),2));
 cerrs = cerrs(~all(isnan(cerrs),2),:); % drop nans if all in session
@@ -31,19 +31,21 @@ plot.plotSSSErrorFig(cerrs, hypnms, dtsc, mnkNms, hypsToShow, doSave, false);
 
 doSave = true;
 
-hypClrs = [plot.hypColor(''); plot.hypColor('data')];
+hypClrs = [plot.hypColor('data'); [0.6 0.6 0.6]];
+% hypClrs = [plot.hypColor('data'); [17, 135, 48]/255];
 opts = struct('clrs', hypClrs, 'doSave', doSave, 'indsToMark', exInds, ...
-    'width', 13, 'height', 3, 'dstep', 6, 'XRotation', 180, ...
+    'width', 13, 'height', 3, 'dstep', 6, 'XRotation', 0, ...
     'dts', cellfun(@str2double, dts));
 plot.plotSSSEllipseFig(C1s, C2s(:,:,end), opts);
 
 %% plot example ellipse - data
 
-doSave = false;
-hypClrs = [plot.hypColor(''); plot.hypColor('data')];
+doSave = true;
+hypClrs = [plot.hypColor('data'); [0.6 0.6 0.6]];
+% hypClrs = [plot.hypColor('data'); [17, 135, 48]/255];
 
-hypNmA = 'When output-potent'; %plot.hypDisplayName('int-data');
-hypNmB = 'When output-null'; %plot.hypDisplayName('pert-data');
+hypNmA = 'Output-potent'; %plot.hypDisplayName('int-data');
+hypNmB = 'Output-null'; %plot.hypDisplayName('pert-data');
 opts = struct('clrs', hypClrs, 'doSave', doSave, ...
     'TextNoteA', hypNmA, 'TextNoteB', hypNmB);
 plot.plotSSSEllipseSingle(Ys{end-1}, Ys{end}, ...

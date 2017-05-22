@@ -3,12 +3,16 @@ function plotHistFigs(fitName, dt, hypNms, opts)
         opts = struct();
     end
     defopts = struct('doSave', false, 'saveDir', 'data/plots', ...
-        'saveExt', 'pdf', 'ymax', nan, ...
+        'saveExt', 'pdf', 'ymax', nan, 'rowStartInd', nan, ...
         'doPca', true, 'grpInds', 1:8, 'dimInds', 1:3);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
     % load output-null activity
-    [S,F] = plot.getScoresAndFits(fitName, {dt});    
+    [S,F] = plot.getScoresAndFits(fitName, {dt});
+    Sa = plot.getScoresAndFits(fitName);
+    errs = plot.getScoreArray(Sa, 'histError');
+    errs = mean(errs(~any(isinf(errs),2),:));
+    
     NB = F.test.NB;
     Y0 = F.test.latents;
     mu = nanmean(Y0*NB);
@@ -18,12 +22,24 @@ function plotHistFigs(fitName, dt, hypNms, opts)
         coeff = eye(size(mu,2));
     end
     
+    % find scales of each axis based on how many neurons contribute
+%     scs = nan(size(coeff,2),1);
+%     [~, beta] = tools.convertRawSpikesToRawLatents(F.dec, F.test.spikes');
+%     for ii = 1:size(coeff,2)
+%         v = beta'*NB*coeff(:,ii);
+%         scs(ii) = tools.lengthOfHypercubeIntersector(v);
+%     end
+%     opts.dimScales = (1000/45)./scs; % convert to sps/sec
+    opts.dimScale = 1000/45;
+    
     ix = ~isnan(S.gs);
     YN0 = bsxfun(@plus, bsxfun(@minus, Y0(ix,:)*NB, mu)*coeff, mu);
-    YNc = cell(numel(hypNms),1);    
+    YNc = cell(numel(hypNms),1); 
+    err = nan(numel(hypNms),1);
     for ii = 1:numel(hypNms)
         Yc = F.fits(strcmp({F.fits.name}, hypNms{ii})).latents(ix,:);
         YNc{ii} = bsxfun(@plus, bsxfun(@minus, Yc*NB, mu)*coeff, mu);
+        err(ii) = errs(strcmp({S(1).scores.name}, hypNms{ii}));
     end
 
     useDataOnlyForRange = false; % false -> use data and preds to set range
@@ -38,19 +54,20 @@ function plotHistFigs(fitName, dt, hypNms, opts)
     if numel(opts.grpInds) == 1 && numel(opts.dimInds) == 1
         plotSingleton(H0, Hs, xs, hypNms, fitName, opts);
     else
-        plotGrid(H0, Hs, xs, hypNms, fitName, S, opts);
+        plotGrid(H0, Hs, xs, hypNms, fitName, err, opts);
     end
 end
 
-function plotGrid(H0, Hs, xs, hypNms, fitName, S, opts)
+function plotGrid(H0, Hs, xs, hypNms, fitName, err, opts)
 
     % plot hists
     opts.clr1 = plot.hypColor('data');
     for jj = 1:numel(Hs)        
         Hc = Hs{jj};
         opts.clr2 = plot.hypColor(hypNms{jj});
-        ix = strcmp(hypNms{jj}, {S.scores.name});
-        opts.histError = 100*S.scores(ix).histError;
+%         ix = strcmp(hypNms{jj}, {S.scores.name});
+%         opts.histError = 100*S.scores(ix).histError;
+        opts.histError = 100*err(jj);
         plot.plotGridHistFig(H0, Hc, xs, opts);
         if opts.doSave
             fnm = ['margHist_' hypNms{jj} '_' fitName];
@@ -64,10 +81,30 @@ function plotSingleton(hs1, Hs, xs, hypNms, fitName, opts)
     
     % plot and save all hists
     opts.clr1 = plot.hypColor('data');
-    opts.title = ['Output-null dim. ' num2str(opts.dimInds)];
+    opts.title = ['Output-null activity, dim. ' num2str(opts.dimInds)];
+%     opts.dimScale = opts.dimScales(opts.dimInds);
     for ii = 1:numel(Hs)
         hs2 = Hs{ii};
         opts.clr2 = plot.hypColor(hypNms{ii});
+        if strcmpi(hypNms{ii}, 'habitual-corrected')
+            opts.lbl1 = [0.6 0.2];
+            opts.lbl2 = [-1.36 0.3];
+        elseif strcmpi(hypNms{ii}, 'constant-cloud')
+            opts.lbl1 = [0.6 0.2];
+            opts.lbl2 = [-1.5 0.27];
+        elseif strcmpi(hypNms{ii}, 'minimum')
+            opts.lbl1 = [0.6 0.2];
+            opts.lbl2 = [-7.5 0.27];
+        elseif strcmpi(hypNms{ii}, 'best-mean')
+            opts.lbl1 = [3 0.1];
+            opts.lbl2 = [1 0.27];
+        elseif strcmpi(hypNms{ii}, 'uncontrolled-uniform')
+            opts.lbl1 = [0.0 0.2];
+            opts.lbl2 = [5 0.15];
+        elseif strcmpi(hypNms{ii}, 'uncontrolled-empirical')
+            opts.lbl1 = [0.6 0.2];
+            opts.lbl2 = [4.5 0.1];
+        end
         plot.plotSingleHistFig(hs1, hs2, xs, opts);        
         if opts.doSave
             fnm = ['margHistSingle_' hypNms{ii} '_' fitName];

@@ -17,11 +17,6 @@ function trials = filterTrialsByParams(trials, params)
     if params.REMOVE_INCORRECTS
         ix = ix & trials.isCorrect;
     end
-    if params.REMOVE_SPEED_TAILS % remove cursor velocities too fast/slow
-        vs = prctile(trials.spd, [10 90]);
-        ix = ix & (trials.spd >= vs(1) & trials.spd <= vs(2));
-        error('fdsafdsaf');
-    end
     trials = io.filterTrialsByIdx(trials, ix);
     
     % filter out shuffle and washout trials prior to 'START_' params

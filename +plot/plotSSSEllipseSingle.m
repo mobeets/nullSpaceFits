@@ -12,6 +12,10 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     fig = plot.init(opts.FontSize, opts.FontName);
     
+    % swap axes
+%     YA(:,2) = -YA(:,2);
+%     YB(:,2) = -YB(:,2);
+
     % mean-center data, because we just want to compare variance
     muA = mean(YA);
     muB = mean(YB);
@@ -21,21 +25,21 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     muB = mean(YB);
     
     [bpA, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CA);
-    [bpB, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CB);
+    [bpB, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CB);    
 
-    plot(YA(:,1), YA(:,2), '.', 'Color', opts.clrs(1,:));
-    plot(YB(:,1), YB(:,2), '.', 'Color', opts.clrs(2,:));
-    % plot(muA(1), muB(2), '.', 'Color', opts.clrs(1,:), ...
-    %     'MarkerSize', 40);
-    % plot(muB(1), muB(2), '.', 'Color', opts.clrs(2,:), ...
-    %     'MarkerSize', 40);
-
+%     plot(YA(:,1), YA(:,2), 'o', 'Color', opts.clrs(1,:), 'MarkerSize', 4);
+    plot(YA(:,1), YA(:,2), '.', 'Color', opts.clrs(1,:), 'MarkerSize', 8);
+    plot(YB(:,1), YB(:,2), '.', 'Color', opts.clrs(2,:), 'MarkerSize', 8);
+    
     bpA(1,:) = bpA(1,:) + muA(1);
     bpA(2,:) = bpA(2,:) + muA(2);
     bpB(1,:) = bpB(1,:) + muB(1);
     bpB(2,:) = bpB(2,:) + muB(2);
     plot(bpA(1,:), bpA(2,:), '-', 'Color', opts.clrs(1,:), 'LineWidth', 2);
-    plot(bpB(1,:), bpB(2,:), '-', 'Color', opts.clrs(2,:), 'LineWidth', 2);
+%     plot(bpB(1,:), bpB(2,:), '-', 'Color', opts.clrs(2,:), 'LineWidth', 2);
+    h = patch(bpB(1,:), bpB(2,:), opts.clrs(2,:));
+    h.FaceAlpha = 0.5;
+    h.EdgeColor = 'none';
 
     pad = 0.5;
     minx = min([bpA(1,:) bpB(1,:)]);
@@ -45,8 +49,10 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     xlim([minx-pad maxx+pad]);
     ylim([miny-pad maxy+pad]);
 
-    xlabel({'Mean-centered activity,', 'dim. 1 (spikes/timestep)'});
-    ylabel({'Mean-centered activity,', 'dim. 2 (spikes/timestep)'});
+%     xlabel({'Mean-centered activity,', 'dim. 1 (spikes/s)'});
+%     ylabel({'Mean-centered activity,', 'dim. 2 (spikes/s)'});
+    xlabel({'Activity, dim. 1', '(spikes/s, rel. to mean)'});
+    ylabel({'Activity, dim. 2', '(spikes/s, rel. to mean)'});
     set(gca, 'XTick', [-1.5 0 1.5]);
     set(gca, 'YTick', [-1.5 0 1.5]);
     set(gca, 'TickDir', 'out');

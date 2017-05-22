@@ -1,15 +1,24 @@
-function plotBehavSmoothed(D, opts)
+function pts = plotBehavSmoothed(D, opts)
     if nargin < 2
         opts = struct();
     end
     defopts = struct('width', 6, 'height', 6, 'margin', 0.125, ...
-        'LineWidth', 3, 'FontSize', 26, ...
-        'behavNm', 'isCorrect', 'binSz', 150, ...
-        'saveDir', 'data/plots', 'doSave', false);
+        'LineWidth', 3, 'FontSize', 26, 'showWashout', false, ...
+        'behavNm', 'isCorrect', 'binSz', 150, 'doPlot', true, ...
+        'saveDir', 'data/plots/behav', 'doSave', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
-    plot.init(opts.FontSize);
-    for ii = 1:2
+    if opts.doPlot
+        plot.init(opts.FontSize);
+    end
+    if opts.showWashout
+        maxbind = 3;
+    else
+        maxbind = 2;
+    end
+    
+    pts = cell(maxbind,2);
+    for ii = 1:maxbind
         B = D.blocks(ii);
         xs = B.trial_index;
         ys = B.(opts.behavNm);
@@ -28,18 +37,31 @@ function plotBehavSmoothed(D, opts)
         if strcmp(opts.behavNm, 'trial_length')
             ysb = (ysb*45)/1000; % convert to seconds
         end
-
-        inds = 2:(numel(ysb)-1); % keep it from looking jumpy    
+        pts{ii,1} = xsb;
+        pts{ii,2} = ysb;
+        if ~opts.doPlot
+            continue;
+        end
+        
+        inds = 2:(numel(ysb)-1); % keep it from looking jumpy
+        if ii == 3
+            inds = 1:numel(ysb);
+            inds = inds >= 0.3*range(inds);
+        end
         plot(xsb(inds), ysb(inds), '-', 'LineWidth', opts.LineWidth, ...
-            'Color', 'k');
+            'Color', 'k');        
 
-        if ii == 2
+        % show dotted line when mapping changes
+        if ii >= 2
             xmn = min(xsb);
             yl = ylim;
             yl(1) = ymn;
             yl(2) = 1.05*yl(2);
             plot([xmn xmn], yl, 'k--', 'LineWidth', 2);
         end
+    end
+    if ~opts.doPlot
+        return;
     end
 
     xlabel('Trial #');
