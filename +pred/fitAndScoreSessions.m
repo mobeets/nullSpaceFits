@@ -29,6 +29,10 @@ function fitAndScoreSessions(saveDir, grpName, opts, hnms, dts, ...
             disp(['Fitting ' dts{ii} '...']);
             [F,~] = pred.fitSession(dts{ii}, hyps, grpName, opts);
             S = score.scoreAll(F, grpName); % score each hyp
+            disp('---------');
+            {S.scores.name}
+            [S.scores.histError]
+            disp('---------');
             toc;
         catch exception
             msgText = getReport(exception, 'basic'); % no stack trace

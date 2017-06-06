@@ -14,7 +14,7 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
     
     % first, find best mean
     mu = findBestMean(Z1, Tr.NB, Tr.(opts.grpName), ...
-        0, 1.2*max(Tr.spikes));
+        0, 1.2*max(Tr.spikes));    
 
     % next, predict this mean as constant in NB
     Zr = Z2*(RB2*RB2');    

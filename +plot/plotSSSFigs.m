@@ -1,8 +1,8 @@
 %% load
 
-fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_v4';
 exInds = [14 1]; % from exInd, below
-[errs, C2s, C1s, Ys, dts, hypnms] = plot.getSSS(fitName, 8, exInds);
+[errs, C2s, C1s, Ys, dts, hypnms, es] = plot.getSSS(fitName, 8, exInds);
 
 %% plot avgs
 

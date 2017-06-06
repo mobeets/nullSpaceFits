@@ -23,18 +23,19 @@ function [isOutOfBoundsFcn, whereOutOfBounds] = boundsFcn(Y, kind, dec, inSpikes
         isOutOfBoundsFcn = @(z) mean(arrayfun(@(ii) ...
             all(z < Y(ii,:)) | all(z > Y(ii,:)), 1:size(Y,1))) > thresh;
     elseif strcmpi(kind, 'spikes')
-        minSps = 0;
+        minSps = 0*mxs;
         maxSps = 1.5*mxs;
         
         if inSpikes
             % in spike space already
-            whereOutOfBounds = @(u) round(u) < minSps | round(u) > maxSps;
+            whereOutOfBounds = @(u) bsxfun(@lt, round(u), minSps) | ...
+                bsxfun(@gt, round(u), maxSps);
             isOutOfBoundsFcn = @(u) any(whereOutOfBounds(u),2);
             return;
         end
 
-%         whereOutOfBounds = @(u) u < minSps | u > maxSps;
-        whereOutOfBounds = @(u) u < minSps | bsxfun(@gt, u, maxSps);
+        whereOutOfBounds = @(u) bsxfun(@lt, u, minSps) | ...
+            bsxfun(@gt, u, maxSps);
         isOutOfBoundsFcn = @(z) any(whereOutOfBounds(...
             tools.latentsToSpikes(z, dec, false, true)),2);
 

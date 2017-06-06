@@ -31,7 +31,10 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     elseif strcmpi(opts.minType, 'best')
         assert(opts.pNorm == 2, 'best-mean assumed to use L2 norm');
         assert(~opts.fitInLatent);
-        mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName));
+%         mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName));
+        mu = findBestNeuronMean(Tr.latents, ...
+            Te.NB, Te.RB, Tr.(opts.grpName), dec, ...
+            0.1*max(Tr.spikes));
         out.bestMean = mu;
         if any(mu < 0)
             warning(['Best mean has negative rates: ' num2str(mu)]);

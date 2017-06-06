@@ -1,6 +1,6 @@
 function dts = getDatesInDir(baseDir)
     if nargin < 2
-        baseDir = 'data/preprocessed';
+        baseDir = 'data/sessions/preprocessed';
     end
     ds = dir(baseDir); ds = ds(~[ds.isdir]); ds = {ds.name};
     dts = cellfun(@(d) strrep(d, '.mat', ''), ds, 'uni', 0);

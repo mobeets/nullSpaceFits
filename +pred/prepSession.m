@@ -26,8 +26,8 @@ function D = prepSession(D, opts)
     
     % verify
     dec = D.simpleData.nullDecoder;
-    isOk1 = pred.everythingIsGonnaBeOkay(D.train, dec, opts.useIme);
-    isOk2 = pred.everythingIsGonnaBeOkay(D.test, dec, opts.useIme);
+    isOk1 = io.everythingIsGonnaBeOkay(D.train, dec, opts.useIme);
+    isOk2 = io.everythingIsGonnaBeOkay(D.test, dec, opts.useIme);
     if ~isOk1 || ~isOk2
         error(['Something is not right with ' D.datestr]);
     end
@@ -58,6 +58,7 @@ function C = prepToFit(B, ix, blkInd, opts)
     % cursor-target info
     ths = B.(opts.thetaNm);
     C.thetas = ths(ix,:);
+    C.target = B.target(ix,:);
     
     % velocity info
     vels = B.(opts.velNm);

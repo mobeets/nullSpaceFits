@@ -1,17 +1,16 @@
 
 doSave = false;
 dt = '20131205';
-fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_v4';
 
 hypsToShow = {'minimum' 'best-mean', 'uncontrolled-uniform', ...
         'uncontrolled-empirical', 'habitual-corrected', ...
         'constant-cloud'};
-% hypsToShow = {'habitual-corrected', 'constant-cloud', 'minimum'};
 
 %% plot grid of hists
 
-% close all;
-hypsToShow = {'constant-cloud', 'habitual-corrected'};
+close all;
+% hypsToShow = {'constant-cloud', 'habitual-corrected'};
 % doSave = true;
 opts = struct('grpInds', 1:8, 'dimInds', 1:3, 'doSave', doSave, ...
     'doPca', true);
@@ -20,8 +19,8 @@ plot.plotHistFigs(fitName, dt, hypsToShow, opts);
 
 %% plot singleton hists
 
-% close all;
-hypsToShow = {'constant-cloud'};
+close all;
+% hypsToShow = {'constant-cloud'};
 % doSave = true;
 opts = struct('grpInds', 1, 'dimInds', 1, 'doSave', doSave, 'doPca', true);
 opts.ymax = 0.6;

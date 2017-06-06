@@ -1,22 +1,24 @@
 
 doSave = false;
 
-% fitName = 'Int2Pert_nIme_v3';
+fitName = 'Int2Pert_yIme_v4';
 % fitName = 'Pert2Int_yIme';
-fitName = 'Int2Pert_yIme';
+% fitName = 'Int2Pert_yIme';
+% fitName = 'Int2Pert_NewHab_v2';
 
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
-
+% hypsToShow = {'habitual-new', ...
+%     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
 % hypsToShow = {'habitual-corrected', 'constant-cloud'};
 % hypsToShow = {'minimum'};
 
 errNms = {'meanError', 'covError', 'histError'};
 % mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
-% errNms = {'covError'};
+% errNms = {'meanError'};
 
-% close all;
+close all;
 showYLabel = true;
 showMnkNm = false;
 doAbbrev = false;

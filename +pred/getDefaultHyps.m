@@ -136,6 +136,13 @@ function hyps = getDefaultHyps(hnms, grpName)
     hyp.fitFcn = @hypfit.closestRowValFit;
     hyps = [hyps hyp];
     
+%     % habitual-new
+%     clear hyp;
+%     hyp.name = 'habitual-new';
+%     hyp.opts = struct('kNN', nan, 'nanIfOutOfBounds', nanIfOutOfBounds);
+%     hyp.fitFcn = @hypfit.habFit;
+%     hyps = [hyps hyp];
+    
 %     % constant-cloud-200
 %     clear hyp;
 %     hyp.name = 'constant-cloud-50';

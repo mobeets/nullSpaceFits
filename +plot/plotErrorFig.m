@@ -55,15 +55,13 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     if strcmpi(errNm, 'histError')
         errs = 100*errs;
         ymax = 105;
-        errDispNm = 'histograms (%)';
         lblDispNm = 'histograms (%)';
-    elseif strcmpi(errNm, 'meanError')
-        errDispNm = 'mean';
-        lblDispNm = 'mean';
-        ymax = 16;
+    elseif strcmpi(errNm, 'meanError')        
+        errs = (1000/45)*errs;
+        ymax = (1000/45)*16;
+        lblDispNm = 'mean (spikes/s)';
     else
-        errDispNm = 'covariance';
-        lblDispNm = 'covariance';
+        lblDispNm = 'covariance (a.u.)';
         ymax = 11;
 %         ymax = 70;
     end
