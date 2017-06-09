@@ -4,12 +4,16 @@ function [m, C, f] = findBestNeuronMean(Z, NB, RB, gs, dec, ubs)
 % gs are groups with which we will bin timesteps
 % ubs are upperbounds per neuron
 %
+% this accounts for the shrinkage of FA so we can compute the best mean in
+% spike space s.t. the factor space mean is optimal across groups
+%
 
     nu = dec.spikeCountMean';
     [~,beta] = tools.convertRawSpikesToRawLatents(dec, 0, false);    
 
     % mean null and potent activity per bin
-    [Zn, Zr] = meanFactorNullActivityPerGroup(Z, NB, RB, gs);
+    Zn = grpstats(Z*NB, gs);
+    Zr = grpstats(Z*RB, gs);
 
     A = RB'*beta; % nrow x ns
     A2 = A'/(A*A');
@@ -25,6 +29,7 @@ function [m, C, f] = findBestNeuronMean(Z, NB, RB, gs, dec, ubs)
 %     m = max(m, 0);
 %     m = quadprog(C'*C, C'*f, [], [], [], [], zeros(numel(nu),1));
 
+    % add constraints so we have non-negative spikes
 %     m - A2*(A*m - A*nu - r) = m - A2*A*m + A2*(A*nu + r) >= 0
 %     (I - A2*A)m >= -A2*(A*nu + r)
     Aleq = []; bleq = [];
@@ -37,17 +42,4 @@ function [m, C, f] = findBestNeuronMean(Z, NB, RB, gs, dec, ubs)
     end
     m = quadprog(C'*C, C'*f, Aleq, bleq, [], [], zeros(numel(nu),1), ubs);
 
-end
-
-function [Zn, Zr] = meanFactorNullActivityPerGroup(Z, NB, RB, gs)
-    ZN = Z*NB;
-    ZR = Z*RB;
-    grps = sort(unique(gs));
-    grps = grps(~isnan(grps));
-    Zn = nan(numel(grps), size(NB,2));
-    Zr = nan(numel(grps), size(RB,2));
-    for ii = 1:numel(grps)
-        Zn(ii,:) = nanmean(ZN(gs == grps(ii),:));
-        Zr(ii,:) = nanmean(ZR(gs == grps(ii),:));
-    end
 end

@@ -35,13 +35,22 @@ function hyps = getDefaultHyps(hnms, grpName)
     hyps = [hyps hyp];
 
     % baseline (L2 norm)
+%     clear hyp;
+%     hyp.name = 'baseline';
+%     hyp.opts = struct('minType', 'baseline', ...
+%         'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 2, ...
+%         'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
+%         'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
+%     hyp.fitFcn = @hypfit.minEnergyFit;
+%     hyps = [hyps hyp];
+
+    % best-mean
     clear hyp;
-    hyp.name = 'baseline';
-    hyp.opts = struct('minType', 'baseline', ...
-        'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 2, ...
-        'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
-        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
-    hyp.fitFcn = @hypfit.minEnergyFit;
+    hyp.name = 'best-mean';
+    hyp.opts = struct('grpName', grpName, ...
+        'addNoise', addNoise, ...
+        'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.bestMeanFit;
     hyps = [hyps hyp];
     
     % baseline (L1 norm)
@@ -55,15 +64,15 @@ function hyps = getDefaultHyps(hnms, grpName)
 %     hyps = [hyps hyp];
     
     % best-mean (L2 norm)
-    clear hyp;
-    hyp.name = 'best-mean';
-    hyp.opts = struct('minType', 'best', ...
-        'grpName', grpName, ...
-        'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 2, ...
-        'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
-        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
-    hyp.fitFcn = @hypfit.minEnergyFit;
-    hyps = [hyps hyp];
+%     clear hyp;
+%     hyp.name = 'best-mean';
+%     hyp.opts = struct('minType', 'best', ...
+%         'grpName', grpName, ...
+%         'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 2, ...
+%         'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
+%         'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
+%     hyp.fitFcn = @hypfit.minEnergyFit;
+%     hyps = [hyps hyp];
     
     % best-mean (L1 norm)
 %     clear hyp;
@@ -94,15 +103,6 @@ function hyps = getDefaultHyps(hnms, grpName)
 %         'addSpikeNoise', addNoise, ...
 %         'nanIfOutOfBounds', false);
 %     hyp.fitFcn = @hypfit.minEnergySampleFit;
-%     hyps = [hyps hyp];
-    
-%     % best-mean
-%     clear hyp;
-%     hyp.name = 'best-mean';
-%     hyp.opts = struct('grpName', grpName, ...
-%         'addNoise', addNoise, ...
-%         'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
-%     hyp.fitFcn = @hypfit.bestMeanFit;
 %     hyps = [hyps hyp];
 
     % uncontrolled-uniform

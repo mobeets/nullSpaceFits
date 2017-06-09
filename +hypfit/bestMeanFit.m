@@ -11,19 +11,16 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
     NB2 = Te.NB;
     RB2 = Te.RB;
     nt = size(Z2,1);
-    
-    % first, find best mean
-    mu = findBestMean(Z1, Tr.NB, Tr.(opts.grpName), ...
-        0, 1.2*max(Tr.spikes));    
 
-    % next, predict this mean as constant in NB
-    Zr = Z2*(RB2*RB2');    
-    Zn = repmat(mu, nt, 1)*(NB2*NB2');
+    % find best mean; predict this mean as constant in NB
+    mu = findBestNullSpaceMean(Z1, NB2, Te.M0, Te.M2);
+    Zn = repmat(mu, nt, 1)*NB2';
+    Zr = Z2*(RB2*RB2');
     Z = Zr + Zn; Z0 = Z;
     
     % add noise
     if opts.addNoise
-        sigma = dec.FactorAnalysisParams.factorStd;
+        sigma = ones(size(Z1,2),1);
         nse = randn(nt, numel(sigma))*diag(sigma);
         Z = Z + nse;
     end
@@ -57,7 +54,21 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
     Z = Z*(NB2*NB2') + Zr; % maintain same output-potent value
 end
 
-function mu = findBestMean(Z, NB, gs, sps_min, sps_max)
+function muh = findBestNullSpaceMean(Z, NB, M0, M2)
+    vsf = @(Y) bsxfun(@plus, Y*M2', M0');
+    gsf = @(Y) tools.computeAngles(vsf(Y));
+    gs = tools.thetaGroup(gsf(Z), tools.thetaCenters);
+    
+    % objective now for prediction muh is [with mu := grpstats(Z*NB, gs)]
+    %   sum_i || muh - mu(ii,:) ||^2
+    % = sum_i 0.5*muh'*muh - muh'*mu(ii,:) + const
+    % = (nd/2)*muh'*muh - sum_i muh'*mu(ii,:)
+    % = (nd/2)*muh'*muh - muh'*sum(mu);
+    % [d/d_muh = 0] -> nd*muh - sum(mu) = 0 -> muh = mean(mu)
+    muh = mean(grpstats(Z*NB, gs)); % minimizes error in mean
+end
+
+function mu = findBestMean1(Z, NB, gs, sps_min, sps_max)
     % ZNc is prediction with constant mean, which we're searching over
     [nt, nd] = size(Z);
     ZN = Z*NB;
@@ -80,13 +91,13 @@ function mu = findBestMean0(Z, NB, gs, sps_min, sps_max)
     mu = nan(numel(grps), nd);
     for ii = 1:numel(grps)
         mu(ii,:) = nanmean(ZN(gs == grps(ii),:));
-    end    
+    end
     % objective now for prediction muh is:
     %   sum_i || muh - mu(ii,:) ||^2
     % = sum_i 0.5*muh'*muh - muh'*mu(ii,:) + const
     % = (nd/2)*muh'*muh - sum_i muh'*mu(ii,:)
     % = (nd/2)*muh'*muh - muh'*sum(mu);
-    % -> quadprog
+    % -> nd*muh - sum(mu) = 0 -> muh = mean(mu)
     
     f = -sum(mu);
     H = eye(nd);

@@ -32,7 +32,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         assert(opts.pNorm == 2, 'best-mean assumed to use L2 norm');
         assert(~opts.fitInLatent);
 %         mu = findBestMean(Tr.spikes, Tr.NB_spikes, Tr.(opts.grpName));
-        mu = findBestNeuronMean(Tr.latents, ...
+        mu = hypfit.findBestNeuronMean(Tr.latents, ...
             Te.NB, Te.RB, Tr.(opts.grpName), dec, ...
             0.1*max(Tr.spikes));
         out.bestMean = mu;
@@ -154,15 +154,7 @@ function m = findBestMean(Z, NB, gs, enforceNonneg)
     if nargin < 4
         enforceNonneg = true;
     end
-    ZN = Z*NB;
-    d = size(ZN,2);
-    grps = sort(unique(gs));
-    M = nan(numel(grps), d);
-    for ii = 1:numel(grps)
-        M(ii,:) = nanmean(ZN(gs == grps(ii),:));
-    end
-    n = sum(M)/d;
-    m = n*NB'; % project null-space value back up to spike space
+    m = mean(grpstats(Z*NB, gs))*NB';
     if enforceNonneg
         % if we're in spike space, we also want NB*n >= 0
         % n.b. the below is not optimal, but in practice, the solution 
