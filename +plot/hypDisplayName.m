@@ -10,7 +10,7 @@ function nm = hypDisplayName(nm, doAbbrev)
         elseif strcmpi(nm, 'best-mean')
             nm = 'Minimal Deviation';
         elseif strcmpi(nm, 'habitual-corrected')
-            nm = 'Habitual Corrected';
+            nm = 'Persistent Strategy';
         elseif strcmpi(nm, 'constant-cloud')
             nm = 'Fixed Repertoire';
         elseif strcmpi(nm, 'int-data')
@@ -31,7 +31,7 @@ function nm = hypDisplayName(nm, doAbbrev)
         elseif strcmpi(nm, 'uncontrolled-empirical')
             nm = 'UE';
         elseif strcmpi(nm, 'habitual-corrected')
-            nm = 'HC';
+            nm = 'PS';
         elseif strcmpi(nm, 'constant-cloud')
             nm = 'CC';
         end

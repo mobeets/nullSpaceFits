@@ -6,7 +6,8 @@ function plotImeErrorsAll(dts, opts)
         opts = struct();
     end
     defopts = struct('doSave', false, 'saveDir', 'data/plots', ...
-        'width', 5, 'height', 4, 'FontSize', 20, 'LineWidth', 2);
+        'width', 5, 'height', 4, 'FontSize', 20, 'LineWidth', 2, ...
+        'blkInd', 1, 'vmx', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     % load stats
@@ -17,8 +18,32 @@ function plotImeErrorsAll(dts, opts)
     end
 
     plot.init;
-    xs = stats(:,3);
-    ys = stats(:,4);
+    if opts.blkInd == 1 % compare Blk1 with and without IME
+        xs = stats(:,1);
+        ys = stats(:,2);
+        xlbl = '1st mapping';
+        ylbl = '1st mapping (IME)';
+    elseif opts.blkInd == 2 % compare Blk2 with and without IME
+        xs = stats(:,3);
+        ys = stats(:,4);
+        xlbl = '2nd mapping';
+        ylbl = '2nd mapping (IME)';    
+    elseif opts.blkInd == 3 % compare Blk2 to Blk1, without IME
+        xs = stats(:,1);
+        ys = stats(:,3);
+        xlbl = '1st mapping';
+        ylbl = '2nd mapping';
+    elseif opts.blkInd == 4 % compare Blk2 to Blk1, with IME
+        xs = stats(:,2);
+        ys = stats(:,4);
+        xlbl = '1st mapping (IME)';
+        ylbl = '2nd mapping (IME)';
+    elseif opts.blkInd == 5 % compare Blk2 (IME) to Blk1 (no IME)
+        xs = stats(:,1);
+        ys = stats(:,4);
+        xlbl = '1st mapping';
+        ylbl = '2nd mapping (IME)';
+    end
     mnks = io.getMonkeys;
     mnkNms = {};
     for ii = 1:numel(mnks)
@@ -27,27 +52,33 @@ function plotImeErrorsAll(dts, opts)
         mnkNms{ii} = ['Monkey ' mnks{ii}(1)];
     end
 
-    vmx = max([xs; ys]);
+    if isnan(opts.vmx)
+        vmx = max([xs; ys]);
+    else
+        vmx = opts.vmx;
+    end
     xlim([0 vmx]);
     ylim(xlim);
     plot(xlim, ylim, 'k--', 'LineWidth', opts.LineWidth);
 
-    set(gca, 'XTick', 0:10:vmx);
-    set(gca, 'YTick', 0:10:vmx);
+    set(gca, 'XTick', 0:5:vmx);
+    set(gca, 'YTick', 0:5:vmx);
 
-    xlabel({'Absolute angular error (deg),', '2nd mapping'});
-    ylabel({'Absolute angular error (deg),', '2nd mapping (IME)'});
+    xlabel({'Absolute angular error (deg),', xlbl});
+    ylabel({'Absolute angular error (deg),', ylbl});
     axis square;
     set(gca, 'FontSize', opts.FontSize);
     set(gca, 'TickDir', 'out');
     set(gca, 'Ticklength', [0 0]);
     set(gca, 'LineWidth', opts.LineWidth);
     
-    legend(mnkNms, 'Location', 'NorthWest');
+    h = legend(mnkNms, 'Location', 'SouthEast');
+%     set(h, 'EdgeColor', 'w');
     legend boxoff;
     
     plot.setPrintSize(gcf, opts);
     if opts.doSave
-        export_fig(gcf, fullfile(opts.saveDir, 'imeErrsAll.pdf'));
+        export_fig(gcf, fullfile(opts.saveDir, ...
+            ['imeErrsAll-' num2str(opts.blkInd) '.pdf']));
     end
 end

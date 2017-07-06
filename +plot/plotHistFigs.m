@@ -2,20 +2,16 @@ function plotHistFigs(fitName, dt, hypNms, opts, latents)
     if nargin < 4
         opts = struct();
     end
-    defopts = struct('doSave', false, 'saveDir', 'data/plots', ...
+    defopts = struct('doSave', false, 'saveDir', 'data/plots/hists', ...
         'saveExt', 'pdf', 'ymax', nan, 'rowStartInd', nan, ...
         'doPca', true, 'grpInds', 1:8, 'dimInds', 1:3);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
     % load output-null activity
     [S,F] = plot.getScoresAndFits(fitName, {dt});
-    Sa = plot.getScoresAndFits(fitName);
+    Sa = plot.getScoresAndFits(fitName, io.getDates);
     errs = plot.getScoreArray(Sa, 'histError');
     errs = mean(errs(~any(isinf(errs),2),:));
-    
-    F.fits(9) = F.fits(4);
-    F.fits(9).latents = latents;
-    F.fits(9).name = 'best-mean-2';
     
     NB = F.test.NB;
     Y0 = F.test.latents;
@@ -43,7 +39,7 @@ function plotHistFigs(fitName, dt, hypNms, opts, latents)
     for ii = 1:numel(hypNms)
         Yc = F.fits(strcmp({F.fits.name}, hypNms{ii})).latents(ix,:);
         YNc{ii} = bsxfun(@plus, bsxfun(@minus, Yc*NB, mu)*coeff, mu);
-%         err(ii) = errs(strcmp({S(1).scores.name}, hypNms{ii}));
+        err(ii) = errs(strcmp({S(1).scores.name}, hypNms{ii}));
     end
 
     useDataOnlyForRange = false; % false -> use data and preds to set range

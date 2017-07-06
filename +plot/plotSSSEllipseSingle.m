@@ -2,10 +2,10 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     if nargin < 5
         opts = struct();
     end
-    defopts = struct('width', 4, 'height', 4, 'margin', 0.125, ...
-        'FontSize', 16, 'FontName', 'Helvetica', 'TextNoteA', '', ...
+    defopts = struct('width', 4.5, 'height', 4.5, 'margin', 0.125, ...
+        'FontSize', 24, 'FontName', 'Helvetica', 'TextNoteA', '', ...
         'TextNoteB', '', 'scaleDim', (1000/45), ...
-        'LineWidth', 3, 'TextNoteFontSize', 14, ...
+        'LineWidth', 3, 'TextNoteFontSize', 24, ...
         'doSave', false, 'saveDir', 'data/plots', ...
         'filename', 'SSS_ellipse', 'ext', 'pdf', ...
         'clrs', [], 'sigMult', 2);
@@ -49,10 +49,8 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     xlim([minx-pad maxx+pad]);
     ylim([miny-pad maxy+pad]);
 
-%     xlabel({'Mean-centered activity,', 'dim. 1 (spikes/s)'});
-%     ylabel({'Mean-centered activity,', 'dim. 2 (spikes/s)'});
-    xlabel({'Activity, dim. 1', '(spikes/s, rel. to mean)'});
-    ylabel({'Activity, dim. 2', '(spikes/s, rel. to mean)'});
+    xlabel({'Activity, dim. 1', '(spikes/s, rel. to baseline)'});
+    ylabel({'Activity, dim. 2', '(spikes/s, rel. to baseline)'});
     tcks = [-1.35 0 1.35];
     set(gca, 'XTick', tcks);
     set(gca, 'YTick', tcks);
@@ -61,12 +59,12 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     set(gca, 'TickDir', 'out');
     set(gca, 'LineWidth', max(opts.LineWidth-1,1));
     box off;
-    axis equal;
+    axis square;
 
     xl = xlim; yl = ylim;
     text(xl(1)+0.1, 0.9*yl(2), opts.TextNoteA, 'Color', opts.clrs(1,:), ...
         'FontSize', opts.TextNoteFontSize);
-    text(xl(1)+0.1, 0.9*yl(2) - 0.3, opts.TextNoteB, 'Color', opts.clrs(2,:), ...
+    text(xl(1)+0.1, 0.9*yl(2) - 0.24, opts.TextNoteB, 'Color', opts.clrs(2,:), ...
         'FontSize', opts.TextNoteFontSize);
 
     plot.setPrintSize(fig, opts);

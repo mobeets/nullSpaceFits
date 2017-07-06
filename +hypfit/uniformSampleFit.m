@@ -19,7 +19,7 @@ function [Z, E] = uniformSampleFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
-        maxC = 10;
+        maxC = 50;
         c = 0;        
         while sum(ixOob) > 0 && c < maxC
             Zn = getSamples(Z1*NB, sum(ixOob));

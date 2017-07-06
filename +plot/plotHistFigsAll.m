@@ -1,8 +1,8 @@
 
 doSave = false;
 dt = '20131205';
-fitName = 'Int2Pert_yIme_v4';
-
+% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_20170605';
 hypsToShow = {'minimum' 'best-mean', 'uncontrolled-uniform', ...
         'uncontrolled-empirical', 'habitual-corrected', ...
         'constant-cloud'};
@@ -21,6 +21,7 @@ plot.plotHistFigs(fitName, dt, hypsToShow, opts);
 
 close all;
 % hypsToShow = {'constant-cloud'};
+% hypsToShow = {};
 % doSave = true;
 opts = struct('grpInds', 1, 'dimInds', 1, 'doSave', doSave, 'doPca', true);
 opts.ymax = 0.6;

@@ -96,10 +96,10 @@ function makeBoxPlot(pts, clrs, lw)
     end
     
     h = findobj(gcf,'tag','Box');
-    for jj = 1:numel(h)
-        patch(get(h(jj),'XData'), get(h(jj),'YData'), get(h(jj), 'Color'), ...
-            'FaceAlpha', 0.5, 'EdgeColor', 'none');
-    end
+%     for jj = 1:numel(h)
+%         patch(get(h(jj),'XData'), get(h(jj),'YData'), get(h(jj), 'Color'), ...
+%             'FaceAlpha', 1.0, 'EdgeColor', 'none');
+%     end
     set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
     set(bp, 'LineWidth', lw);
     set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
@@ -109,11 +109,15 @@ function makeBarPlot(pts, clrs, lw, nSEs)
     ms = mean(pts);
     bs = nSEs*std(pts)/sqrt(size(pts,1));
     for ii = 1:size(pts,2)        
-        bar(ii, ms(ii), 'EdgeColor', 'k', 'FaceColor', clrs(ii,:), ...
+%         bar(ii, ms(ii), 'EdgeColor', 'k', 'FaceColor', clrs(ii,:), ...
+%             'LineWidth', lw);
+        bar(ii, ms(ii), 'EdgeColor', clrs(ii,:), 'FaceColor', 'w', ...
             'LineWidth', lw);
 %         plot([ii-0.5 ii+0.5], [ms(ii) ms(ii)], '-', ...
 %             'Color', clrs(ii,:), 'LineWidth', 2*lw);
+%         plot([ii ii], [ms(ii)-bs(ii) ms(ii)+bs(ii)], '-', ...
+%             'Color', 'k', 'LineWidth', lw);
         plot([ii ii], [ms(ii)-bs(ii) ms(ii)+bs(ii)], '-', ...
-            'Color', 'k', 'LineWidth', lw);
+            'Color', clrs(ii,:), 'LineWidth', lw);
     end
 end

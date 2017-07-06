@@ -1,4 +1,4 @@
-function dts = getDates(asympsOnly, showRaw, mnkNms)
+function dts = getDates(asympsOnly, showRaw, mnkNms, dtsToIgnore)
     if nargin < 1
         asympsOnly = true; % include only those that have asymptotes
     end
@@ -7,6 +7,9 @@ function dts = getDates(asympsOnly, showRaw, mnkNms)
     end
     if nargin < 3
         mnkNms = io.getMonkeys();
+    end
+    if nargin < 4
+        dtsToIgnore = {'20120327'};
     end
 
     if asympsOnly
@@ -19,6 +22,7 @@ function dts = getDates(asympsOnly, showRaw, mnkNms)
             dtsM = io.getDates(false, true, mnkNms);
             dts = dts(ismember(dts, dtsM));
         end
+        dts = dts(~ismember(dts, dtsToIgnore)); % ignore some dates
         return;
     end
 
@@ -37,4 +41,5 @@ function dts = getDates(asympsOnly, showRaw, mnkNms)
         fnms = dir(fullfile(DATADIR, 'preprocessed'));
         dts = strrep({fnms(~[fnms.isdir]).name}, '.mat', '');
     end
+    dts = dts(~ismember(dts, dtsToIgnore)); % ignore some dates
 end

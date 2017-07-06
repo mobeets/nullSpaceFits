@@ -9,7 +9,7 @@ function [S,F] = getScoresAndFits(fitsName, dts)
     S = [];
     for ii = 1:numel(fnms)
         fnm = fnms(ii).name;
-        if ~isempty(dts) && ~ismember(dts, strrep(fnm, '_scores.mat', ''))
+        if ~isempty(dts) && ~any(ismember(dts, strrep(fnm, '_scores.mat', '')))
             continue;
         end
         X = load(fullfile(fitsDir, fnm));

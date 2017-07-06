@@ -5,7 +5,7 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
     defopts = struct('clr1', [0 0 0], 'clr2', [0.5 0.5 0.5], ...
         'width', 3, 'height', 2.5, 'margin', 0.125, ...
         'FontSize', 16, 'title', '', ...
-        'xMult', 7, 'yMult', 0.6, 'dimScale', 1.0, ...
+        'xMult', 6, 'yMult', 0.6, 'dimScale', 1.0, ...
         'LineWidth', 3, 'LineStyle', 'k-', 'ymax', nan);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
@@ -43,7 +43,7 @@ function plotSingleHistFig(hs1, hs2, xs, opts)
     xlabel('Spikes/s, rel. to baseline', 'FontSize', opts.FontSize);
     
     set(gca, 'YTick', []);
-    ylabel('# Occurrences', 'FontSize', opts.FontSize);
+    ylabel('Frequency', 'FontSize', opts.FontSize);
     
     set(gca, 'TickDir', 'out');
     set(gca, 'LineWidth', opts.LineWidth-1);

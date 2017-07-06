@@ -27,7 +27,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     end    
     
     % load scores
-    S = plot.getScoresAndFits(fitName);
+    S = plot.getScoresAndFits(fitName, io.getDates);
     dts = {S.datestr};
     hypnms = {S(1).scores.name};
     hypDispNms = cellfun(@(h) plot.hypDisplayName(h, doAbbrev), ...
@@ -63,7 +63,6 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     else
         lblDispNm = 'covariance (a.u.)';
         ymax = 11;
-%         ymax = 70;
     end
     
     % no ylabel, shrink figure
@@ -83,11 +82,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     else
         mnkTitle = '';
     end
-    % title = ['Error in ' errDispNm ', ' mnkTitle];
-%     ttl = [errDispNm ', ' mnkTitle];
-%     ttl = ['Error in ' errDispNm];
     ttl = '';
-    % title = mnkTitle;
     if ~isempty(mnkNm)
         fnm = [errNm '_' fitName '_' mnkNm(1)];
     else
@@ -101,7 +96,5 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         'title', ttl, 'ymax', ymax, ...
         'TextNote', mnkTitle, ...
         'clrs', hypClrs(hypInds,:));
-    % close all;
     plot.plotError(errs, hypDispNms(hypInds), opts);
-    % breakyaxis([22 41]);
 end

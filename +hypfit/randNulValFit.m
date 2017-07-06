@@ -20,7 +20,7 @@ function [Z, E] = randNulValFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
-        maxC = 10;
+        maxC = 50;
         c = 0;        
         while sum(ixOob) > 0 && c < maxC
             Zsamp = Z1(randi(size(Z1,1),sum(ixOob),1),:);

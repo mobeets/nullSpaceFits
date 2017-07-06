@@ -46,7 +46,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     
     % set upper and lower bounds
     if opts.obeyBounds
-        lb = 0.8*min(Y1); ub = 1.2*max(Y1);
+        lb = 1.0*min(Y1); ub = 1.0*max(Y1);
     else
         lb = []; ub = [];
     end
@@ -84,7 +84,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         
         c = 0;
         ixBad = any(U < lbs, 2) | any(U > ubs, 2);
-        while sum(ixBad) > 0 && c < 10
+        while sum(ixBad) > 0 && c < 50
             nBad = sum(ixBad);
             if strcmpi(opts.noiseDistribution, 'gaussian')
                 U(ixBad,:) = normrnd(U0(ixBad,:), repmat(sigma, nBad, 1));

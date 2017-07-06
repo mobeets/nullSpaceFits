@@ -47,8 +47,7 @@ function hyps = getDefaultHyps(hnms, grpName)
     % best-mean
     clear hyp;
     hyp.name = 'best-mean';
-    hyp.opts = struct('grpName', grpName, ...
-        'addNoise', addNoise, ...
+    hyp.opts = struct('grpName', grpName, 'addNoise', addNoise, ...
         'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.bestMeanFit;
     hyps = [hyps hyp];
@@ -124,7 +123,7 @@ function hyps = getDefaultHyps(hnms, grpName)
     % habitual-corrected
     clear hyp;
     hyp.name = 'habitual-corrected';
-    hyp.opts = struct('thetaTol', 20, 'obeyBounds', obeyBounds, ...
+    hyp.opts = struct('thetaTol', 22.5, 'obeyBounds', obeyBounds, ...
         'nanIfOutOfBounds', nanIfOutOfBounds);
     hyp.fitFcn = @hypfit.randNulValInGrpFit;
     hyps = [hyps hyp];

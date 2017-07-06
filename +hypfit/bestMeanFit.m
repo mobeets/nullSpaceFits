@@ -19,32 +19,40 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
     Z = Zr + Zn; Z0 = Z;
     
     % add noise
+%     if opts.addNoise
+%         sigma = ones(size(Z1,2),1);
+%         nse = randn(nt, numel(sigma))*diag(sigma);
+%         Z = Z + nse;
+%     end
+%     if opts.addNoise
+%         sps = tools.latentsToSpikes(Z, dec, true, true);
+%         Z = tools.convertRawSpikesToRawLatents(dec, sps');
+%     end
     if opts.addNoise
-        sigma = ones(size(Z1,2),1);
-        nse = randn(nt, numel(sigma))*diag(sigma);
-        Z = Z + nse;
+        sps0 = tools.latentsToSpikes(Z, dec, false, true);
+        sps = poissrnd(max(sps0,0));
+        Z = tools.convertRawSpikesToRawLatents(dec, sps');
     end
     
     % correct to be within bounds if noise was added
     if opts.obeyBounds && opts.addNoise
-        % resample invalid points
-        isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
-        ixOob = isOutOfBounds(Z); % might be fixed by resampling noise
-        
+        isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, true);
+        ixOob = isOutOfBounds(sps); % might be fixed by resampling noise
         n0 = sum(ixOob);
-        maxC = 10;
-        c = 0;        
+        maxC = 50;
+        c = 0;
         while sum(ixOob) > 0 && c < maxC
-            nse = randn(sum(ixOob), numel(sigma))*diag(sigma);
-            Z(ixOob,:) = Z0(ixOob,:) + nse;
-            ixOob = isOutOfBounds(Z);
+            sps(ixOob,:) = poissrnd(max(sps0(ixOob,:),0));
+            ixOob = isOutOfBounds(sps);
             c = c + 1;
         end
+        Z = tools.convertRawSpikesToRawLatents(dec, sps');
         if n0 - sum(ixOob) > 0
             disp(['Corrected ' num2str(n0 - sum(ixOob)) ...
-                ' bestMeanFit sample(s) to lie within bounds']);
-        end        
+                ' best-mean sample(s) to lie within bounds']);
+        end
     end
+        
     if opts.obeyBounds && opts.nanIfOutOfBounds
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
@@ -55,6 +63,8 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
 end
 
 function muh = findBestNullSpaceMean(Z, NB, M0, M2)
+    % figure out which direction bin Z would move the cursor
+    %   with the current decoder
     vsf = @(Y) bsxfun(@plus, Y*M2', M0');
     gsf = @(Y) tools.computeAngles(vsf(Y));
     gs = tools.thetaGroup(gsf(Z), tools.thetaCenters);

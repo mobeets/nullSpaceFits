@@ -24,7 +24,7 @@ function [isOutOfBoundsFcn, whereOutOfBounds] = boundsFcn(Y, kind, dec, inSpikes
             all(z < Y(ii,:)) | all(z > Y(ii,:)), 1:size(Y,1))) > thresh;
     elseif strcmpi(kind, 'spikes')
         minSps = 0*mxs;
-        maxSps = 1.5*mxs;
+        maxSps = 1.0*mxs;
         
         if inSpikes
             % in spike space already
