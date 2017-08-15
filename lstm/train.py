@@ -39,8 +39,9 @@ def main(args):
     if args.num_epochs > 0:
         print('Training...')
         callbacks = get_callbacks(args)
-        # scs = ScoreCallback(Xtr, ytr, Xte, yte, gtr, gte, args.batch_size)
-        # callbacks.append(scs)
+        if args.monitor_score:
+            scs = ScoreCallback(Xtr, ytr, Xte, yte, gtr, gte, args.batch_size)
+            callbacks.append(scs)
         mdl.fit(Xtr, ytr,
             batch_size=args.batch_size,
             epochs=args.num_epochs,
@@ -76,6 +77,8 @@ if __name__ == '__main__':
                 default=10, help='batch size for training')
     parser.add_argument("--do_plot", action="store_true", 
                 help="plot examples")
+    parser.add_argument("--monitor_score", action="store_true", 
+                help="monitor score during training")
     parser.add_argument("--do_score", action="store_true", 
                 help="score only")
     parser.add_argument('--model_dir', type=str,

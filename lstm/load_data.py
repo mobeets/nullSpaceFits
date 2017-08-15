@@ -40,7 +40,7 @@ def make_design_1(d, skip_freeze_period=True):
 
     X = np.hstack([X3, X4, X5])
 
-    ix = ~np.isnan(y).any(axis=1) | np.isnan(X).any(axis=1)
+    ix = ~(np.isnan(y).any(axis=1) | np.isnan(X).any(axis=1))
     # X = np.hstack([X1, X2, X3, X4, X5, X6])
     if skip_freeze_period:
         ix = ix & ixFreeze
