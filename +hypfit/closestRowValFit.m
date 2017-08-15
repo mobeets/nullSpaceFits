@@ -5,7 +5,7 @@ function [Z, inds] = closestRowValFit(Tr, Te, dec, opts)
         opts = struct();
     end
     defopts = struct('kNN', nan, 'obeyBounds', true, ...
-        'nanIfOutOfBounds', false);
+        'nanIfOutOfBounds', false, 'nReps', 10);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     NB2 = Te.NB;
@@ -29,9 +29,8 @@ function [Z, inds] = closestRowValFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
-        maxC = 10;
         c = 0;
-        while sum(ixOob) > 0 && c < maxC
+        while sum(ixOob) > 0 && c < opts.nReps
             % set dists of oob points to inf, then resample
             xinds = 1:size(ds,1); xinds = xinds(ixOob)';
             ds(sub2ind(size(ds), xinds, inds(ixOob))) = inf;

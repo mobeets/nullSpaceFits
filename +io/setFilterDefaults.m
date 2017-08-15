@@ -8,4 +8,5 @@ function ps = setFilterDefaults(datestr)
 %     ps.END_SHUFFLE = nan;
     ps.REMOVE_SPEED_TAILS = false;
     ps.IDEAL_SPEED = 175;
+    ps.MIN_TIME = 0;
 end

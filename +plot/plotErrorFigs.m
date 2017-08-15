@@ -1,8 +1,7 @@
 
 doSave = false;
 
-% fitName = 'Int2Pert_yIme';
-fitName = 'Int2Pert_yIme_20170605';
+fitName = 'Int2Pert_yIme';
 % fitName = 'Int2Pert_nIme';
 % fitName = 'Pert2Int_yIme';
 
@@ -12,11 +11,11 @@ hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
 hypsToShow = {};
 
 errNms = {'meanError', 'covError', 'histError'};
-% mnkNms = io.getMonkeys;
+mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
 errNms = {'histError'};
 
-% close all;
+close all;
 showYLabel = true;
 showMnkNm = false;
 doAbbrev = false;

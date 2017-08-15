@@ -12,7 +12,59 @@ function hyps = getDefaultHyps(hnms, grpName)
     addNoise = true;
     obeyBounds = true;
     nanIfOutOfBounds = true;
-    % n.b. minimum-sample and baseline-sample ignore nanIfOutOfBounds
+    nReps = 100; % number of tries to resample out-of-bounds points
+    
+    % minimum (L2 norm)
+    clear hyp;
+    hyp.name = 'minimum';
+    hyp.opts = struct('minType', 'minimum', ...
+        'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 2, ...
+        'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
+        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise, ...
+        'nReps', nReps);
+    hyp.fitFcn = @hypfit.minEnergyFit;
+    hyps = [hyps hyp];
+
+    % best-mean
+    clear hyp;
+    hyp.name = 'best-mean';
+    hyp.opts = struct('grpName', grpName, 'addNoise', addNoise, ...
+        'nReps', nReps, 'obeyBounds', obeyBounds, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.bestMeanFit;
+    hyps = [hyps hyp];
+
+    % uncontrolled-uniform
+    clear hyp;
+    hyp.name = 'uncontrolled-uniform';
+    hyp.opts = struct('obeyBounds', obeyBounds, 'nReps', nReps, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.uniformSampleFit;
+    hyps = [hyps hyp];
+
+    % uncontrolled-empirical
+    clear hyp;
+    hyp.name = 'uncontrolled-empirical';
+    hyp.opts = struct('obeyBounds', obeyBounds, 'nReps', nReps, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.randNulValFit;
+    hyps = [hyps hyp];
+
+    % habitual-corrected
+    clear hyp;
+    hyp.name = 'habitual-corrected';
+    hyp.opts = struct('thetaTol', 22.5, 'obeyBounds', obeyBounds, ...
+        'nReps', nReps, 'nanIfOutOfBounds', nanIfOutOfBounds);
+    hyp.fitFcn = @hypfit.randNulValInGrpFit;
+    hyps = [hyps hyp];
+
+    % constant-cloud
+    clear hyp;
+    hyp.name = 'constant-cloud';
+    hyp.opts = struct('kNN', nan, 'obeyBounds', obeyBounds, ...
+        'nanIfOutOfBounds', nanIfOutOfBounds, 'nReps', nReps);
+    hyp.fitFcn = @hypfit.closestRowValFit;
+    hyps = [hyps hyp];
     
     % minimum (L1 norm)
 %     clear hyp;
@@ -23,16 +75,6 @@ function hyps = getDefaultHyps(hnms, grpName)
 %         'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
 %     hyp.fitFcn = @hypfit.minEnergyFit;
 %     hyps = [hyps hyp];
-    
-    % minimum (L2 norm)
-    clear hyp;
-    hyp.name = 'minimum';
-    hyp.opts = struct('minType', 'minimum', ...
-        'nanIfOutOfBounds', nanIfOutOfBounds, 'pNorm', 2, ...
-        'fitInLatent', fitInLatent, 'sigmaScale', 1.0, ...
-        'obeyBounds', obeyBounds, 'addSpikeNoise', addNoise);
-    hyp.fitFcn = @hypfit.minEnergyFit;
-    hyps = [hyps hyp];
 
     % baseline (L2 norm)
 %     clear hyp;
@@ -44,14 +86,6 @@ function hyps = getDefaultHyps(hnms, grpName)
 %     hyp.fitFcn = @hypfit.minEnergyFit;
 %     hyps = [hyps hyp];
 
-    % best-mean
-    clear hyp;
-    hyp.name = 'best-mean';
-    hyp.opts = struct('grpName', grpName, 'addNoise', addNoise, ...
-        'obeyBounds', obeyBounds, 'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.bestMeanFit;
-    hyps = [hyps hyp];
-    
     % baseline (L1 norm)
 %     clear hyp;
 %     hyp.name = 'baseline-L1';
@@ -104,37 +138,6 @@ function hyps = getDefaultHyps(hnms, grpName)
 %     hyp.fitFcn = @hypfit.minEnergySampleFit;
 %     hyps = [hyps hyp];
 
-    % uncontrolled-uniform
-    clear hyp;
-    hyp.name = 'uncontrolled-uniform';
-    hyp.opts = struct('obeyBounds', obeyBounds, ...
-        'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.uniformSampleFit;
-    hyps = [hyps hyp];
-
-    % uncontrolled-empirical
-    clear hyp;
-    hyp.name = 'uncontrolled-empirical';
-    hyp.opts = struct('obeyBounds', obeyBounds, ...
-        'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.randNulValFit;
-    hyps = [hyps hyp];
-
-    % habitual-corrected
-    clear hyp;
-    hyp.name = 'habitual-corrected';
-    hyp.opts = struct('thetaTol', 22.5, 'obeyBounds', obeyBounds, ...
-        'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.randNulValInGrpFit;
-    hyps = [hyps hyp];
-
-    % constant-cloud
-    clear hyp;
-    hyp.name = 'constant-cloud';
-    hyp.opts = struct('kNN', nan, 'nanIfOutOfBounds', nanIfOutOfBounds);
-    hyp.fitFcn = @hypfit.closestRowValFit;
-    hyps = [hyps hyp];
-    
 %     % habitual-new
 %     clear hyp;
 %     hyp.name = 'habitual-new';

@@ -1,7 +1,10 @@
 function trials = filterTrialsByParams(trials, params)
     
     ix = true(size(trials.time));
-%     ix = ix & trials.time > 6; % ignore timesteps when cursor is frozen
+    if ~isnan(params.MIN_TIME)
+        % e.g., ignore timesteps when cursor is frozen
+        ix = ix & trials.time >= params.MIN_TIME;
+    end
     if ~isnan(params.MIN_ANGULAR_ERROR)
         ix = ix & abs(trials.angError) >= params.MIN_ANGULAR_ERROR;
     end

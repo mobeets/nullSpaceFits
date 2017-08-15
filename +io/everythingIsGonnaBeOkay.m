@@ -1,5 +1,8 @@
-function isOk = everythingIsGonnaBeOkay(Blk, dec, useIme)
+function isOk = everythingIsGonnaBeOkay(Blk, dec, useIme, confirmNoFreeze)
 % confirm all things are as they should be
+    if nargin  < 4
+        confirmNoFreeze = false;
+    end
     
     matSum = @(A) max(sum(A.^2,2));
     trMeanTooHigh = @(A) cellfun(@(a) nanmean(a.^2), A) > 1e-5;
@@ -34,7 +37,12 @@ function isOk = everythingIsGonnaBeOkay(Blk, dec, useIme)
         % IME velocities are not as easily verified... :(
         v8 = true; v9 = true;
     end
-    isOk = all([v1 v2 v3 v4 v5 v6 v7 v8 v9]);
+    if confirmNoFreeze
+        v10 = all(Blk.time >= 5); % no freeze period activity
+    else
+        v10 = true;
+    end
+    isOk = all([v1 v2 v3 v4 v5 v6 v7 v8 v9 v10]);
     
 end
 

@@ -15,7 +15,7 @@ function [F,D] = fitSession(dtstr, hyps, grpName, opts)
     % load
     D = io.loadPrepDataByDate(dtstr); % load preprocessed session data
     D = pred.prepSession(D, opts); % split into train/test
-    
+
     % fit
     F = pred.fitHyps(D, hyps); % make predictions with each hyp
 

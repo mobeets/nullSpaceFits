@@ -4,7 +4,7 @@ function [Z, inds] = randNulValInGrpFit(Tr, Te, dec, opts)
         opts = struct();
     end
     defopts = struct('thetaTol', 22.5, 'obeyBounds', true, ...
-        'nanIfOutOfBounds', false);
+        'nReps', 10, 'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     NB2 = Te.NB;
@@ -26,9 +26,8 @@ function [Z, inds] = randNulValInGrpFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
-        maxC = 50;
         c = 0;        
-        while sum(ixOob) > 0 && c < maxC
+        while sum(ixOob) > 0 && c < opts.nReps
             [Zsamp, nErrs, newInds] = getSamples(Z1, ix(ixOob,:));
             inds(ixOob) = newInds;
             Z(ixOob,:) = Zr(ixOob,:) + Zsamp*(NB2*NB2');

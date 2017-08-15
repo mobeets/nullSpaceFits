@@ -3,7 +3,7 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
         opts = struct();
     end
     defopts = struct('grpName', 'thetaActualGrps', 'addNoise', true, ...
-        'obeyBounds', true, 'nanIfOutOfBounds', false);
+        'nReps', 10, 'obeyBounds', true, 'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
     Z1 = Tr.latents;
@@ -39,9 +39,8 @@ function [Z, mu] = bestMeanFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, true);
         ixOob = isOutOfBounds(sps); % might be fixed by resampling noise
         n0 = sum(ixOob);
-        maxC = 50;
         c = 0;
-        while sum(ixOob) > 0 && c < maxC
+        while sum(ixOob) > 0 && c < opts.nReps
             sps(ixOob,:) = poissrnd(max(sps0(ixOob,:),0));
             ixOob = isOutOfBounds(sps);
             c = c + 1;

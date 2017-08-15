@@ -26,7 +26,14 @@ function plotWhiskers(D, bind, trialNo, opts)
     [by_trial.cErrs{trialNo}; by_trial.mdlErrs{trialNo}]
     
     plot.init;
-    fill_circle(Xtarget{trialNo}, TARGET_RADIUS, [0.2 0.8 0.2]);
+    center = Xtarget{trialNo};
+    center = reshape(center,1,2);
+    r = linspace(0,2*pi,3000);
+    unit_circle = [cos(r)' sin(r)'];
+    target_pts = bsxfun(@plus, TARGET_RADIUS*unit_circle, center);
+    plot(target_pts(:,1), target_pts(:,2), 'Color', [0.2 0.8 0.2]);
+
+%     fill_circle(Xtarget{trialNo}, TARGET_RADIUS, [0.2 0.8 0.2]);
 %     text(Xtarget{trialNo}(1) - TARGET_RADIUS/2, ...
 %         Xtarget{trialNo}(2), 'target', 'FontSize', 24);
     plot(Y{trialNo}(1,1:end-1), Y{trialNo}(2,1:end-1), 'k-o', ...

@@ -27,19 +27,18 @@ function plotSSSEllipseSingle(YA, YB, CA, CB, opts)
     [bpA, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CA);
     [bpB, ~, ~] = plot.gauss2dcirc([], opts.sigMult, CB);    
 
-%     plot(YA(:,1), YA(:,2), 'o', 'Color', opts.clrs(1,:), 'MarkerSize', 4);
-    plot(YA(:,1), YA(:,2), '.', 'Color', opts.clrs(1,:), 'MarkerSize', 8);
-    plot(YB(:,1), YB(:,2), '.', 'Color', opts.clrs(2,:), 'MarkerSize', 8);
+    plot(YA(:,1), YA(:,2), '.', 'Color', opts.clrs(1,:), 'MarkerSize', 12);
+    plot(YB(:,1), YB(:,2), '.', 'Color', opts.clrs(2,:), 'MarkerSize', 12);
     
     bpA(1,:) = bpA(1,:) + muA(1);
     bpA(2,:) = bpA(2,:) + muA(2);
     bpB(1,:) = bpB(1,:) + muB(1);
     bpB(2,:) = bpB(2,:) + muB(2);
-    plot(bpA(1,:), bpA(2,:), '-', 'Color', opts.clrs(1,:), 'LineWidth', 2);
-%     plot(bpB(1,:), bpB(2,:), '-', 'Color', opts.clrs(2,:), 'LineWidth', 2);
-    h = patch(bpB(1,:), bpB(2,:), opts.clrs(2,:));
-    h.FaceAlpha = 0.5;
-    h.EdgeColor = 'none';
+    plot(bpA(1,:), bpA(2,:), '-', 'Color', opts.clrs(1,:), 'LineWidth', opts.LineWidth);
+    plot(bpB(1,:), bpB(2,:), '-', 'Color', opts.clrs(2,:), 'LineWidth', opts.LineWidth);
+%     h = patch(bpB(1,:), bpB(2,:), opts.clrs(2,:));
+%     h.FaceAlpha = 0.5;
+%     h.EdgeColor = 'none';
 
     pad = 0.5;
     minx = min([bpA(1,:) bpB(1,:)]);

@@ -1,0 +1,4332 @@
+% The below is for Pert2Int_yIme_final followed by Int2Pert_nIme_final
+Fitting 20120302...
+500 of 1466
+1000 of 1466
+Corrected 304 bestMeanFit sample(s) to lie within bounds
+Corrected 879 uniform sample sample(s) to lie within bounds
+Corrected 71 unconstrained sample(s) to lie within bounds
+Corrected 63 habitual sample(s) to lie within bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 5 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7181    0.2128    0.4928    0.1807    0.1505    0.1820
+
+---------
+Elapsed time is 18.758434 seconds.
+
+ans =
+
+     5     3    23    51   111   171    84    22
+
+Fitting 20120305...
+500 of 2578
+1000 of 2578
+1500 of 2578
+2000 of 2578
+2500 of 2578
+Corrected 685 bestMeanFit sample(s) to lie within bounds
+Corrected 1348 uniform sample sample(s) to lie within bounds
+Corrected 73 unconstrained sample(s) to lie within bounds
+Corrected 69 habitual sample(s) to lie within bounds
+36 habitual sample(s) still out-of-bounds
+16 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 5 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 11 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 15 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6945    0.2518    0.4649    0.1932    0.1912    0.1990
+
+---------
+Elapsed time is 27.325751 seconds.
+
+ans =
+
+    20    36   232   487   154    45    23     6
+
+Fitting 20120306...
+500 of 3796
+1000 of 3796
+1500 of 3796
+2000 of 3796
+2500 of 3796
+3000 of 3796
+3500 of 3796
+Corrected 411 bestMeanFit sample(s) to lie within bounds
+Corrected 2460 uniform sample sample(s) to lie within bounds
+Corrected 248 unconstrained sample(s) to lie within bounds
+Corrected 197 habitual sample(s) to lie within bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 20 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7337    0.1639    0.5077    0.1491    0.1390    0.1269
+
+---------
+Elapsed time is 40.903446 seconds.
+
+ans =
+
+    48    35   105   513   645   184    68    45
+
+Fitting 20120308...
+500 of 2693
+1000 of 2693
+1500 of 2693
+2000 of 2693
+2500 of 2693
+Corrected 701 bestMeanFit sample(s) to lie within bounds
+Corrected 1649 uniform sample sample(s) to lie within bounds
+Corrected 444 unconstrained sample(s) to lie within bounds
+Corrected 462 habitual sample(s) to lie within bounds
+5 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.5889    0.1966    0.4405    0.1618    0.1669    0.1653
+
+---------
+Elapsed time is 25.291876 seconds.
+
+ans =
+
+    24    29    62    74    96    90    56    32
+
+Fitting 20120309...
+500 of 3380
+1000 of 3380
+1500 of 3380
+2000 of 3380
+2500 of 3380
+3000 of 3380
+Corrected 624 bestMeanFit sample(s) to lie within bounds
+Corrected 2129 uniform sample sample(s) to lie within bounds
+Corrected 84 unconstrained sample(s) to lie within bounds
+Corrected 79 habitual sample(s) to lie within bounds
+3 habitual sample(s) still out-of-bounds
+2 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 15 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7093    0.1732    0.4670    0.1559    0.1369    0.1326
+
+---------
+Elapsed time is 32.650552 seconds.
+
+ans =
+
+    61    69   187   341   186   108    50    40
+
+Fitting 20120319...
+500 of 3219
+1000 of 3219
+1500 of 3219
+2000 of 3219
+2500 of 3219
+3000 of 3219
+Corrected 968 bestMeanFit sample(s) to lie within bounds
+Corrected 2258 uniform sample sample(s) to lie within bounds
+Corrected 323 unconstrained sample(s) to lie within bounds
+Corrected 306 habitual sample(s) to lie within bounds
+18 habitual sample(s) still out-of-bounds
+12 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 42 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 6 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 5 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6626    0.2022    0.4779    0.1755    0.1855    0.1582
+
+---------
+Elapsed time is 31.247657 seconds.
+
+ans =
+
+    80   111   225   191    90    40    41    66
+
+Fitting 20120321...
+500 of 3044
+1000 of 3044
+1500 of 3044
+2000 of 3044
+2500 of 3044
+3000 of 3044
+Corrected 920 bestMeanFit sample(s) to lie within bounds
+Corrected 2093 uniform sample sample(s) to lie within bounds
+Corrected 321 unconstrained sample(s) to lie within bounds
+Corrected 271 habitual sample(s) to lie within bounds
+12 habitual sample(s) still out-of-bounds
+12 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 12 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6439    0.1949    0.3941    0.1576    0.1292    0.1063
+
+---------
+Elapsed time is 29.126920 seconds.
+
+ans =
+
+    18   134   187   162    84    55    56    16
+
+Fitting 20120323...
+500 of 3113
+1000 of 3113
+1500 of 3113
+2000 of 3113
+2500 of 3113
+3000 of 3113
+Corrected 632 bestMeanFit sample(s) to lie within bounds
+Corrected 2221 uniform sample sample(s) to lie within bounds
+Corrected 322 unconstrained sample(s) to lie within bounds
+Corrected 231 habitual sample(s) to lie within bounds
+8 habitual sample(s) still out-of-bounds
+9 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 31 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6326    0.2660    0.5039    0.2282    0.1643    0.1619
+
+---------
+Elapsed time is 30.472312 seconds.
+
+ans =
+
+    15    40   159   222    93    88   118    35
+
+Fitting 20120327...
+500 of 2656
+1000 of 2656
+1500 of 2656
+2000 of 2656
+2500 of 2656
+Corrected 762 bestMeanFit sample(s) to lie within bounds
+Corrected 1855 uniform sample sample(s) to lie within bounds
+Corrected 254 unconstrained sample(s) to lie within bounds
+Corrected 185 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 25 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: Only one instance of group. Skipping in
+optimalBinCount. 
+> In score.optimalBinCount (line 29)
+  In score.histsFcn (line 11)
+  In score.histErrorsFcn (line 3)
+  In score.scoreAll (line 41)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7049    0.3159    0.5580    0.2859    0.2715    0.1643
+
+---------
+Elapsed time is 25.972269 seconds.
+
+ans =
+
+     1     6   176   353   229   117    33
+
+Fitting 20120329...
+500 of 3586
+1000 of 3586
+1500 of 3586
+2000 of 3586
+2500 of 3586
+3000 of 3586
+3500 of 3586
+Corrected 1072 bestMeanFit sample(s) to lie within bounds
+Corrected 2513 uniform sample sample(s) to lie within bounds
+Corrected 661 unconstrained sample(s) to lie within bounds
+Corrected 433 habitual sample(s) to lie within bounds
+2 habitual sample(s) still out-of-bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 115 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: Only one instance of group. Skipping in
+optimalBinCount. 
+> In score.optimalBinCount (line 29)
+  In score.histsFcn (line 11)
+  In score.histErrorsFcn (line 3)
+  In score.scoreAll (line 41)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6724    0.3238    0.5910    0.2505    0.2243    0.1760
+
+---------
+Elapsed time is 34.440697 seconds.
+
+ans =
+
+     5   111   500   353   132    31     2     1
+
+Fitting 20120331...
+500 of 3224
+1000 of 3224
+1500 of 3224
+2000 of 3224
+2500 of 3224
+3000 of 3224
+Corrected 625 bestMeanFit sample(s) to lie within bounds
+Corrected 2178 uniform sample sample(s) to lie within bounds
+Corrected 187 unconstrained sample(s) to lie within bounds
+Corrected 192 habitual sample(s) to lie within bounds
+11 habitual sample(s) still out-of-bounds
+10 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 52 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7467    0.3023    0.5511    0.2600    0.1887    0.1850
+
+---------
+Elapsed time is 41.381819 seconds.
+
+ans =
+
+    24    43    41    33    37   141   161    33
+
+Fitting 20120403...
+500 of 4238
+1000 of 4238
+1500 of 4238
+2000 of 4238
+2500 of 4238
+3000 of 4238
+3500 of 4238
+4000 of 4238
+Corrected 1288 bestMeanFit sample(s) to lie within bounds
+Corrected 2676 uniform sample sample(s) to lie within bounds
+Corrected 373 unconstrained sample(s) to lie within bounds
+Corrected 347 habitual sample(s) to lie within bounds
+61 habitual sample(s) still out-of-bounds
+41 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 16 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 7 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 16 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6625    0.3369    0.6253    0.2689    0.1912    0.1574
+
+---------
+Elapsed time is 48.302202 seconds.
+
+ans =
+
+   137   164   211   149   177   268   306   123
+
+Fitting 20120514...
+500 of 3730
+1000 of 3730
+1500 of 3730
+2000 of 3730
+2500 of 3730
+3000 of 3730
+3500 of 3730
+Corrected 2071 bestMeanFit sample(s) to lie within bounds
+Corrected 2280 uniform sample sample(s) to lie within bounds
+Corrected 2022 unconstrained sample(s) to lie within bounds
+Corrected 1983 habitual sample(s) to lie within bounds
+114 habitual sample(s) still out-of-bounds
+94 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 26 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 318 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 26 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 25 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.5711    0.3142    0.6528    0.2339    0.1632    0.1255
+
+---------
+Elapsed time is 42.511233 seconds.
+
+ans =
+
+   152   121    87   106   232   174   152   165
+
+Fitting 20120516...
+500 of 3627
+1000 of 3627
+1500 of 3627
+2000 of 3627
+2500 of 3627
+3000 of 3627
+3500 of 3627
+Corrected 848 bestMeanFit sample(s) to lie within bounds
+Corrected 2525 uniform sample sample(s) to lie within bounds
+Corrected 773 unconstrained sample(s) to lie within bounds
+Corrected 639 habitual sample(s) to lie within bounds
+23 habitual sample(s) still out-of-bounds
+20 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 129 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 3 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7923    0.3374    0.5928    0.2522    0.1909    0.1873
+
+---------
+Elapsed time is 36.008073 seconds.
+
+ans =
+
+   129   130   149   149   219   132    98   160
+
+Fitting 20120518...
+500 of 3635
+1000 of 3635
+1500 of 3635
+2000 of 3635
+2500 of 3635
+3000 of 3635
+3500 of 3635
+Corrected 683 bestMeanFit sample(s) to lie within bounds
+Corrected 2552 uniform sample sample(s) to lie within bounds
+Corrected 180 unconstrained sample(s) to lie within bounds
+Corrected 197 habitual sample(s) to lie within bounds
+7 habitual sample(s) still out-of-bounds
+5 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 96 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 2 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.9066    0.2351    0.5967    0.1923    0.1263    0.0994
+
+---------
+Elapsed time is 34.514996 seconds.
+
+ans =
+
+   117   118   159   239   235   139   122   142
+
+Fitting 20120521...
+500 of 3575
+1000 of 3575
+1500 of 3575
+2000 of 3575
+2500 of 3575
+3000 of 3575
+3500 of 3575
+Corrected 942 bestMeanFit sample(s) to lie within bounds
+Corrected 2463 uniform sample sample(s) to lie within bounds
+Corrected 658 unconstrained sample(s) to lie within bounds
+Corrected 471 habitual sample(s) to lie within bounds
+16 habitual sample(s) still out-of-bounds
+12 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 39 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 7 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8218    0.3207    0.6261    0.2596    0.2505    0.1900
+
+---------
+Elapsed time is 33.469153 seconds.
+
+ans =
+
+   168   138   168   173   144   122   101    84
+
+Fitting 20120523...
+500 of 3488
+1000 of 3488
+1500 of 3488
+2000 of 3488
+2500 of 3488
+3000 of 3488
+Corrected 1281 bestMeanFit sample(s) to lie within bounds
+Corrected 2406 uniform sample sample(s) to lie within bounds
+Corrected 1033 unconstrained sample(s) to lie within bounds
+Corrected 923 habitual sample(s) to lie within bounds
+65 habitual sample(s) still out-of-bounds
+70 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 4 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 46 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 6 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7192    0.3146    0.6034    0.2183    0.1772    0.1428
+
+---------
+Elapsed time is 30.041054 seconds.
+
+ans =
+
+   162   158   137   127   137    93    83   113
+
+Fitting 20120525...
+500 of 3837
+1000 of 3837
+1500 of 3837
+2000 of 3837
+2500 of 3837
+3000 of 3837
+3500 of 3837
+Corrected 966 bestMeanFit sample(s) to lie within bounds
+Corrected 2716 uniform sample sample(s) to lie within bounds
+Corrected 636 unconstrained sample(s) to lie within bounds
+Corrected 531 habitual sample(s) to lie within bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 122 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7703    0.3428    0.6052    0.2966    0.2151    0.2090
+
+---------
+Elapsed time is 35.184124 seconds.
+
+ans =
+
+   230   196   150   151   154   179   157   186
+
+Fitting 20120528...
+500 of 3892
+1000 of 3892
+1500 of 3892
+2000 of 3892
+2500 of 3892
+3000 of 3892
+3500 of 3892
+Corrected 546 bestMeanFit sample(s) to lie within bounds
+Corrected 2626 uniform sample sample(s) to lie within bounds
+Corrected 291 unconstrained sample(s) to lie within bounds
+Corrected 213 habitual sample(s) to lie within bounds
+46 habitual sample(s) still out-of-bounds
+42 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 103 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 10 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 6 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7651    0.3390    0.6143    0.2599    0.1728    0.1269
+
+---------
+Elapsed time is 31.860497 seconds.
+
+ans =
+
+   194   150   120   195   240   185   165   180
+
+Fitting 20120530...
+500 of 4552
+1000 of 4552
+1500 of 4552
+2000 of 4552
+2500 of 4552
+3000 of 4552
+3500 of 4552
+4000 of 4552
+4500 of 4552
+Corrected 1194 bestMeanFit sample(s) to lie within bounds
+Corrected 2751 uniform sample sample(s) to lie within bounds
+Corrected 606 unconstrained sample(s) to lie within bounds
+Corrected 543 habitual sample(s) to lie within bounds
+43 habitual sample(s) still out-of-bounds
+33 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 11 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 21 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 6 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6786    0.3314    0.6112    0.2145    0.1432    0.1083
+
+---------
+Elapsed time is 35.180646 seconds.
+
+ans =
+
+   260   202   269   330   325   224   227   296
+
+Fitting 20120601...
+500 of 2460
+1000 of 2460
+1500 of 2460
+2000 of 2460
+Corrected 844 bestMeanFit sample(s) to lie within bounds
+Corrected 1556 uniform sample sample(s) to lie within bounds
+Corrected 629 unconstrained sample(s) to lie within bounds
+Corrected 593 habitual sample(s) to lie within bounds
+66 habitual sample(s) still out-of-bounds
+48 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 6 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 203 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 9 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 14 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6089    0.3010    0.6746    0.2067    0.1601    0.1276
+
+---------
+Elapsed time is 22.015243 seconds.
+
+ans =
+
+   129    81    80    98   110   107   152   169
+
+Fitting 20120628...
+500 of 4332
+1000 of 4332
+1500 of 4332
+2000 of 4332
+2500 of 4332
+3000 of 4332
+3500 of 4332
+4000 of 4332
+Corrected 923 bestMeanFit sample(s) to lie within bounds
+Corrected 3037 uniform sample sample(s) to lie within bounds
+Corrected 339 unconstrained sample(s) to lie within bounds
+Corrected 267 habitual sample(s) to lie within bounds
+31 habitual sample(s) still out-of-bounds
+14 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 47 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 6 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 9 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7387    0.3281    0.5406    0.2616    0.1472    0.1220
+
+---------
+Elapsed time is 39.981449 seconds.
+
+ans =
+
+   227   165   175   239   277   247   178   274
+
+Fitting 20120630...
+500 of 4230
+1000 of 4230
+1500 of 4230
+2000 of 4230
+2500 of 4230
+3000 of 4230
+3500 of 4230
+4000 of 4230
+Corrected 923 bestMeanFit sample(s) to lie within bounds
+Corrected 2301 uniform sample sample(s) to lie within bounds
+Corrected 526 unconstrained sample(s) to lie within bounds
+Corrected 428 habitual sample(s) to lie within bounds
+59 habitual sample(s) still out-of-bounds
+42 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 4 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 6 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 37 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 15 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8208    0.3590    0.5736    0.2969    0.1765    0.1065
+
+---------
+Elapsed time is 38.214981 seconds.
+
+ans =
+
+   216   131   174   233   306   302   225   208
+
+Fitting 20120703...
+500 of 4185
+1000 of 4185
+1500 of 4185
+2000 of 4185
+2500 of 4185
+3000 of 4185
+3500 of 4185
+4000 of 4185
+Corrected 1054 bestMeanFit sample(s) to lie within bounds
+Corrected 2594 uniform sample sample(s) to lie within bounds
+Corrected 649 unconstrained sample(s) to lie within bounds
+Corrected 526 habitual sample(s) to lie within bounds
+12 habitual sample(s) still out-of-bounds
+11 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 13 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 9 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 4 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7631    0.3397    0.5799    0.2710    0.1355    0.1189
+
+---------
+Elapsed time is 37.975517 seconds.
+
+ans =
+
+   245   170   152   173   340   297   221   224
+
+Fitting 20120709...
+500 of 4063
+1000 of 4063
+1500 of 4063
+2000 of 4063
+2500 of 4063
+3000 of 4063
+3500 of 4063
+4000 of 4063
+Corrected 385 bestMeanFit sample(s) to lie within bounds
+Corrected 2126 uniform sample sample(s) to lie within bounds
+Corrected 71 unconstrained sample(s) to lie within bounds
+Corrected 77 habitual sample(s) to lie within bounds
+5 habitual sample(s) still out-of-bounds
+5 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8142    0.3384    0.5885    0.2237    0.1326    0.1478
+
+---------
+Elapsed time is 37.641404 seconds.
+
+ans =
+
+   153    82    82   194   297   234   206   224
+
+Fitting 20130527...
+500 of 3529
+1000 of 3529
+1500 of 3529
+2000 of 3529
+2500 of 3529
+3000 of 3529
+3500 of 3529
+Corrected 2409 bestMeanFit sample(s) to lie within bounds
+Corrected 2415 uniform sample sample(s) to lie within bounds
+Corrected 1426 unconstrained sample(s) to lie within bounds
+Corrected 1336 habitual sample(s) to lie within bounds
+141 habitual sample(s) still out-of-bounds
+131 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 63 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 107 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 10 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 8 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.2903    0.2293    0.5417    0.0946    0.0963    0.0754
+
+---------
+Elapsed time is 28.797386 seconds.
+
+ans =
+
+   125   200   281   411   180    32    41    81
+
+Fitting 20130612...
+500 of 3423
+1000 of 3423
+1500 of 3423
+2000 of 3423
+2500 of 3423
+3000 of 3423
+Corrected 607 bestMeanFit sample(s) to lie within bounds
+Corrected 1812 uniform sample sample(s) to lie within bounds
+Corrected 477 unconstrained sample(s) to lie within bounds
+Corrected 540 habitual sample(s) to lie within bounds
+5 habitual sample(s) still out-of-bounds
+2 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 2 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.5576    0.2249    0.5115    0.1383    0.1331    0.0990
+
+---------
+Elapsed time is 27.093769 seconds.
+
+ans =
+
+   193   249   273   118    98    48    92   105
+
+Fitting 20131204...
+500 of 3737
+1000 of 3737
+1500 of 3737
+2000 of 3737
+2500 of 3737
+3000 of 3737
+3500 of 3737
+Corrected 364 bestMeanFit sample(s) to lie within bounds
+Corrected 2602 uniform sample sample(s) to lie within bounds
+Corrected 354 unconstrained sample(s) to lie within bounds
+Corrected 296 habitual sample(s) to lie within bounds
+2 habitual sample(s) still out-of-bounds
+2 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 153 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7363    0.2713    0.5361    0.2603    0.1343    0.1056
+
+---------
+Elapsed time is 34.391815 seconds.
+
+ans =
+
+   270   187   211   163    66    47   204   236
+
+Fitting 20131205...
+500 of 3840
+1000 of 3840
+1500 of 3840
+2000 of 3840
+2500 of 3840
+3000 of 3840
+3500 of 3840
+Corrected 192 bestMeanFit sample(s) to lie within bounds
+Corrected 2701 uniform sample sample(s) to lie within bounds
+Corrected 222 unconstrained sample(s) to lie within bounds
+Corrected 172 habitual sample(s) to lie within bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 114 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7096    0.2884    0.5608    0.2314    0.1574    0.0949
+
+---------
+Elapsed time is 36.041607 seconds.
+
+ans =
+
+   226   189   162   192   178   147   215   196
+
+Fitting 20131208...
+500 of 3881
+1000 of 3881
+1500 of 3881
+2000 of 3881
+2500 of 3881
+3000 of 3881
+3500 of 3881
+Corrected 301 bestMeanFit sample(s) to lie within bounds
+Corrected 2784 uniform sample sample(s) to lie within bounds
+Corrected 321 unconstrained sample(s) to lie within bounds
+Corrected 357 habitual sample(s) to lie within bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 104 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6948    0.2473    0.4915    0.1985    0.1199    0.0981
+
+---------
+Elapsed time is 30.507276 seconds.
+
+ans =
+
+   271   298   277   113   129   192   224   189
+
+Fitting 20131212...
+500 of 3500
+1000 of 3500
+1500 of 3500
+2000 of 3500
+2500 of 3500
+3000 of 3500
+3500 of 3500
+Corrected 336 bestMeanFit sample(s) to lie within bounds
+Corrected 2382 uniform sample sample(s) to lie within bounds
+Corrected 505 unconstrained sample(s) to lie within bounds
+Corrected 412 habitual sample(s) to lie within bounds
+11 habitual sample(s) still out-of-bounds
+15 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 30 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 7 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.5199    0.2771    0.4779    0.2080    0.1150    0.1005
+
+---------
+Elapsed time is 28.296120 seconds.
+
+ans =
+
+   171   212   195   134   133   114   192   128
+
+Fitting 20131218...
+500 of 4788
+1000 of 4788
+1500 of 4788
+2000 of 4788
+2500 of 4788
+3000 of 4788
+3500 of 4788
+4000 of 4788
+4500 of 4788
+Corrected 726 bestMeanFit sample(s) to lie within bounds
+Corrected 2342 uniform sample sample(s) to lie within bounds
+Corrected 756 unconstrained sample(s) to lie within bounds
+Corrected 710 habitual sample(s) to lie within bounds
+17 habitual sample(s) still out-of-bounds
+8 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 676 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 2 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 10 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7771    0.3103    0.5169    0.2382    0.1270    0.0847
+
+---------
+Elapsed time is 52.008821 seconds.
+
+ans =
+
+   199   271   386   246   199   262   260   139
+
+Fitting 20160329...
+500 of 2243
+1000 of 2243
+1500 of 2243
+2000 of 2243
+Corrected 709 bestMeanFit sample(s) to lie within bounds
+Corrected 1513 uniform sample sample(s) to lie within bounds
+Corrected 765 unconstrained sample(s) to lie within bounds
+Corrected 785 habitual sample(s) to lie within bounds
+21 habitual sample(s) still out-of-bounds
+18 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 125 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 7 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.5695    0.3605    0.5962    0.2863    0.2520    0.1608
+
+---------
+Elapsed time is 33.239729 seconds.
+
+ans =
+
+    22    26   128   154   148    81    64    26
+
+Fitting 20160404...
+500 of 2221
+1000 of 2221
+1500 of 2221
+2000 of 2221
+Corrected 545 bestMeanFit sample(s) to lie within bounds
+Corrected 1534 uniform sample sample(s) to lie within bounds
+Corrected 664 unconstrained sample(s) to lie within bounds
+Corrected 594 habitual sample(s) to lie within bounds
+41 habitual sample(s) still out-of-bounds
+42 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 93 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 3 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7010    0.4071    0.6484    0.3303    0.2090    0.1905
+
+---------
+Elapsed time is 30.573114 seconds.
+
+ans =
+
+    58    92   105   115   129    55    28    30
+
+Fitting 20160405...
+500 of 2259
+1000 of 2259
+1500 of 2259
+2000 of 2259
+Corrected 655 bestMeanFit sample(s) to lie within bounds
+Corrected 1486 uniform sample sample(s) to lie within bounds
+Corrected 803 unconstrained sample(s) to lie within bounds
+Corrected 720 habitual sample(s) to lie within bounds
+32 habitual sample(s) still out-of-bounds
+35 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 126 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 5 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6377    0.4247    0.7153    0.3309    0.2853    0.2208
+
+---------
+Elapsed time is 30.883816 seconds.
+
+ans =
+
+    73    89   149   138   137    55    10    12
+
+Fitting 20160714...
+500 of 2307
+1000 of 2307
+1500 of 2307
+2000 of 2307
+Corrected 550 bestMeanFit sample(s) to lie within bounds
+Corrected 947 uniform sample sample(s) to lie within bounds
+Corrected 1183 unconstrained sample(s) to lie within bounds
+Corrected 1039 habitual sample(s) to lie within bounds
+36 habitual sample(s) still out-of-bounds
+18 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 433 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 7 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 15 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7604    0.4663    0.5811    0.3000    0.2514    0.1771
+
+---------
+Elapsed time is 28.496318 seconds.
+
+ans =
+
+    69    56   131   104   160    81    34    30
+
+Fitting 20160722...
+500 of 2370
+1000 of 2370
+1500 of 2370
+2000 of 2370
+Corrected 507 bestMeanFit sample(s) to lie within bounds
+Corrected 1312 uniform sample sample(s) to lie within bounds
+Corrected 788 unconstrained sample(s) to lie within bounds
+Corrected 737 habitual sample(s) to lie within bounds
+8 habitual sample(s) still out-of-bounds
+6 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 277 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 4 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6114    0.3967    0.5464    0.3409    0.3151    0.2095
+
+---------
+Elapsed time is 20.045171 seconds.
+
+ans =
+
+    83    75   122   121   110    37    65    33
+
+Fitting 20160726...
+500 of 2271
+1000 of 2271
+1500 of 2271
+2000 of 2271
+Corrected 625 bestMeanFit sample(s) to lie within bounds
+Corrected 1445 uniform sample sample(s) to lie within bounds
+Corrected 1023 unconstrained sample(s) to lie within bounds
+Corrected 967 habitual sample(s) to lie within bounds
+41 habitual sample(s) still out-of-bounds
+14 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 168 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 2 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 27 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6228    0.4042    0.5328    0.3143    0.2409    0.1632
+
+---------
+Elapsed time is 22.975119 seconds.
+
+ans =
+
+    46    58   122   135    96    64    76    36
+
+Fitting 20160727...
+500 of 2322
+1000 of 2322
+1500 of 2322
+2000 of 2322
+Corrected 503 bestMeanFit sample(s) to lie within bounds
+Corrected 1194 uniform sample sample(s) to lie within bounds
+Corrected 618 unconstrained sample(s) to lie within bounds
+Corrected 525 habitual sample(s) to lie within bounds
+7 habitual sample(s) still out-of-bounds
+3 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 318 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 6 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 5 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7467    0.3985    0.5479    0.3636    0.2548    0.1798
+
+---------
+Elapsed time is 23.217018 seconds.
+
+ans =
+
+    72   121   128    98   159    53    33    39
+
+Fitting 20160728...
+500 of 2392
+1000 of 2392
+1500 of 2392
+2000 of 2392
+Corrected 610 bestMeanFit sample(s) to lie within bounds
+Corrected 848 uniform sample sample(s) to lie within bounds
+Corrected 874 unconstrained sample(s) to lie within bounds
+Corrected 847 habitual sample(s) to lie within bounds
+53 habitual sample(s) still out-of-bounds
+27 habitual sample(s) had no neighbors within range.
+Warning: best-mean: Ignoring 28 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 469 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 32 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 26 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6366    0.3105    0.5369    0.2678    0.2641    0.1828
+
+---------
+Elapsed time is 20.296975 seconds.
+
+ans =
+
+    88   110   126    78   128   113    67    39
+
+Fitting 20160810...
+500 of 2488
+1000 of 2488
+1500 of 2488
+2000 of 2488
+Corrected 306 bestMeanFit sample(s) to lie within bounds
+Corrected 1434 uniform sample sample(s) to lie within bounds
+Corrected 637 unconstrained sample(s) to lie within bounds
+Corrected 563 habitual sample(s) to lie within bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 302 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7146    0.4140    0.5410    0.3352    0.2612    0.1899
+
+---------
+Elapsed time is 20.588316 seconds.
+
+ans =
+
+    79   108   207   186   117    53    47    47
+
+Fitting 20160814...
+500 of 2293
+1000 of 2293
+1500 of 2293
+2000 of 2293
+Corrected 336 bestMeanFit sample(s) to lie within bounds
+Corrected 1434 uniform sample sample(s) to lie within bounds
+Corrected 653 unconstrained sample(s) to lie within bounds
+Corrected 661 habitual sample(s) to lie within bounds
+23 habitual sample(s) still out-of-bounds
+1 habitual sample(s) had no neighbors within range.
+Warning: uncontrolled-uniform: Ignoring 166 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 17 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7607    0.4479    0.5515    0.3825    0.3500    0.2340
+
+---------
+Elapsed time is 20.798657 seconds.
+
+ans =
+
+    64    98   142    76   114    74    50    38
+
+>> clear all
+Fitting 20120302...
+500 of 2597
+1000 of 2597
+1500 of 2597
+2000 of 2597
+2500 of 2597
+Corrected 326 bestMeanFit sample(s) to lie within bounds
+Corrected 1774 uniform sample sample(s) to lie within bounds
+Corrected 153 unconstrained sample(s) to lie within bounds
+Corrected 186 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 76 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7821    0.1849    0.5063    0.1385    0.1206    0.1142
+
+---------
+Elapsed time is 21.984647 seconds.
+
+ans =
+
+   268   270   336   367   422   380   311   243
+
+Fitting 20120305...
+500 of 1855
+1000 of 1855
+1500 of 1855
+Corrected 225 bestMeanFit sample(s) to lie within bounds
+Corrected 1327 uniform sample sample(s) to lie within bounds
+Corrected 27 unconstrained sample(s) to lie within bounds
+Corrected 35 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 73 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6229    0.2785    0.5534    0.2045    0.1631    0.1928
+
+---------
+Elapsed time is 14.676244 seconds.
+
+ans =
+
+   179   246   298   262   226   199   235   210
+
+Fitting 20120306...
+500 of 4281
+1000 of 4281
+1500 of 4281
+2000 of 4281
+2500 of 4281
+3000 of 4281
+3500 of 4281
+4000 of 4281
+Corrected 270 bestMeanFit sample(s) to lie within bounds
+Corrected 3017 uniform sample sample(s) to lie within bounds
+Corrected 72 unconstrained sample(s) to lie within bounds
+Corrected 96 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 260 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7922    0.2358    0.5445    0.1998    0.1815    0.1635
+
+---------
+Elapsed time is 32.368227 seconds.
+
+ans =
+
+   455   619   540   613   709   492   417   436
+
+Fitting 20120308...
+500 of 2808
+1000 of 2808
+1500 of 2808
+2000 of 2808
+2500 of 2808
+Corrected 273 bestMeanFit sample(s) to lie within bounds
+Corrected 1924 uniform sample sample(s) to lie within bounds
+Corrected 129 unconstrained sample(s) to lie within bounds
+Corrected 113 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 196 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7887    0.2865    0.6129    0.2497    0.2357    0.2039
+
+---------
+Elapsed time is 21.365613 seconds.
+
+ans =
+
+   384   488   265   237   351   304   390   389
+
+Fitting 20120309...
+500 of 2404
+1000 of 2404
+1500 of 2404
+2000 of 2404
+Corrected 272 bestMeanFit sample(s) to lie within bounds
+Corrected 1614 uniform sample sample(s) to lie within bounds
+Corrected 93 unconstrained sample(s) to lie within bounds
+Corrected 142 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 304 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7156    0.2431    0.5078    0.2137    0.1668    0.1717
+
+---------
+Elapsed time is 18.797110 seconds.
+
+ans =
+
+   391   249   241   300   336   311   273   303
+
+Fitting 20120319...
+500 of 4316
+1000 of 4316
+1500 of 4316
+2000 of 4316
+2500 of 4316
+3000 of 4316
+3500 of 4316
+4000 of 4316
+Corrected 458 bestMeanFit sample(s) to lie within bounds
+Corrected 3010 uniform sample sample(s) to lie within bounds
+Corrected 205 unconstrained sample(s) to lie within bounds
+Corrected 148 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 504 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7896    0.3018    0.6131    0.2496    0.2121    0.1981
+
+---------
+Elapsed time is 33.343520 seconds.
+
+ans =
+
+   611   531   388   570   607   456   580   573
+
+Fitting 20120321...
+500 of 1876
+1000 of 1876
+1500 of 1876
+Corrected 305 bestMeanFit sample(s) to lie within bounds
+Corrected 1355 uniform sample sample(s) to lie within bounds
+Corrected 124 unconstrained sample(s) to lie within bounds
+Corrected 142 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 200 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8031    0.2639    0.6337    0.2288    0.1431    0.1541
+
+---------
+Elapsed time is 14.861849 seconds.
+
+ans =
+
+   196   159   273   223   232   292   270   231
+
+Fitting 20120323...
+500 of 6169
+1000 of 6169
+1500 of 6169
+2000 of 6169
+2500 of 6169
+3000 of 6169
+3500 of 6169
+4000 of 6169
+4500 of 6169
+5000 of 6169
+5500 of 6169
+6000 of 6169
+Corrected 956 bestMeanFit sample(s) to lie within bounds
+Corrected 4188 uniform sample sample(s) to lie within bounds
+Corrected 576 unconstrained sample(s) to lie within bounds
+Corrected 499 habitual sample(s) to lie within bounds
+5 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 889 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 5 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6562    0.2852    0.5844    0.2467    0.1779    0.1639
+
+---------
+Elapsed time is 52.837076 seconds.
+
+ans =
+
+   644   711   682   711   992   862   690   877
+
+Fitting 20120327...
+Warning: bRB RBs angle (goal: 0, val: 47.3185) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 20)
+  In pred.prepSession (line 29)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: bRB NBs angle (goal: 90, val: 65.7607) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 22)
+  In pred.prepSession (line 29)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: latent decoder errors (goal: 0, val: 274) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 28)
+  In pred.prepSession (line 29)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: spike decoder errors (goal: 0, val: 91) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 31)
+  In pred.prepSession (line 29)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: bRB RBs angle (goal: 0, val: 31.6921) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 20)
+  In pred.prepSession (line 30)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: bRB NBs angle (goal: 90, val: 70.8637) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 22)
+  In pred.prepSession (line 30)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: latent decoder errors (goal: 0, val: 278) 
+> In io.everythingIsGonnaBeOkay>assertAndPrint (line 85)
+  In io.everythingIsGonnaBeOkay (line 28)
+  In pred.prepSession (line 30)
+  In pred.fitSession (line 17)
+  In pred.fitAndScoreSessions (line 30) 
+Warning: Error for 20120327: Error using pred.prepSession
+(line 32)
+Something is not right with 20120327
+ 
+> In pred.fitAndScoreSessions (line 39) 
+Fitting 20120329...
+500 of 3139
+1000 of 3139
+1500 of 3139
+2000 of 3139
+2500 of 3139
+3000 of 3139
+Corrected 488 bestMeanFit sample(s) to lie within bounds
+Corrected 2202 uniform sample sample(s) to lie within bounds
+Corrected 249 unconstrained sample(s) to lie within bounds
+Corrected 267 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 524 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7513    0.2914    0.5790    0.2824    0.1243    0.1629
+
+---------
+Elapsed time is 26.326444 seconds.
+
+ans =
+
+   357   295   395   355   402   435   460   440
+
+Fitting 20120331...
+500 of 3443
+1000 of 3443
+1500 of 3443
+2000 of 3443
+2500 of 3443
+3000 of 3443
+Corrected 570 bestMeanFit sample(s) to lie within bounds
+Corrected 2291 uniform sample sample(s) to lie within bounds
+Corrected 336 unconstrained sample(s) to lie within bounds
+Corrected 330 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 655 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7858    0.2774    0.5438    0.2470    0.1574    0.1746
+
+---------
+Elapsed time is 28.495847 seconds.
+
+ans =
+
+   552   465   409   331   299   357   403   627
+
+Fitting 20120403...
+500 of 2522
+1000 of 2522
+1500 of 2522
+2000 of 2522
+2500 of 2522
+Corrected 606 bestMeanFit sample(s) to lie within bounds
+Corrected 1669 uniform sample sample(s) to lie within bounds
+Corrected 481 unconstrained sample(s) to lie within bounds
+Corrected 338 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 524 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 2 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7708    0.2647    0.5733    0.2273    0.2004    0.1532
+
+---------
+Elapsed time is 20.481140 seconds.
+
+ans =
+
+   305   372   206   266   374   324   301   374
+
+Fitting 20120514...
+500 of 13300
+1000 of 13300
+1500 of 13300
+2000 of 13300
+2500 of 13300
+3000 of 13300
+3500 of 13300
+4000 of 13300
+4500 of 13300
+5000 of 13300
+5500 of 13300
+6000 of 13300
+6500 of 13300
+7000 of 13300
+7500 of 13300
+8000 of 13300
+8500 of 13300
+9000 of 13300
+9500 of 13300
+10000 of 13300
+10500 of 13300
+11000 of 13300
+11500 of 13300
+12000 of 13300
+12500 of 13300
+13000 of 13300
+Corrected 6717 bestMeanFit sample(s) to lie within bounds
+Corrected 7471 uniform sample sample(s) to lie within bounds
+Corrected 5271 unconstrained sample(s) to lie within bounds
+Corrected 5162 habitual sample(s) to lie within bounds
+127 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 61 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 4539 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 99 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 127 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8139    0.3188    0.6135    0.2564    0.1783    0.1629
+
+---------
+Elapsed time is 107.281301 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1544        1777        1597        1434        1699
+
+  Columns 6 through 8
+
+        1545        1795        1909
+
+Fitting 20120516...
+500 of 9006
+1000 of 9006
+1500 of 9006
+2000 of 9006
+2500 of 9006
+3000 of 9006
+3500 of 9006
+4000 of 9006
+4500 of 9006
+5000 of 9006
+5500 of 9006
+6000 of 9006
+6500 of 9006
+7000 of 9006
+7500 of 9006
+8000 of 9006
+8500 of 9006
+9000 of 9006
+Corrected 1386 bestMeanFit sample(s) to lie within bounds
+Corrected 5796 uniform sample sample(s) to lie within bounds
+Corrected 1120 unconstrained sample(s) to lie within bounds
+Corrected 893 habitual sample(s) to lie within bounds
+3 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 2031 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8127    0.2907    0.6024    0.2175    0.1257    0.1648
+
+---------
+Elapsed time is 79.578915 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1209        1068        1056         959        1105
+
+  Columns 6 through 8
+
+        1400        1210         999
+
+Fitting 20120518...
+500 of 9283
+1000 of 9283
+1500 of 9283
+2000 of 9283
+2500 of 9283
+3000 of 9283
+3500 of 9283
+4000 of 9283
+4500 of 9283
+5000 of 9283
+5500 of 9283
+6000 of 9283
+6500 of 9283
+7000 of 9283
+7500 of 9283
+8000 of 9283
+8500 of 9283
+9000 of 9283
+Corrected 935 bestMeanFit sample(s) to lie within bounds
+Corrected 6567 uniform sample sample(s) to lie within bounds
+Corrected 370 unconstrained sample(s) to lie within bounds
+Corrected 391 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 1114 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8807    0.2656    0.5588    0.1881    0.1136    0.1237
+
+---------
+Elapsed time is 91.744957 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+         956        1165        1226        1137        1458
+
+  Columns 6 through 8
+
+        1247         951        1143
+
+Fitting 20120521...
+500 of 6306
+1000 of 6306
+1500 of 6306
+2000 of 6306
+2500 of 6306
+3000 of 6306
+3500 of 6306
+4000 of 6306
+4500 of 6306
+5000 of 6306
+5500 of 6306
+6000 of 6306
+Corrected 1161 bestMeanFit sample(s) to lie within bounds
+Corrected 3534 uniform sample sample(s) to lie within bounds
+Corrected 234 unconstrained sample(s) to lie within bounds
+Corrected 201 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 2173 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8110    0.2284    0.5403    0.2162    0.1519    0.1583
+
+---------
+Elapsed time is 60.231556 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+         952         737         832         847         656
+
+  Columns 6 through 8
+
+         555         621        1106
+
+Fitting 20120523...
+500 of 5742
+1000 of 5742
+1500 of 5742
+2000 of 5742
+2500 of 5742
+3000 of 5742
+3500 of 5742
+4000 of 5742
+4500 of 5742
+5000 of 5742
+5500 of 5742
+Corrected 2017 bestMeanFit sample(s) to lie within bounds
+Corrected 3655 uniform sample sample(s) to lie within bounds
+Corrected 1934 unconstrained sample(s) to lie within bounds
+Corrected 1369 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 1414 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8249    0.2574    0.6244    0.2346    0.1382    0.1394
+
+---------
+Elapsed time is 59.852330 seconds.
+
+ans =
+
+   966   705   697   913   459   526   710   766
+
+Fitting 20120525...
+500 of 10289
+1000 of 10289
+1500 of 10289
+2000 of 10289
+2500 of 10289
+3000 of 10289
+3500 of 10289
+4000 of 10289
+4500 of 10289
+5000 of 10289
+5500 of 10289
+6000 of 10289
+6500 of 10289
+7000 of 10289
+7500 of 10289
+8000 of 10289
+8500 of 10289
+9000 of 10289
+9500 of 10289
+10000 of 10289
+Corrected 2212 bestMeanFit sample(s) to lie within bounds
+Corrected 6662 uniform sample sample(s) to lie within bounds
+Corrected 1173 unconstrained sample(s) to lie within bounds
+Corrected 833 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 2332 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.9449    0.3076    0.5273    0.2365    0.1722    0.1727
+
+---------
+Elapsed time is 99.123248 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1249        1411        1208        1069        1466
+
+  Columns 6 through 8
+
+        1473        1209        1204
+
+Fitting 20120528...
+500 of 8622
+1000 of 8622
+1500 of 8622
+2000 of 8622
+2500 of 8622
+3000 of 8622
+3500 of 8622
+4000 of 8622
+4500 of 8622
+5000 of 8622
+5500 of 8622
+6000 of 8622
+6500 of 8622
+7000 of 8622
+7500 of 8622
+8000 of 8622
+8500 of 8622
+Corrected 531 bestMeanFit sample(s) to lie within bounds
+Corrected 5408 uniform sample sample(s) to lie within bounds
+Corrected 450 unconstrained sample(s) to lie within bounds
+Corrected 422 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 2186 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8641    0.3129    0.5836    0.2702    0.1549    0.1328
+
+---------
+Elapsed time is 67.027538 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1294        1185         809         754         852
+
+  Columns 6 through 8
+
+        1066        1468        1194
+
+Fitting 20120530...
+500 of 2338
+1000 of 2338
+1500 of 2338
+2000 of 2338
+Corrected 370 bestMeanFit sample(s) to lie within bounds
+Corrected 1396 uniform sample sample(s) to lie within bounds
+Corrected 285 unconstrained sample(s) to lie within bounds
+Corrected 151 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 683 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7618    0.2922    0.5782    0.2526    0.1093    0.0812
+
+---------
+Elapsed time is 20.401017 seconds.
+
+ans =
+
+   287   299   275   265   271   242   364   335
+
+Fitting 20120601...
+500 of 8465
+1000 of 8465
+1500 of 8465
+2000 of 8465
+2500 of 8465
+3000 of 8465
+3500 of 8465
+4000 of 8465
+4500 of 8465
+5000 of 8465
+5500 of 8465
+6000 of 8465
+6500 of 8465
+7000 of 8465
+7500 of 8465
+8000 of 8465
+Corrected 1800 bestMeanFit sample(s) to lie within bounds
+Corrected 5367 uniform sample sample(s) to lie within bounds
+Corrected 1887 unconstrained sample(s) to lie within bounds
+Corrected 1841 habitual sample(s) to lie within bounds
+10 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 2105 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 15 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 10 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6432    0.3184    0.5989    0.2261    0.1440    0.1569
+
+---------
+Elapsed time is 64.532925 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1025        1454        1403        1125         872
+
+  Columns 6 through 8
+
+         745         896         945
+
+Fitting 20120628...
+500 of 1753
+1000 of 1753
+1500 of 1753
+Corrected 243 bestMeanFit sample(s) to lie within bounds
+Corrected 1259 uniform sample sample(s) to lie within bounds
+Corrected 143 unconstrained sample(s) to lie within bounds
+Corrected 86 habitual sample(s) to lie within bounds
+1 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 206 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7687    0.3296    0.6028    0.2582    0.1335    0.1387
+
+---------
+Elapsed time is 14.956707 seconds.
+
+ans =
+
+   207   284   204   168   193   242   221   234
+
+Fitting 20120630...
+500 of 8567
+1000 of 8567
+1500 of 8567
+2000 of 8567
+2500 of 8567
+3000 of 8567
+3500 of 8567
+4000 of 8567
+4500 of 8567
+5000 of 8567
+5500 of 8567
+6000 of 8567
+6500 of 8567
+7000 of 8567
+7500 of 8567
+8000 of 8567
+8500 of 8567
+Corrected 570 bestMeanFit sample(s) to lie within bounds
+Corrected 6040 uniform sample sample(s) to lie within bounds
+Corrected 555 unconstrained sample(s) to lie within bounds
+Corrected 453 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 1087 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8640    0.3265    0.5584    0.2717    0.2259    0.1769
+
+---------
+Elapsed time is 72.821330 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1312        1016        1061         826         930
+
+  Columns 6 through 8
+
+         866        1139        1417
+
+Fitting 20120703...
+500 of 4636
+1000 of 4636
+1500 of 4636
+2000 of 4636
+2500 of 4636
+3000 of 4636
+3500 of 4636
+4000 of 4636
+4500 of 4636
+Corrected 711 bestMeanFit sample(s) to lie within bounds
+Corrected 3202 uniform sample sample(s) to lie within bounds
+Corrected 351 unconstrained sample(s) to lie within bounds
+Corrected 429 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 761 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7077    0.3249    0.6084    0.2198    0.1239    0.1185
+
+---------
+Elapsed time is 42.987597 seconds.
+
+ans =
+
+   498   619   549   529   562   647   653   579
+
+Fitting 20120709...
+500 of 2404
+1000 of 2404
+1500 of 2404
+2000 of 2404
+Corrected 103 bestMeanFit sample(s) to lie within bounds
+Corrected 1721 uniform sample sample(s) to lie within bounds
+Corrected 76 unconstrained sample(s) to lie within bounds
+Corrected 76 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 199 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7157    0.1997    0.4693    0.1775    0.0881    0.0679
+
+---------
+Elapsed time is 23.395615 seconds.
+
+ans =
+
+   298   301   285   197   213   303   430   377
+
+Fitting 20130527...
+500 of 2669
+1000 of 2669
+1500 of 2669
+2000 of 2669
+2500 of 2669
+Corrected 1833 bestMeanFit sample(s) to lie within bounds
+Corrected 764 uniform sample sample(s) to lie within bounds
+Corrected 1201 unconstrained sample(s) to lie within bounds
+Corrected 1103 habitual sample(s) to lie within bounds
+27 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 244 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 1581 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 37 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 23 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.5088    0.2040    0.4919    0.1306    0.1031    0.0787
+
+---------
+Elapsed time is 25.617682 seconds.
+
+ans =
+
+   243   414   342   219   361   333   244   223
+
+Fitting 20130612...
+500 of 3162
+1000 of 3162
+1500 of 3162
+2000 of 3162
+2500 of 3162
+3000 of 3162
+Corrected 551 bestMeanFit sample(s) to lie within bounds
+Corrected 2057 uniform sample sample(s) to lie within bounds
+Corrected 639 unconstrained sample(s) to lie within bounds
+Corrected 680 habitual sample(s) to lie within bounds
+10 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 1 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 37 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 9 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6701    0.1855    0.4992    0.1634    0.1031    0.1008
+
+---------
+Elapsed time is 29.262402 seconds.
+
+ans =
+
+   369   408   344   298   209   306   354   429
+
+Fitting 20131204...
+500 of 3383
+1000 of 3383
+1500 of 3383
+2000 of 3383
+2500 of 3383
+3000 of 3383
+Corrected 273 bestMeanFit sample(s) to lie within bounds
+Corrected 2410 uniform sample sample(s) to lie within bounds
+Corrected 301 unconstrained sample(s) to lie within bounds
+Corrected 293 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 222 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6241    0.2622    0.4739    0.2382    0.1133    0.1023
+
+---------
+Elapsed time is 30.235257 seconds.
+
+ans =
+
+   471   334   398   366   258   248   385   533
+
+Fitting 20131205...
+500 of 6999
+1000 of 6999
+1500 of 6999
+2000 of 6999
+2500 of 6999
+3000 of 6999
+3500 of 6999
+4000 of 6999
+4500 of 6999
+5000 of 6999
+5500 of 6999
+6000 of 6999
+6500 of 6999
+Corrected 222 bestMeanFit sample(s) to lie within bounds
+Corrected 4890 uniform sample sample(s) to lie within bounds
+Corrected 490 unconstrained sample(s) to lie within bounds
+Corrected 451 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 244 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7172    0.2874    0.4504    0.2342    0.1478    0.1019
+
+---------
+Elapsed time is 49.843234 seconds.
+
+ans =
+
+   668   902   769   664   805   618   857   836
+
+Fitting 20131208...
+500 of 3024
+1000 of 3024
+1500 of 3024
+2000 of 3024
+2500 of 3024
+3000 of 3024
+Corrected 315 bestMeanFit sample(s) to lie within bounds
+Corrected 2098 uniform sample sample(s) to lie within bounds
+Corrected 280 unconstrained sample(s) to lie within bounds
+Corrected 253 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 234 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7970    0.2753    0.5187    0.2353    0.1690    0.1153
+
+---------
+Elapsed time is 23.159025 seconds.
+
+ans =
+
+   426   382   372   314   237   293   289   361
+
+Fitting 20131212...
+500 of 3296
+1000 of 3296
+1500 of 3296
+2000 of 3296
+2500 of 3296
+3000 of 3296
+Corrected 166 bestMeanFit sample(s) to lie within bounds
+Corrected 2354 uniform sample sample(s) to lie within bounds
+Corrected 233 unconstrained sample(s) to lie within bounds
+Corrected 244 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 240 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7967    0.2985    0.5451    0.2045    0.1215    0.1417
+
+---------
+Elapsed time is 24.871636 seconds.
+
+ans =
+
+   543   373   320   398   267   399   357   374
+
+Fitting 20131218...
+500 of 6214
+1000 of 6214
+1500 of 6214
+2000 of 6214
+2500 of 6214
+3000 of 6214
+3500 of 6214
+4000 of 6214
+4500 of 6214
+5000 of 6214
+5500 of 6214
+6000 of 6214
+Corrected 326 bestMeanFit sample(s) to lie within bounds
+Corrected 4250 uniform sample sample(s) to lie within bounds
+Corrected 842 unconstrained sample(s) to lie within bounds
+Corrected 758 habitual sample(s) to lie within bounds
+4 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 841 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 4 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7249    0.3244    0.5531    0.2328    0.1354    0.1006
+
+---------
+Elapsed time is 49.015918 seconds.
+
+ans =
+
+   793   709   740   656   528   484   623   986
+
+Fitting 20160329...
+500 of 2739
+1000 of 2739
+1500 of 2739
+2000 of 2739
+2500 of 2739
+Corrected 657 bestMeanFit sample(s) to lie within bounds
+Corrected 1033 uniform sample sample(s) to lie within bounds
+Corrected 1041 unconstrained sample(s) to lie within bounds
+Corrected 938 habitual sample(s) to lie within bounds
+16 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 1382 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 10 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 15 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7850    0.2952    0.5569    0.2260    0.2260    0.1417
+
+---------
+Elapsed time is 22.425467 seconds.
+
+ans =
+
+   345   259   325   316   195   231   313   400
+
+Fitting 20160404...
+500 of 3585
+1000 of 3585
+1500 of 3585
+2000 of 3585
+2500 of 3585
+3000 of 3585
+3500 of 3585
+Corrected 901 bestMeanFit sample(s) to lie within bounds
+Corrected 2142 uniform sample sample(s) to lie within bounds
+Corrected 1081 unconstrained sample(s) to lie within bounds
+Corrected 913 habitual sample(s) to lie within bounds
+5 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 922 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 5 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 4 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6172    0.2685    0.5407    0.2136    0.1206    0.1187
+
+---------
+Elapsed time is 28.128114 seconds.
+
+ans =
+
+   442   623   617   306   158   264   325   350
+
+Fitting 20160405...
+500 of 6757
+1000 of 6757
+1500 of 6757
+2000 of 6757
+2500 of 6757
+3000 of 6757
+3500 of 6757
+4000 of 6757
+4500 of 6757
+5000 of 6757
+5500 of 6757
+6000 of 6757
+6500 of 6757
+Corrected 1581 bestMeanFit sample(s) to lie within bounds
+Corrected 3679 uniform sample sample(s) to lie within bounds
+Corrected 2128 unconstrained sample(s) to lie within bounds
+Corrected 2252 habitual sample(s) to lie within bounds
+31 habitual sample(s) still out-of-bounds
+Warning: best-mean: Ignoring 19 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-uniform: Ignoring 2260 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 22 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 22 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6952    0.2678    0.5954    0.2070    0.1206    0.1220
+
+---------
+Elapsed time is 62.477841 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+         686         687         806         906        1075
+
+  Columns 6 through 8
+
+         744         645         703
+
+Fitting 20160714...
+500 of 13565
+1000 of 13565
+1500 of 13565
+2000 of 13565
+2500 of 13565
+3000 of 13565
+3500 of 13565
+4000 of 13565
+4500 of 13565
+5000 of 13565
+5500 of 13565
+6000 of 13565
+6500 of 13565
+7000 of 13565
+7500 of 13565
+8000 of 13565
+8500 of 13565
+9000 of 13565
+9500 of 13565
+10000 of 13565
+10500 of 13565
+11000 of 13565
+11500 of 13565
+12000 of 13565
+12500 of 13565
+13000 of 13565
+13500 of 13565
+Corrected 675 bestMeanFit sample(s) to lie within bounds
+Corrected 9392 uniform sample sample(s) to lie within bounds
+Corrected 2816 unconstrained sample(s) to lie within bounds
+Corrected 4451 habitual sample(s) to lie within bounds
+40 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 1771 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 39 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8251    0.4559    0.5615    0.3218    0.1905    0.2115
+
+---------
+Elapsed time is 114.953305 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+        1761        1336        1917        2010        1487
+
+  Columns 6 through 8
+
+        1628        1256         915
+
+Fitting 20160722...
+500 of 4621
+1000 of 4621
+1500 of 4621
+2000 of 4621
+2500 of 4621
+3000 of 4621
+3500 of 4621
+4000 of 4621
+4500 of 4621
+Corrected 229 bestMeanFit sample(s) to lie within bounds
+Corrected 3219 uniform sample sample(s) to lie within bounds
+Corrected 972 unconstrained sample(s) to lie within bounds
+Corrected 1126 habitual sample(s) to lie within bounds
+3 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 434 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 3 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.8048    0.3268    0.5093    0.2625    0.1820    0.1826
+
+---------
+Elapsed time is 40.368959 seconds.
+
+ans =
+
+   430   379   490   518   689   556   529   605
+
+Fitting 20160726...
+500 of 3528
+1000 of 3528
+1500 of 3528
+2000 of 3528
+2500 of 3528
+3000 of 3528
+3500 of 3528
+Corrected 211 bestMeanFit sample(s) to lie within bounds
+Corrected 2547 uniform sample sample(s) to lie within bounds
+Corrected 912 unconstrained sample(s) to lie within bounds
+Corrected 851 habitual sample(s) to lie within bounds
+2 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 210 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7004    0.4565    0.5420    0.3305    0.2121    0.2391
+
+---------
+Elapsed time is 32.275107 seconds.
+
+ans =
+
+   341   342   453   445   506   427   304   295
+
+Fitting 20160727...
+500 of 6148
+1000 of 6148
+1500 of 6148
+2000 of 6148
+2500 of 6148
+3000 of 6148
+3500 of 6148
+4000 of 6148
+4500 of 6148
+5000 of 6148
+5500 of 6148
+6000 of 6148
+Corrected 333 bestMeanFit sample(s) to lie within bounds
+Corrected 4383 uniform sample sample(s) to lie within bounds
+Corrected 1308 unconstrained sample(s) to lie within bounds
+Corrected 984 habitual sample(s) to lie within bounds
+2 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 591 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 2 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6971    0.2667    0.4368    0.1756    0.1620    0.1510
+
+---------
+Elapsed time is 54.403583 seconds.
+
+ans =
+
+   571   794   601   697   595   908   696   651
+
+Fitting 20160728...
+500 of 3023
+1000 of 3023
+1500 of 3023
+2000 of 3023
+2500 of 3023
+3000 of 3023
+Corrected 131 bestMeanFit sample(s) to lie within bounds
+Corrected 2132 uniform sample sample(s) to lie within bounds
+Corrected 490 unconstrained sample(s) to lie within bounds
+Corrected 363 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 238 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6928    0.3690    0.4646    0.2819    0.2307    0.1866
+
+---------
+Elapsed time is 26.340029 seconds.
+
+ans =
+
+   352   284   308   409   426   275   255   304
+
+Fitting 20160810...
+500 of 6142
+1000 of 6142
+1500 of 6142
+2000 of 6142
+2500 of 6142
+3000 of 6142
+3500 of 6142
+4000 of 6142
+4500 of 6142
+5000 of 6142
+5500 of 6142
+6000 of 6142
+Corrected 368 bestMeanFit sample(s) to lie within bounds
+Corrected 4150 uniform sample sample(s) to lie within bounds
+Corrected 936 unconstrained sample(s) to lie within bounds
+Corrected 750 habitual sample(s) to lie within bounds
+Warning: uncontrolled-uniform: Ignoring 939 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: uncontrolled-empirical: Ignoring 1 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.7183    0.3541    0.4933    0.2769    0.1845    0.1940
+
+---------
+Elapsed time is 54.821021 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+         681         463         676         655         818
+
+  Columns 6 through 8
+
+        1095         368         471
+
+Fitting 20160814...
+500 of 6785
+1000 of 6785
+1500 of 6785
+2000 of 6785
+2500 of 6785
+3000 of 6785
+3500 of 6785
+4000 of 6785
+4500 of 6785
+5000 of 6785
+5500 of 6785
+6000 of 6785
+6500 of 6785
+Corrected 188 bestMeanFit sample(s) to lie within bounds
+Corrected 4859 uniform sample sample(s) to lie within bounds
+Corrected 1106 unconstrained sample(s) to lie within bounds
+Corrected 2056 habitual sample(s) to lie within bounds
+9 habitual sample(s) still out-of-bounds
+Warning: uncontrolled-uniform: Ignoring 291 NaN
+prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+Warning: habitual-corrected: Ignoring 9 NaN prediction(s). 
+> In score.scoreAll (line 34)
+  In pred.fitAndScoreSessions (line 31) 
+---------
+
+ans = 
+
+  Columns 1 through 3
+
+    'minimum'    'best-mean'    'uncontrolled-uni...'
+
+  Columns 4 through 5
+
+    'uncontrolled-emp...'    'habitual-corrected'
+
+  Column 6
+
+    'constant-cloud'
+
+
+ans =
+
+    0.6836    0.2626    0.4940    0.2312    0.1862    0.1552
+
+---------
+Elapsed time is 60.956329 seconds.
+
+ans =
+
+  Columns 1 through 5
+
+         683         853        1022         685         766
+
+  Columns 6 through 8
+
+         835         816         700
+
+>> 

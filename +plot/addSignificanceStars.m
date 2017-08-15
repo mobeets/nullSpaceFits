@@ -32,7 +32,7 @@ function [inds, lvls] = getSignificantDifferences(errs, baseCol, alphas)
         Ps(ii) = signrank(errs(:,ii), errs(:,baseCol), 'tail', 'right');
     end
     
-    % Holm-Bonferroni correction    
+    % Holm-Bonferroni correction
     [Ps0,ix] = sort(Ps);
     rnk = 1:nd; rnk = rnk(ix)';
     ntests = nd-1;

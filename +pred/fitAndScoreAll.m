@@ -5,16 +5,7 @@ doOverwrite = false;
 
 %%
 
-dts = io.getDates;
-doOverwrite = true;
-saveDir = 'Int2Pert_yIme_20170605';
-grpName = 'thetaActualImeGrps';
-opts = struct('useIme', true, 'trainBlk', 1, 'testBlk', 2);
-pred.fitAndScoreSessions(saveDir, grpName, opts, {}, dts, doOverwrite);
-
-%%
-
-saveDir = 'Int2Pert_yIme_final';
+saveDir = 'Int2Pert_yIme';
 grpName = 'thetaActualImeGrps';
 opts = struct('useIme', true, 'trainBlk', 1, 'testBlk', 2);
 pred.fitAndScoreSessions(saveDir, grpName, opts, {}, dts, doOverwrite);

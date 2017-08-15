@@ -8,7 +8,7 @@ function plotWedge(wedgeToHighlight, opts)
         'doSave', false, 'saveDir', 'data/plots', ...
         'filename', 'wedge_', 'ext', 'pdf', ...
         'LineWidth', 2, 'MarkerSize', 70, 'nwedges', 8, ...
-        'wedClr', [0.2 0.8 0.2], 'circClr', [0 0 0], ...
+        'wedgeClr', [0.2 0.8 0.2], 'circClr', [0 0 0], ...
         'arrowClr', [0.2 0.5 0.2]);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     fig = plot.init;
@@ -21,7 +21,7 @@ function plotWedge(wedgeToHighlight, opts)
         c2 = c2 - pi/opts.nwedges;
         h = plot_arc(c1, c2, 0, 0, 1);
         if ii == wedgeToHighlight
-            set(h, 'FaceColor', opts.wedClr);
+            set(h, 'FaceColor', opts.wedgeClr);
             th = mean([c1 c2]);
         end
         set(h, 'EdgeColor', [0.5 0.5 0.5]);

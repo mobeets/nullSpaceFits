@@ -5,7 +5,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
     defopts = struct('minType', 'baseline', ...
         'nanIfOutOfBounds', false, 'fitInLatent', false, ...
         'grpName', 'thetaActualGrps', 'makeFAOrthogonal', false, ...
-        'noiseDistribution', 'poisson', 'pNorm', 2, ...
+        'noiseDistribution', 'poisson', 'pNorm', 2, 'nReps', 10, ...
         'obeyBounds', true, 'sigmaScale', 1.0, 'addSpikeNoise', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     dispNm = ['minEnergyFit (' opts.minType ')'];
@@ -84,7 +84,7 @@ function [Z,out] = minEnergyFit(Tr, Te, dec, opts)
         
         c = 0;
         ixBad = any(U < lbs, 2) | any(U > ubs, 2);
-        while sum(ixBad) > 0 && c < 50
+        while sum(ixBad) > 0 && c < opts.nReps
             nBad = sum(ixBad);
             if strcmpi(opts.noiseDistribution, 'gaussian')
                 U(ixBad,:) = normrnd(U0(ixBad,:), repmat(sigma, nBad, 1));

@@ -2,7 +2,8 @@ function [Z, E] = uniformSampleFit(Tr, Te, dec, opts)
     if nargin < 4
         opts = struct();
     end
-    defopts = struct('obeyBounds', true, 'nanIfOutOfBounds', false);
+    defopts = struct('obeyBounds', true, 'nReps', 10, ...
+        'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     RB = Te.RB;
@@ -19,9 +20,8 @@ function [Z, E] = uniformSampleFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
-        maxC = 50;
-        c = 0;        
-        while sum(ixOob) > 0 && c < maxC
+        c = 0;
+        while sum(ixOob) > 0 && c < opts.nReps
             Zn = getSamples(Z1*NB, sum(ixOob));
             Z(ixOob,:) = Zr(ixOob,:) + Zn*NB';
             ixOob = isOutOfBounds(Z);

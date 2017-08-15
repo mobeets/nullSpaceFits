@@ -3,16 +3,22 @@ function clr = hypColor(hypnm)
     clrs1 = cbrewer('div', 'RdYlGn', 11);
     clrs2 = cbrewer('div', 'RdYlBu', 11);
     clrs3 = cbrewer('div', 'PuOr', 11);
+    clrs4 = cbrewer('div', 'PiYG', 11);
+    clrs5 = cbrewer('div', 'PRGn', 11);
+    
+%     clrs = [clrs2(3,:); clrs2(2,:); clrs3(9,:); clrs3(10,:); clrs2(9,:); clrs2(10,:)];
+%     clrs = [clrs2(3,:); clrs2(2,:); clrs4(3,:); clrs5(3,:); clrs2(9,:); clrs2(10,:)];
+    
     clrs = [clrs2(3,:); clrs2(2,:); clrs1(9,:); clrs1(10,:); clrs2(9,:); clrs2(10,:)];
 
 %     
 %     clrs = cbrewer('qual', 'Set1', 5);
 %     
 %     % desaturated pink
-%     clr1 = [0.9412    0.0078    0.4980];
+%     clr1 = clrs(2,:);
 %     clr1a = rgb2hsv(clr1);
-%     clr1a(:,2) = 0.6*clr1a(:,2);
-%     clr1 = hsv2rgb(clr1a);
+%     clr1a(:,2) = 0.8*clr1a(:,2);
+%     clrs(2,:) = hsv2rgb(clr1a);
 %     
 %     % reorder
 %     clrs = [clrs; clr1];

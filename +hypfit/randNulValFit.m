@@ -3,7 +3,8 @@ function [Z, E] = randNulValFit(Tr, Te, dec, opts)
     if nargin < 4
         opts = struct();
     end
-    defopts = struct('obeyBounds', true, 'nanIfOutOfBounds', false);
+    defopts = struct('obeyBounds', true, 'nReps', 10, ...
+        'nanIfOutOfBounds', false);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     NB2 = Te.NB;
@@ -20,9 +21,8 @@ function [Z, E] = randNulValFit(Tr, Te, dec, opts)
         isOutOfBounds = tools.boundsFcn(Tr.spikes, 'spikes', dec, false);
         ixOob = isOutOfBounds(Z);
         n0 = sum(ixOob);
-        maxC = 50;
-        c = 0;        
-        while sum(ixOob) > 0 && c < maxC
+        c = 0;
+        while sum(ixOob) > 0 && c < opts.nReps
             Zsamp = Z1(randi(size(Z1,1),sum(ixOob),1),:);
             Z(ixOob,:) = Zr(ixOob,:) + Zsamp*(NB2*NB2');
             ixOob = isOutOfBounds(Z);

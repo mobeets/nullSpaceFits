@@ -1,0 +1,39 @@
+
+Idea: A trial-level version of reassociation
+Goal: Predict neural activity during perturbation trials given:
+	- the repertoire recorded during intuitive trials
+	- the freeze period perturbation activity, to seed each trial
+
+Process idea:
+1. train LSTMs on dynamics of intuitive trials
+	- LSTM-null:
+		- given joint activity/stimulus history, and potent activity (through perturbation decoder!), predict null activity
+	- LSTM-potent:
+		- given joint _stimulus_ history, and given current cursor position, predict next potent activity _goal_ (in intuitive decoder!)
+	- LSTM-potent-pert:
+		- given joint activity/stimulus history, and potent goal, predict potent activity (through intuitive decoder!)
+2. same as 2 above
+3. For each trial in perturbation:
+	- seed LSTM-null and LSTM-potent with freeze period activity
+	- predict the next potent activity based on position
+		- e.g., using LSTM-potent? or something
+	- select best repertoire activity given this potent activity goal
+		- or, weight points in repertoire based on how well they would produce this desired potent activity?
+	- pass this value through LSTM to get next time step
+	- repeat
+
+The idea of LSTM-potent is that, supposing the animal knows the mapping, maybe you can train a model for the _ideal_ potent activity subject only to the stimulus history. This way, this same model can apply during the perturbation session since it won't depend on the particular dynamics constraints of the different potent spaces.
+
+And then you just learn the perturbation's potent dynamics during the intuitive session.
+
+
+Process idea #2:
+
+1. LSTM-null: Y^n(t) = f( Y^n(<t), Y^r(≤t), X(≤t) )
+	- can train simply using intuitive activity through perturbation mapping
+	- or, could select Y^n(t) post-hoc given Y^r(t) and the repertoire
+2. LSTM-potent: Y^r(t) = f( Y^n(<t), Y^r(<t), X(≤t), G(t) )
+	- G(t) is the current activity goal
+		- during perturbation, this is the intuitive activity that would yield the nearest value of the desired potent activity
+		- during intuitive session, this is the intuitive activity that would yield the best velocity towards the target
+	- can train using intuitive activity through perturbation mapping
