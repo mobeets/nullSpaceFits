@@ -2,11 +2,12 @@ from __future__ import print_function
 import os.path
 import json
 import argparse
+import numpy as np
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from load_data import load
 from model import get_model, load_model
-from vis import plot_examples
-from score import print_scores, ScoreCallback, predict_sequential, FairModel
+from vis import plot_examples, plot_tunings
+from score import print_scores, ScoreCallback
 
 def get_callbacks(args):
     json_file = os.path.join(args.model_dir, args.run_name + '.json')
@@ -26,15 +27,9 @@ def main(args):
     args.output_dim = ytr.shape[-1]
     args.seq_length = ytr.shape[-2]
     mdl = get_model(args.batch_size, args.input_dim, args.output_dim,
-        args.seq_length, args.optimizer, stateful=args.do_score)
+        args.seq_length, args.optimizer)
     if args.model_file is not None:
         mdl.load_weights(args.model_file)
-    if args.do_score and args.model_file is not None:
-        bmdl = get_model(1, args.input_dim, args.output_dim, 1,
-            args.optimizer, stateful=True)
-        bmdl.load_weights(args.model_file)
-    else:
-        bmdl = None
     
     if args.num_epochs > 0:
         print('Training...')
@@ -48,7 +43,14 @@ def main(args):
             callbacks=callbacks,
             validation_data=(Xte, yte))
 
-    print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, args.batch_size, bmdl)
+    if args.do_score:
+        bmdl = get_model(1, args.input_dim, args.output_dim, 1,
+            args.optimizer, stateful=True)
+        bmdl.set_weights(mdl.get_weights())
+    else:
+        bmdl = None
+    ytuns = print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, args.batch_size, bmdl)
+    plot_tunings(np.unique(gte)[1:], ytuns[0], ytuns[1:], outdir=args.plot_dir, prefix=args.run_name + '_test')
     if args.do_plot:
         yhat_tr = mdl.predict(Xtr, batch_size=args.batch_size)
         yhat_te = mdl.predict(Xte, batch_size=args.batch_size)

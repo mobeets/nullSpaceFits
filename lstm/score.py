@@ -9,15 +9,15 @@ def get_rsqs(y, yhat):
     # or ignoring zero-filled timesteps?
     return np.nanmean(np.array([r2_score(y[i], yhat[i], multioutput='raw_values') if ~np.isnan(yhat[i]).any() else np.nan for i in xrange(len(y))]), axis=0)
 
-get_tuning_error = lambda x,y: np.square(x-y).sum()
+get_tuning_error = lambda x,y: np.square(x-y).sum(axis=0)
 
 def get_tuning(y, gs, ignore_group=-1):
     grps = np.unique(gs)
     grps = grps[grps != ignore_group] # ignore dummy group
-    vs = np.zeros(len(grps))
+    vs = np.zeros((len(grps), y.shape[-1]))
     for i in xrange(len(grps)):
         idx = (gs == grps[i])[:,:,0]
-        vs[i] = np.nanmean(y[idx])
+        vs[i] = np.nanmean(y[idx], axis=0)
     return vs#/vs.sum()
 
 class ScoreCallback(Callback):
@@ -80,7 +80,7 @@ class FairModel:
         idx = ~np.isnan(yhat).any(axis=-1)
         return np.mean(np.square(yhat[idx] - y[idx]), axis=-1).mean()
 
-def predict_sequential(model, X, y_hist_inds, times, last_freeze=5, nsteps=4):
+def predict_sequential(model, X, y_hist_inds, times, last_freeze=5, nsteps=5):
     """
     want to predict y for each trial sequentially,
         so that we can use the activity up until the freeze period,
@@ -127,7 +127,7 @@ def print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, batch_size, bmdl
     score_te, rsq_te, tun_te_err, tun_te, tun_teh = get_scores(mdl, Xte, yte, gte, batch_size)
 
     dmdl = DummyModel(np.arange(yte.shape[-1])) # returns yte[t-1]
-    score_dm,rsq_dm, tun_err1, tun1, tun1h = get_scores(dmdl, Xte, yte, gte, batch_size)
+    score_dm, rsq_dm, tun_err1, tun1, tun1h = get_scores(dmdl, Xte, yte, gte, batch_size)
 
     print('============')
     print('Train tuning act={}'.format(tun_tr))
@@ -145,6 +145,8 @@ def print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, batch_size, bmdl
         score_fm,rsq_fm, tun_err2, tun2, tun2h = get_scores(fmdl, Xte, yte, gte, batch_size)
         print('Fair tuning pred={}'.format(tun2h))
         print('Fair tuning err={}'.format(tun_err2))
+    else:
+        tun2h = 0*tun1h
 
     print('============')
     print('Train rsq={}'.format(rsq_tr))
@@ -152,3 +154,5 @@ def print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, batch_size, bmdl
     print('Dummy rsq={}'.format(rsq_dm))
     print('Test score={}'.format(score_te))
     print('Dummy score={}'.format(score_dm))
+
+    return tun_te, tun_teh, tun1h, tun2h

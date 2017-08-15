@@ -2,6 +2,23 @@ import os.path
 import numpy as np
 import matplotlib.pyplot as plt
 
+def plot_tunings(gs, yte, yhats, outdir='', prefix=''):
+    fig = plt.figure(facecolor='white')
+    one_dim = len(yte.shape) == 1
+    if one_dim:
+        yte = yte[:,None]
+        yhats = [yhat[:,None] for yhat in yhats]
+    nrs = 1
+    ncs = yte.shape[-1]
+    clrs = ['r', 'g', 'b']
+    for i in xrange(ncs):
+        plt.subplot(nrs,ncs,i+1)
+        plt.plot(gs, yte[:,i], 'k-')
+        for j, yhat in enumerate(yhats):
+            plt.plot(gs, yhat[:,i], clrs[j] + '-')
+    fig.savefig(os.path.join(outdir, '{}_yhat-tuning.pdf').format(prefix))
+    plt.close(fig)
+
 def plot_2d_examples(yte, yhat, outdir='', prefix=''):
     i = 1
     fig = plt.figure(facecolor='white')
