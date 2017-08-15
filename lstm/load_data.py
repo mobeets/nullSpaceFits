@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.io
+import pandas as pd
 from keras.preprocessing import sequence
 
 def get_column(d, keys):
@@ -23,6 +24,7 @@ def make_design_1(d, skip_freeze_period=True):
     y = get_column(d, 'Yr')
     X1 = get_column(d, 'trial_index')
     X2 = get_column(d, 'time')
+    gs = get_column(d, 'gs')
     
     tr_change = np.diff(X1[:,0]) > 0
     tr_change = np.hstack([[False], tr_change])
@@ -37,12 +39,17 @@ def make_design_1(d, skip_freeze_period=True):
     X6[ixFreeze] = 0.0
 
     X = np.hstack([X3, X4, X5])
+
+    ix = ~np.isnan(y).any(axis=1) | np.isnan(X).any(axis=1)
     # X = np.hstack([X1, X2, X3, X4, X5, X6])
     if skip_freeze_period:
-        X = X[ixFreeze]
-        y = y[ixFreeze]
-        X1 = X1[ixFreeze]
-    return X, y, X1
+        ix = ix & ixFreeze
+    X = X[ix]
+    y = y[ix]
+    X1 = X1[ix]
+    X2 = X2[ix]
+    gs = gs[ix]
+    return X, y, X1, gs, X2
 
 def make_design_2(d, skip_freeze_period=True):
     """
@@ -51,13 +58,14 @@ def make_design_2(d, skip_freeze_period=True):
     y = get_column(d, 'Yn')
     X1 = get_column(d, 'trial_index')
     X2 = get_column(d, 'time')
+    gs = get_column(d, 'gs')
 
     tr_change = np.diff(X1[:,0]) > 0
     tr_change = np.hstack([[False], tr_change])
 
-    X3 = get_column(d, 'Yr')
-    X3a = get_column_lag1(d, 'Yr', tr_change)
-    X4 = get_column_lag1(d, 'Yn', tr_change)
+    X3 = get_column_lag1(d, 'Yn', tr_change)
+    X4 = get_column(d, 'Yr')
+    X4a = get_column_lag1(d, 'Yr', tr_change)
     X5 = get_column(d, 'Yr_goal')
     X6 = get_column(d, 'Yn_goal')
 
@@ -65,13 +73,17 @@ def make_design_2(d, skip_freeze_period=True):
     X5[ixFreeze] = 0.0
     X6[ixFreeze] = 0.0
 
-    X = np.hstack([X3, X3a, X4, X5])
+    X = np.hstack([X3, X4, X4a, X5])
     # X = np.hstack([X1, X2, X3, X4, X5, X6])
+    ix = ~(np.isnan(y).any(axis=1) | np.isnan(X).any(axis=1))
     if skip_freeze_period:
-        X = X[ixFreeze]
-        y = y[ixFreeze]
-        X1 = X1[ixFreeze]
-    return X, y, X1
+        ix = ix & ixFreeze
+    X = X[ix]
+    y = y[ix]
+    X1 = X1[ix]
+    X2 = X2[ix]
+    gs = gs[ix]
+    return X, y, X1, gs, X2
 
 def make_trial_sequences(vals, trs, maxlen=None):
     vs = []
@@ -102,22 +114,45 @@ def load(infile='data/input/20131205-goals.mat', kind='null',
         make_design = make_design_2
     else:
         make_design = make_design_1
-    gtr = get_column(d, ['train', 'gs'])
-    gte = get_column(d, ['test', 'gs'])
 
-    Xtr, ytr, ttr = make_design(get_column(d, 'train'),
+    Xtr, ytr, ttr, gtr, tmstr = make_design(get_column(d, 'train'),
         skip_freeze_period=False)
-    Xte, yte, tte = make_design(get_column(d, 'test'),
+    Xte, yte, tte, gte, tmste = make_design(get_column(d, 'test'),
         skip_freeze_period=False)
 
     if maxlen is None:
         maxlen = np.bincount(get_column(d, ['train', 'time'])).max()
-    Xtr, ytr, gtr = make_trial_sequences([Xtr, ytr, gtr], ttr, maxlen)
-    Xte, yte, gte = make_trial_sequences([Xte, yte, gte], tte, maxlen)
-    Xtr, ytr, gtr = prepare_for_batch_size([Xtr, ytr, gtr], batch_size)
-    Xte, yte, gte = prepare_for_batch_size([Xte, yte, gte], batch_size)
-    return Xtr, ytr, Xte, yte, gtr, gte
+    Xtr, ytr, gtr, tmstr = make_trial_sequences([Xtr, ytr, gtr, tmstr], ttr, maxlen)
+    ttr = np.unique(ttr)
+    Xte, yte, gte, tmste = make_trial_sequences([Xte, yte, gte, tmste], tte, maxlen)
+    tte = np.unique(tte)
+    Xtr, ytr, gtr, ttr, tmstr = prepare_for_batch_size([Xtr, ytr, gtr, ttr, tmstr], batch_size)
+    Xte, yte, gte, tte, tmste = prepare_for_batch_size([Xte, yte, gte, tte, tmste], batch_size)
+    return Xtr, ytr, Xte, yte, gtr, gte, ttr, tte, tmstr, tmste
+
+def make_df(d, main_key='time', ignores=['spikes', 'latents']):
+    x = {}
+    for k in d.dtype.names:
+        v = d[k][0,0]
+        if k in ignores:
+            continue
+        if v.shape[0] != d[main_key][0,0].shape[0]:
+            continue
+        if len(v.shape) == 1:
+            x[k] = v
+            continue
+        for i in xrange(v.shape[-1]):
+            ck = k + '_{}'.format(i) if v.shape[-1] > 1 else k
+            x[ck] = v[:,i]
+    return pd.DataFrame(x)
+
+def load_dfs(fnm):
+    d = scipy.io.loadmat(fnm)['G']
+    dfs = dict((k, make_df(d[k][0,0])) for k in d.dtype.names)
+    return dfs
 
 if __name__ == '__main__':
-    Xtr, ytr, Xte, yte = load('data/input/20131205-goals.mat')
+    fnm = 'data/input/20131205-goals.mat'
+    dfs = load_dfs(fnm)
     1/0
+    Xtr, ytr, Xte, yte = load(fnm)

@@ -1,6 +1,9 @@
-function G = make_struct_2(F, fnm)
-%     D = io.quickLoadByDate(dtstr);
-%     F = pred.prepSession(D, struct('skipFreezePeriod', false));
+function G = make_struct(F, fnm)
+% ps = io.setFilterDefaults(dtstr);
+% ps.MIN_DISTANCE = nan; ps.MAX_DISTANCE = nan;
+% D = io.quickLoadByDate(dtstr);
+% F = pred.prepSession(D, struct('skipFreezePeriod', false));
+
     if nargin < 2
         fnm = '';
     end
@@ -59,6 +62,8 @@ function G = makeBlock(F, isPert)
     gs = tools.thetaGroup(tools.computeAngles(vels), tools.thetaCenters);
     gs(isnan(gs)) = -1;
     G.gs = gs;
+    
+%     ix = any(isnan(Y),2) | any(isnan(ths),2) | any(isnan(vels),2);
     
 %     if isPert
 %         % do normal cloud goal

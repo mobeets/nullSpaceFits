@@ -4,20 +4,20 @@ from keras.models import Model
 import keras.backend as K
 
 def get_model(batch_size, input_dim, output_dim, seq_length, optimizer,
-    add_dense=True, already_trained=False):
+    add_dense=True, stateful=False):
 
     X = Input(batch_shape=(batch_size, seq_length, input_dim),
         name='X')
 
     if add_dense:
         z = LSTM(2*output_dim, return_sequences=True,
-            activation='relu', stateful=already_trained, name='z')(X)
+            activation='relu', stateful=stateful, name='z')(X)
         z_dense = Dense(output_dim, name='z_dense')
         decoder_mean = TimeDistributed(z_dense, name='y_hat')
         y_hat = decoder_mean(z)
     else:
         y_hat = LSTM(output_dim, return_sequences=True,
-            stateful=already_trained, name='y_hat')(X)
+            stateful=stateful, name='y_hat')(X)
 
     model = Model(X, y_hat)
     model.compile(optimizer=optimizer, loss='mse')
