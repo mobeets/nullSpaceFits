@@ -17,11 +17,21 @@ def get_column_lag1(d, key, ixSetToZero):
     x[ixSetToZero,:] = 0.0
     return x
 
-def make_design_1(d, skip_freeze_period=True):
+def make_design(d, kind='joint', skip_freeze_period=False):
     """
     LSTM-potent: Y^r(t) = f( Y^n(<t), Y^r(<t), X(<=t), H(t) )
+    LSTM-null: Y^n(t) = f( Y^n(<t), Y^r(<=t), X(<=t) )
     """
-    y = get_column(d, 'Yr')
+    if kind == 'both':
+        yr = get_column(d, 'Yr')
+        yn = get_column(d, 'Yn')
+        y = np.hstack([yr, yn])
+    elif kind == 'potent':
+        y = get_column(d, 'Yr')
+    elif kind == 'null':
+        y = get_column(d, 'Yn')[:,:2]
+    else:
+        assert False
     X1 = get_column(d, 'trial_index')
     X2 = get_column(d, 'time')
     gs = get_column(d, 'gs')
@@ -29,52 +39,25 @@ def make_design_1(d, skip_freeze_period=True):
     tr_change = np.diff(X1[:,0]) > 0
     tr_change = np.hstack([[False], tr_change])
 
-    X3 = get_column_lag1(d, 'Yr', tr_change)
-    X4 = get_column_lag1(d, 'Yn', tr_change)
-    X5 = get_column(d, 'Yr_goal')
-    X6 = get_column(d, 'Yn_goal')
-
-    ixFreeze = (X2 > 5.0)[:,0] # non-freeze period
-    X5[ixFreeze] = 0.0
-    X6[ixFreeze] = 0.0
-
-    X = np.hstack([X3, X4, X5])
-
-    ix = ~(np.isnan(y).any(axis=1) | np.isnan(X).any(axis=1))
-    # X = np.hstack([X1, X2, X3, X4, X5, X6])
-    if skip_freeze_period:
-        ix = ix & ixFreeze
-    X = X[ix]
-    y = y[ix]
-    X1 = X1[ix]
-    X2 = X2[ix]
-    gs = gs[ix]
-    return X, y, X1, gs, X2
-
-def make_design_2(d, skip_freeze_period=True):
-    """
-    LSTM-null: Y^n(t) = f( Y^n(<t), Y^r(<=t), X(<=t) )
-    """
-    y = get_column(d, 'Yn')
-    X1 = get_column(d, 'trial_index')
-    X2 = get_column(d, 'time')
-    gs = get_column(d, 'gs')
-
-    tr_change = np.diff(X1[:,0]) > 0
-    tr_change = np.hstack([[False], tr_change])
-
     X3 = get_column_lag1(d, 'Yn', tr_change)
-    X4 = get_column(d, 'Yr')
-    X4a = get_column_lag1(d, 'Yr', tr_change)
+    X4 = get_column_lag1(d, 'Yr', tr_change)
     X5 = get_column(d, 'Yr_goal')
     X6 = get_column(d, 'Yn_goal')
+    thsx = np.cos(np.deg2rad(get_column(d, 'thetas')))
+    thsy = np.sin(np.deg2rad(get_column(d, 'thetas')))
 
     ixFreeze = (X2 > 5.0)[:,0] # non-freeze period
     X5[ixFreeze] = 0.0
     X6[ixFreeze] = 0.0
 
-    X = np.hstack([X3, X4, X4a, X5])
-    # X = np.hstack([X1, X2, X3, X4, X5, X6])
+    if kind == 'null':
+        X4c = get_column(d, 'Yr')
+        xss = [X3, X4, X4c, X5, thsx, thsy] # null goes first
+    else:
+        xss = [X4, X3, X5, thsx, thsy]
+    # X = np.hstack([X3, X4, X5])
+    X = np.hstack(xss)
+
     ix = ~(np.isnan(y).any(axis=1) | np.isnan(X).any(axis=1))
     if skip_freeze_period:
         ix = ix & ixFreeze
@@ -110,15 +93,8 @@ def load(infile='data/input/20131205-goals.mat', kind='null',
     d = scipy.io.loadmat(infile)['G']
     assert 'train' in d.dtype.names
 
-    if kind == 'null':
-        make_design = make_design_2
-    else:
-        make_design = make_design_1
-
-    Xtr, ytr, ttr, gtr, tmstr = make_design(get_column(d, 'train'),
-        skip_freeze_period=False)
-    Xte, yte, tte, gte, tmste = make_design(get_column(d, 'test'),
-        skip_freeze_period=False)
+    Xtr, ytr, ttr, gtr, tmstr = make_design(get_column(d, 'train'), kind)
+    Xte, yte, tte, gte, tmste = make_design(get_column(d, 'test'), kind)
 
     if maxlen is None:
         maxlen = np.bincount(get_column(d, ['train', 'time'])).max()

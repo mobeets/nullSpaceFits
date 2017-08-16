@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.metrics import r2_score
 from keras.callbacks import Callback
+from vis import plot_example_predictions, plot_tunings
 
 def get_rsqs(y, yhat):
     if np.isnan(yhat).any():
@@ -12,6 +13,9 @@ def get_rsqs(y, yhat):
 get_tuning_error = lambda x,y: np.square(x-y).sum(axis=0)
 
 def get_tuning(y, gs, ignore_group=-1):
+    """
+    todo: filter out min_tm < times < val
+    """
     grps = np.unique(gs)
     grps = grps[grps != ignore_group] # ignore dummy group
     vs = np.zeros((len(grps), y.shape[-1]))
@@ -64,7 +68,7 @@ class FairModel:
     """
     returns sequential prediction
     """
-    def __init__(self, model, inds, times, last_freeze=5, nsteps=4):
+    def __init__(self, model, inds, times, last_freeze=5, nsteps=6):
         self.model = model
         self.y_hist_inds = inds
         self.times = times
@@ -80,7 +84,7 @@ class FairModel:
         idx = ~np.isnan(yhat).any(axis=-1)
         return np.mean(np.square(yhat[idx] - y[idx]), axis=-1).mean()
 
-def predict_sequential(model, X, y_hist_inds, times, last_freeze=5, nsteps=5):
+def predict_sequential(model, X, y_hist_inds, times, last_freeze, nsteps):
     """
     want to predict y for each trial sequentially,
         so that we can use the activity up until the freeze period,
@@ -98,6 +102,7 @@ def predict_sequential(model, X, y_hist_inds, times, last_freeze=5, nsteps=5):
         # ignore 0 time step (filler)
         atms = tms[(tms > 0) & (tms <= last_freeze+nsteps)]
         # times should be sorted and sequential, and include t=1
+        assert len(atms) > 0
         assert atms.min() < last_freeze
         assert (np.unique(np.diff(atms)) == 1).all()
         yprev = None
@@ -112,41 +117,46 @@ def predict_sequential(model, X, y_hist_inds, times, last_freeze=5, nsteps=5):
             yprev = yc
     return yhat
 
-def get_scores(mdl, X, y, g, batch_size):
+def get_scores(mdl, X, y, g, tms, batch_size, max_time=None):
     score = mdl.evaluate(X, y, batch_size=batch_size)
     yhat = mdl.predict(X, batch_size=batch_size)    
     rsq = get_rsqs(y, yhat)
-    tun = get_tuning(y, g)
-    tunh = get_tuning(yhat, g)
+    
+    gc = g.copy()
+    if max_time is not None:
+        ix = tms > max_time
+        gc[ix] = -1
+    tun = get_tuning(y, gc)
+    tunh = get_tuning(yhat, gc)
     tun_err = get_tuning_error(tun, tunh)
-    return score, rsq, tun_err, tun, tunh
+    return score, rsq, tun_err, tun, tunh, yhat
 
-def print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, batch_size, bmdl=None):    
+def print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, args, bmdl=None):    
 
-    score_tr, rsq_tr, tun_tr_err, tun_tr, tun_trh = get_scores(mdl, Xtr, ytr, gtr, batch_size)
-    score_te, rsq_te, tun_te_err, tun_te, tun_teh = get_scores(mdl, Xte, yte, gte, batch_size)
+    last_freeze = 5
+    nsteps = 6
+    max_tm = None#last_freeze + nsteps
 
+    score_tr, rsq_tr, tun_tr_err, tun_tr, tun_trh, yhat0 = get_scores(mdl, Xtr, ytr, gtr, tmtr, args.batch_size, max_time=max_tm)
+    score_te, rsq_te, tun_te_err, tun_te, tun_teh, yhat1 = get_scores(mdl, Xte, yte, gte, tmte, args.batch_size, max_time=max_tm)
+    tun_tr_te_err = get_tuning_error(tun_tr, tun_te)
+
+    # dummy is likely an upper bound on yhat_test
     dmdl = DummyModel(np.arange(yte.shape[-1])) # returns yte[t-1]
-    score_dm, rsq_dm, tun_err1, tun1, tun1h = get_scores(dmdl, Xte, yte, gte, batch_size)
+    score_dm, rsq_dm, tun_err1, tun1, tun1h, yhat2 = get_scores(dmdl, Xte, yte, gte, tmte, args.batch_size, max_time=max_tm)
 
     print('============')
-    print('Train tuning act={}'.format(tun_tr))
-    print('Train tuning pred={}'.format(tun_trh))
     print('Train tuning err={}'.format(tun_tr_err))
-    print('============')
-    print('Test tuning act={}'.format(tun_te))
-    print('Test tuning pred={}'.format(tun_teh))
-    print('Test tuning err={}'.format(tun_te_err))
-
-    print('Dummy tuning pred={}'.format(tun1h))
-    print('Dummy tuning err={}'.format(tun_err1))
+    print('Tuning err (y_train)={}'.format(tun_tr_te_err)) # i.e., predicts no change
+    print('Tuning err (yhat_test)={}'.format(tun_te_err))
+    print('Tuning err (dummy)={}'.format(tun_err1)) # upper bound on yhat_test?
     if bmdl is not None:
-        fmdl = FairModel(bmdl, range(yte.shape[-1]), tmte) # returns yte[t-1]
-        score_fm,rsq_fm, tun_err2, tun2, tun2h = get_scores(fmdl, Xte, yte, gte, batch_size)
-        print('Fair tuning pred={}'.format(tun2h))
-        print('Fair tuning err={}'.format(tun_err2))
+        fmdl = FairModel(bmdl, range(yte.shape[-1]), tmte, last_freeze=last_freeze, nsteps=nsteps) # returns yte[t-1]
+        score_fm,rsq_fm, tun_err2, tun2, tun2h, yhat3 = get_scores(fmdl, Xte, yte, gte, tmte, args.batch_size, max_time=max_tm)
+        print('Tuning err (yhat_test, fair)={}'.format(tun_err2))
     else:
         tun2h = 0*tun1h
+        yhat3 = 0*yhat2
 
     print('============')
     print('Train rsq={}'.format(rsq_tr))
@@ -154,5 +164,13 @@ def print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, batch_size, bmdl
     print('Dummy rsq={}'.format(rsq_dm))
     print('Test score={}'.format(score_te))
     print('Dummy score={}'.format(score_dm))
-
-    return tun_te, tun_teh, tun1h, tun2h
+    
+    if args.do_plot:
+        print('Plotting...')
+        plot_example_predictions(yte, [yhat1], ['b-'], tmte,
+            last_freeze+1, 25, outdir=args.plot_dir,
+            prefix=args.run_name + '_test-hat', n=10)
+        plot_example_predictions(yte, [yhat3], ['r-'], tmte,
+            last_freeze+1, last_freeze+nsteps, outdir=args.plot_dir,
+            prefix=args.run_name + '_test-seq', n=10)
+        plot_tunings(np.unique(gte)[1:], tun_te, [tun_teh, tun1h, tun2h], tun_tr, outdir=args.plot_dir, prefix=args.run_name + '_test')

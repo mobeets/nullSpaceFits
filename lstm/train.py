@@ -6,14 +6,13 @@ import numpy as np
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from load_data import load
 from model import get_model, load_model
-from vis import plot_examples, plot_tunings
 from score import print_scores, ScoreCallback
 
 def get_callbacks(args):
     json_file = os.path.join(args.model_dir, args.run_name + '.json')
     mdl_file = os.path.join(args.model_dir, args.run_name + '.h5')
     json.dump(vars(args), open(json_file, 'w'))
-    early_stopping = EarlyStopping(monitor='val_loss', patience=2)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=args.patience)
     checkpt = ModelCheckpoint(mdl_file, monitor='val_loss',
         save_weights_only=True, save_best_only=True)    
     return [early_stopping, checkpt]
@@ -49,15 +48,7 @@ def main(args):
         bmdl.set_weights(mdl.get_weights())
     else:
         bmdl = None
-    ytuns = print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, args.batch_size, bmdl)
-    plot_tunings(np.unique(gte)[1:], ytuns[0], ytuns[1:], outdir=args.plot_dir, prefix=args.run_name + '_test')
-    if args.do_plot:
-        yhat_tr = mdl.predict(Xtr, batch_size=args.batch_size)
-        yhat_te = mdl.predict(Xte, batch_size=args.batch_size)
-        plot_examples(yte, yhat_te, outdir=args.plot_dir,
-            prefix=args.run_name + '_test', n=20)
-        plot_examples(ytr, yhat_tr, outdir=args.plot_dir,
-            prefix=args.run_name + '_train', n=10)
+    ytuns = print_scores(mdl, Xtr, ytr, Xte, yte, gtr, gte, tmtr, tmte, args, bmdl)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -70,11 +61,13 @@ if __name__ == '__main__':
     parser.add_argument('--optimizer', type=str,
                 default='adam', help='optimizer for training')
     parser.add_argument('--kind', type=str, required=True,
-                choices=['potent', 'null'], help='predict null or potent')
+                choices=['potent', 'null', 'both'], help='predict null, potent, or both')
     parser.add_argument('--num_epochs', type=int,
                 default=200, help='number of epochs of training')
     parser.add_argument('--max_len', type=int,
                 default=25, help='maximum trial length')
+    parser.add_argument('--patience', type=int,
+                default=5, help='epochs to wait for val_loss to decrease')
     parser.add_argument('--batch_size', type=int,
                 default=10, help='batch size for training')
     parser.add_argument("--do_plot", action="store_true", 

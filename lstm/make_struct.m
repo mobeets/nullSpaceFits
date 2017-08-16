@@ -1,7 +1,7 @@
 function G = make_struct(F, fnm)
 % ps = io.setFilterDefaults(dtstr);
 % ps.MIN_DISTANCE = nan; ps.MAX_DISTANCE = nan;
-% D = io.quickLoadByDate(dtstr);
+% D = io.quickLoadByDate(dtstr, ps);
 % F = pred.prepSession(D, struct('skipFreezePeriod', false));
 
     if nargin < 2
@@ -44,7 +44,6 @@ function G = makeBlock(F, isPert)
     Y = G.latents;
     ths = G.thetas;
     dec = G;
-    vels = G.vel;
     
     G.Yn = Y*N;
     G.Yr = Y*R;
@@ -59,8 +58,11 @@ function G = makeBlock(F, isPert)
     G.Yr_goal = Yh*R;
     G.Yn_goal = Yh*N;
     
-    gs = tools.thetaGroup(tools.computeAngles(vels), tools.thetaCenters);
+%     gs = tools.computeAngles(velsThroughDec(Y, F.test));
+    gs = ths;
+    gs = tools.thetaGroup(gs, tools.thetaCenters);
     gs(isnan(gs)) = -1;
+    gs(~G.X_on) = -1;
     G.gs = gs;
     
 %     ix = any(isnan(Y),2) | any(isnan(ths),2) | any(isnan(vels),2);
