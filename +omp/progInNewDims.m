@@ -1,6 +1,12 @@
+%% plot opts
+
+opts.doSave = true;
+opts.saveDir = fullfile('data', 'plots', 'omp');
+opts.ext = 'pdf';
+
 %% find basis for manifold
 
-dec = kI.kalmanInitParams;
+dec = ks(1).kalmanInitParams;
 mu = dec.NormalizeSpikes.mean;
 sdev = dec.NormalizeSpikes.std;
 [~, beta] = omp.spikesToLatents(dec, nan);
@@ -8,6 +14,10 @@ sdev = dec.NormalizeSpikes.std;
 normSps = @(sps) bsxfun(@minus, sps, mu);
 B = beta_nb*beta_nb'; % find dim orthogonal to manifold
 % B = eye(size(B)); % find avg-activity dim
+
+% baselineShift = mean(blks(end-1).sps) - mu;
+% [beta_nb, beta_rb] = io.getNulRowBasis([baselineShift; beta]);
+% B = beta_nb*beta_nb';
 
 %% prep
 
@@ -21,14 +31,27 @@ ps = repmat(mean(atrgs), ntrgs, 1); % starting position
 
 %% find dimension per target-angle
 
-% best 40 trials for each OMP, start trial:
-trStarts = [nan 220 47 199 348 nan];
-
-% cblk = blks(1); vfcn = decI.vfcn;
-
-vfcn = decP.vfcn;
-
 plot.init;
+% axis off; axis equal;
+% for kk = 1:ntrgs
+%     subplot_tight(2,4,kk); hold on;
+
+% find new dimension for all target-angles
+newDims = cell(5, ntrgs);
+for jj = 2:5
+    for ii = 1:ntrgs
+        ctrg = trgs(ii); % fit one dim per angle
+%         ctrg = trgs(kk); % fit one dim across session
+        newDims{jj,ii} = omp.getAvgActivityDim(blks(jj), ctrg, normSps, B);
+    end
+end
+
+% best 40 trials for each OMP, start trial:
+% trStarts = [nan 220 47 199 348 nan];
+% cblk = blks(1); vfcn = decI.vfcn;
+vfcn = decs(2).vfcn;
+
+% plot polar grid
 plot(0, 0, 'k+', 'HandleVisibility', 'off');
 ymx = 3;
 xs = tools.thetaCenters(32); xs = [xs; trgs(1)]; xs = [cosd(xs) sind(xs)];
@@ -43,23 +66,14 @@ end
 clrs = cbrewer('qual', 'Set1', 5);
 xs = trgs; xs = [xs; trgs(1)]; xs = [cosd(xs) sind(xs)];
 for jj = 2:5
-    % find dimension for all target-angles
-    cblk = blks(jj);
-    newDims = cell(ntrgs, 1);
-    for ii = 1:ntrgs
-        newDims{ii} = omp.getAvgActivityDim(cblk, trgs(7), normSps, B);
-    end
-
     % find progress of each dimension
     prgs_pred = nan(ntrgs, ntrgs);    
     for ii = 1:ntrgs
-        nD = repmat(newDims{ii}{1}' + mu, ntrgs, 1); % new dim
+        nD = repmat(newDims{jj,ii}{1}' + mu, ntrgs, 1); % new dim
         prgs_pred(ii,:) = lstmat.getProgress(nD, ps, atrgs, vfcn);
     end
-%     ys = diag(prgs_pred);
-    ys = diag(circshift(prgs_pred,-1)); % get off-diagonal
-    ys = [ys; ys(1)];
-    ys(ys < 0) = 0;
+    ys = diag(prgs_pred); ys = [ys; ys(1)];
+    ys(ys < 0) = 0; % ignore negative progress
     plot(ys.*xs(:,1), ys.*xs(:,2), '-', 'Color', clrs(jj,:), ...
         'LineWidth', 2);
 end
@@ -68,12 +82,23 @@ legend boxoff;
 axis equal;
 axis off;
 title('progress of new dims');
+% title(['dim: ' num2str(trgs(kk)) '^\circ']);
+
+fnm = 'progs-newdims';
+plot.setPrintSize(gcf, struct('width', 6, 'height', 5));
+if opts.doSave
+    export_fig(gcf, fullfile(opts.saveDir, ...
+        [dtstr '-' fnm '.' opts.ext]));
+end
 
 %% show actual progress
 
-vfcn = decP.vfcn;
+showIntBlks = false;
+vfcn = decs(2).vfcn;
 
 plot.init;
+
+% show polar grid
 plot(0, 0, 'k+', 'HandleVisibility', 'off');
 ymx = 50;
 xs = tools.thetaCenters(32); xs = [xs; trgs(1)]; xs = [cosd(xs) sind(xs)];
@@ -84,18 +109,19 @@ for ii = 1:numel(trgs)
         'k--', 'Color', 0.8*ones(3,1), 'HandleVisibility', 'off');
 end
 
-inds = 2:5;
-% inds = 1:numel(blks);
-clrs = cbrewer('qual', 'Set1', 5);
-% clrs = cbrewer('seq', 'Blues', 5);
-% clrs = [0.8 0.2 0.2; clrs(2:end,:); 0.8 0.4 0.4; 0.5 0.5 0.5];
+if showIntBlks
+    inds = 1:numel(blks);
+    clrs = cbrewer('seq', 'Blues', 5);
+    clrs = [0.8 0.2 0.2; clrs(2:end,:); 0.8 0.4 0.4; 0.5 0.5 0.5];
+else
+    inds = 2:5;
+    clrs = cbrewer('qual', 'Set1', 5);
+end
 xs = trgs; xs = [xs; trgs(1)]; xs = [cosd(xs) sind(xs)];
 for ii = inds
-    % compare predicted to true progress
     cblk = blks(ii);
     prgs = lstmat.getProgress(cblk.sps, cblk.pos, cblk.trgpos, vfcn);
-    ys = grpstats(prgs, cblk.thgrps);
-    ys = [ys; ys(1)];
+    ys = grpstats(prgs, cblk.thgrps); ys = [ys; ys(1)];
     plot(ys.*xs(:,1), ys.*xs(:,2), '-', 'Color', clrs(ii,:), ...
         'LineWidth', 2);
 end
@@ -105,13 +131,20 @@ axis equal;
 axis off;
 title('actual progress');
 
+fnm = 'progs';
+plot.setPrintSize(gcf, struct('width', 6, 'height', 5));
+if opts.doSave
+    export_fig(gcf, fullfile(opts.saveDir, ...
+        [dtstr '-' fnm '.' opts.ext]));
+end
+
 %% plot projection onto new dims
 
-vfcn = decP.vfcn;
+vfcn = decs(2).vfcn;
 newDims = cell(ntrgs,1);
 vss = cell(ntrgs,1);
 for ii = 1:ntrgs
-    newDims{ii} = omp.getAvgActivityDim(blks(5), trgs(ii), normSps, B);
+    newDims{ii} = omp.getAvgActivityDim(blks(end-1), trgs(ii), normSps, B);
     vs = cell(numel(blks),1);
     for jj = 1:numel(blks)
         vs{jj} = normSps(blks(jj).sps)*newDims{ii}{1};
@@ -136,6 +169,13 @@ for ii = 1:ntrgs
     title(['new dim for angle ' num2str(trgs(ii)) '^\circ']);
 end
 
+fnm = 'proj';
+plot.setPrintSize(gcf, struct('width', 9, 'height', 3));
+if opts.doSave
+    export_fig(gcf, fullfile(opts.saveDir, ...
+        [dtstr '-' fnm '.' opts.ext]));
+end
+
 %% plot variance in new dims
 
 plot.init;
@@ -149,19 +189,37 @@ for ii = 1:ntrgs
     title(['new dim for angle ' num2str(trgs(ii)) '^\circ']);
 end
 
-%% compare projections of data onto two new dims
-
-bins = linspace(-10, 20);
-plot.init;
-for jj = 1:numel(blks)
-    subplot(2,3,jj); hold on;
-    cs1 = histc(vss{1}{jj}, bins);
-    cs2 = histc(vss{6}{jj}, bins);
-    plot(cs1, cs2, '.', 'Color', clrs(jj,:));
-    vmx = max([cs1; cs2]);
-    xlim([0 vmx]); ylim(xlim);
-    plot(xlim, ylim, 'k--');
+fnm = 'vars';
+plot.setPrintSize(gcf, struct('width', 9, 'height', 3));
+if opts.doSave
+    export_fig(gcf, fullfile(opts.saveDir, ...
+        [dtstr '-' fnm '.' opts.ext]));
 end
-xlabel('projection onto new dim');
-ylabel('normalized frequency');
-% title(['new dim for angle ' num2str(trgs(ii)) '^\circ']);
+
+%% compare dimensions
+
+newDims = cell(ntrgs,1);
+for ii = 1:ntrgs
+    newDims{ii} = omp.getAvgActivityDim(blks(end-1), trgs(ii), normSps, B);
+end
+
+nrms = nan(ntrgs, ntrgs);
+plot.init;
+for ii = 1:ntrgs
+    subplot(2,4,ii); hold on;    
+    for jj = 1:ntrgs
+        plot(newDims{jj}{1}' + 0*mu, '-', 'Color', 0.8*ones(3,1));
+        nrms(ii,jj) = rad2deg(subspace(newDims{jj}{1}, newDims{ii}{1}));
+    end
+    plot(newDims{ii}{1}' + 0*mu, 'k-', 'LineWidth', 1);
+    title([num2str(trgs(ii)) '^\circ']);
+end
+xlabel('neuron index');
+ylabel('weight on neuron');
+
+fnm = 'dims';
+plot.setPrintSize(gcf, struct('width', 9, 'height', 4));
+if opts.doSave
+    export_fig(gcf, fullfile(opts.saveDir, ...
+        [dtstr '-' fnm '.' opts.ext]));
+end
