@@ -1,4 +1,4 @@
-function [latents, beta] = convertRawSpikesToRawLatents(dec, sps)
+function [latents, beta] = spikesToLatents(dec, sps)
 % Convert spikes to latents
 
     if isempty(sps)
@@ -8,8 +8,8 @@ function [latents, beta] = convertRawSpikesToRawLatents(dec, sps)
 
     % FA params
     L = dec.FactorAnalysisParams.L;
-    ph = dec.FactorAnalysisParams.ph;    
-    sigmainv = diag(1./dec.spikeCountStd');
+    ph = dec.FactorAnalysisParams.Ph;    
+    sigmainv = diag(1./dec.NormalizeSpikes.std');
     if isfield(dec.FactorAnalysisParams, 'spikeRot')
         % rotate, if necessary, from orthonormalization
         R = dec.FactorAnalysisParams.spikeRot;
@@ -18,7 +18,7 @@ function [latents, beta] = convertRawSpikesToRawLatents(dec, sps)
     end
     beta = L'/(L*L'+diag(ph)); % See Eqn. 5 of DAP.pdf
     beta = R'*beta*sigmainv';
-    mu = dec.spikeCountMean';
+    mu = dec.NormalizeSpikes.mean';
     u = bsxfun(@plus, sps, -mu); % normalize
     latents = u'*beta';
 end

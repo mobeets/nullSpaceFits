@@ -1,4 +1,4 @@
-function G = make_struct(F, fnm)
+function G = make_struct(F, fnm, skipExtras)
 % ps = io.setFilterDefaults(dtstr);
 % ps.MIN_DISTANCE = nan; ps.MAX_DISTANCE = nan;
 % D = io.quickLoadByDate(dtstr, ps);
@@ -7,16 +7,19 @@ function G = make_struct(F, fnm)
     if nargin < 2
         fnm = '';
     end
+    if nargin < 3
+        skipExtras = false;
+    end
     
     assert(isfield(F, 'train'));
-    G.train = makeBlock(F, false);
-    G.test = makeBlock(F, true);
+    G.train = makeBlock(F, false, skipExtras);
+    G.test = makeBlock(F, true, skipExtras);
     if ~isempty(fnm)
         save(fullfile('lstm', 'data', 'input', [fnm '.mat']), 'G');
     end
 end
 
-function G = makeBlock(F, isPert)
+function G = makeBlock(F, isPert, skipExtras)
 % 1. LSTM-null: Y^n(t) = f( Y^n(<t), Y^r(?t), X(?t) )
 % 	- can train simply using intuitive activity through perturbation mapping
 % 2. LSTM-potent: Y^r(t) = f( Y^n(<t), Y^r(<t), X(?t), H(t) )
@@ -41,6 +44,9 @@ function G = makeBlock(F, isPert)
 %         dec = F.train;
 %         vels = F.train.vel;
     end
+    if skipExtras
+        return;
+    end
     Y = G.latents;
     ths = G.thetas;
     dec = G;
@@ -48,15 +54,6 @@ function G = makeBlock(F, isPert)
     G.Yn = Y*N;
     G.Yr = Y*R;
     G.X_on = G.time >= 6; % freeze period over
-    
-    % find intuitive time step achieving maximum progress given theta
-    vs = velsThroughDec(F.train.latents, dec);
-    angs = [cosd(ths) sind(ths)];
-    progs = vs*angs';
-    [~,inds] = max(progs);
-    Yh = F.train.latents(inds,:);
-    G.Yr_goal = Yh*R;
-    G.Yn_goal = Yh*N;
     
 %     gs = tools.computeAngles(velsThroughDec(Y, F.test));
     gs = ths;
@@ -67,16 +64,34 @@ function G = makeBlock(F, isPert)
     
 %     ix = any(isnan(Y),2) | any(isnan(ths),2) | any(isnan(vels),2);
     
-%     if isPert
-%         % do normal cloud goal
-%         Yr1 = F.train.latents*R;
-%         Yr2 = F.test.latents*R;
-%         ds = pdist2(Yr2, Yr1); % nz2 x nz1
-%         [~, inds] = min(ds, [], 2);
-%         Yh = F.train.latents(inds,:);
-%         G.Yr_goal = Yh*R;
-%         G.Yn_goal = Yh*N;
-%     end
+    % find intuitive time step achieving maximum progress given theta
+    vs = velsThroughDec(F.train.latents, dec);
+    angs = [cosd(ths) sind(ths)];
+    progs = vs*angs';
+    [~,inds] = max(progs);
+    Yh = F.train.latents(inds,:);
+    G.Yr_maxprog = Yh*R;
+    G.Yn_maxprog = Yh*N;
+    
+    if isPert
+        % do normal cloud goal
+        Yr1 = F.train.latents*R;
+        Yr2 = F.test.latents*R;
+        ds = pdist2(Yr2, Yr1); % nz2 x nz1
+        [~, inds] = min(ds, [], 2);
+        Yh = F.train.latents(inds,:);
+        G.Yr_goal = Yh*R;
+        G.Yn_goal = Yh*N;
+    else
+        % do normal cloud goal
+        Yr1 = F.test.latents*R;
+        Yr2 = F.train.latents*R;
+        ds = pdist2(Yr2, Yr1); % nz2 x nz1
+        [~, inds] = min(ds, [], 2);
+        Yh = F.test.latents(inds,:);
+        G.Yr_goal = Yh*R;
+        G.Yn_goal = Yh*N;
+    end
 
 end
 
@@ -86,11 +101,12 @@ function vs = velsThroughDec(Y, dec)
     vs = ((eye(size(dec.M1)) - dec.M1)\vs')';
 end
 
-function Blk = prepBlock(Blk)    
+function Blk = prepBlock(Blk)
     
     % center target and cursor position
     zPos = mean(unique(Blk.target, 'rows'));
     Blk.target = bsxfun(@minus, Blk.target, zPos);
+    Blk.targetAngle = round(tools.computeAngles(Blk.target));
     if isfield(Blk, 'pos')
         Blk.pos = bsxfun(@minus, Blk.pos, zPos);
     end

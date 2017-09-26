@@ -1,16 +1,35 @@
 %% find range of factor activity possible in first two dims
 % subject to non-negative firing
 
-inControlPlane = true;
+inControlPlane = false;
 
 % [Ss,Fs] = plot.getScoresAndFits('Int2Pert_nIme');
-saveDir = 'data/plots/boundaries2';
-for ii = 1:numel(Fs)
+% saveDir = 'data/plots/boundaries2';
+saveDir = '';
+exflgs = nan(numel(Fs), 2);
+for ii = 1%1:numel(Fs)
     F = Fs(ii);
     Tr = F.train;
     Te = F.test;
-    lb = min([Tr.spikes; Te.spikes]); % [1 x 88]
-    ub = max([Tr.spikes; Te.spikes]); % [1 x 88]
+    
+    gstr = tools.thetaGroup(Tr.thetas, tools.thetaCenters);
+    gste = tools.thetaGroup(Te.thetas, tools.thetaCenters);
+    mutr = grpstats(Tr.spikes, gstr);
+    mute = grpstats(Te.spikes, gste);
+    lb = min(mutr);
+    ub = max(mutr);
+    
+    M2 = Tr.M2_spikes;
+    beta = speed.getBetaFromFA(F.dec);
+    mu = F.dec.spikeCountMean;
+    [vv, fval, exflg] = speed.findMaxProgress(M2', [1 0]', beta', mu', lb', ub');
+    exflgs(ii,1) = exflg;
+    exflgs(ii,2) = mean((lb <= mu) & (mu <= ub));
+    continue;
+    
+%     lb = min([Tr.spikes; Te.spikes]); % [1 x 88]
+%     ub = max([Tr.spikes; Te.spikes]); % [1 x 88]
+    
     mu = F.dec.spikeCountMean; % [1 x 88]
     beta = speed.getBetaFromFA(F.dec); % [10 x 88]
     M2 = Tr.M2_spikes; % [2 x 88]

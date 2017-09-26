@@ -6,7 +6,7 @@ function D = prepSession(D, opts)
         'mapNm_spikes', 'nDecoder', 'skipFreezePeriod', true, ...
         'thetaNm', 'thetas', 'velNm', 'vel', 'velNextNm', 'velNext', ...
         'trainBlk', 1, 'testBlk', 2, 'trainProp', 0.5, ...
-        'fieldsToAdd', []);
+        'fieldsToAdd', [], 'throwError', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     if opts.useIme
         opts = replaceWithImeFields(opts);
@@ -38,7 +38,12 @@ function D = prepSession(D, opts)
     isOk2 = io.everythingIsGonnaBeOkay(D.test, dec, opts.useIme, ...
         opts.skipFreezePeriod);
     if ~isOk1 || ~isOk2
-        error(['Something is not right with ' D.datestr]);
+        msg = ['Something is not right with ' D.datestr];
+        if opts.throwError
+            error(msg);
+        else
+            warning(msg);
+        end
     end
 
 end

@@ -1,10 +1,5 @@
 function [latents, beta] = convertRawSpikesToRawLatents(dec, sps)
-% Convert spikes to latents
-
-    if isempty(sps)
-        latents = [];
-        return;
-    end
+% Convert spikes to latents    
 
     % FA params
     L = dec.FactorAnalysisParams.L;
@@ -19,6 +14,10 @@ function [latents, beta] = convertRawSpikesToRawLatents(dec, sps)
     beta = L'/(L*L'+diag(ph)); % See Eqn. 5 of DAP.pdf
     beta = R'*beta*sigmainv';
     mu = dec.spikeCountMean';
-    u = bsxfun(@plus, sps, -mu); % normalize
+    if isempty(sps)
+        latents = [];
+        return;
+    end
+    u = bsxfun(@plus, sps', -mu); % normalize
     latents = u'*beta';
 end

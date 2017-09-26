@@ -58,13 +58,14 @@ function errs = checkDecoderVelocities(Blk, Y)
     end
     
     ts = Blk.trial_index;
+    tm = Blk.time;
     vel = Blk.vel;
     velNext = Blk.velNext;
     
     trs = sort(unique(ts));
     errs = cell(numel(trs),1);
     for ii = 1:numel(trs)
-        ix = trs(ii) == ts;
+        ix = trs(ii) == ts & tm > 5; % freeze period
         vs = vel(ix,:);
         vsn = velNext(ix,:);
         us = Y(ix,:);

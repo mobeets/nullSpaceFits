@@ -26,22 +26,33 @@ plot.plotSSSErrorFig(cerrs, hypnms, dtsc, mnkNms, hypsToShow, doSave, false);
 
 %% plot ellipses - data
 
-doSave = true;
+doSave = false;
 hypClrs = [plot.hypColor('data'); [0.6 0.6 0.6]];
 opts = struct('clrs', hypClrs, 'doSave', doSave, 'indsToMark', exInds, ...
     'width', 13, 'height', 3, 'dstep', 6, 'XRotation', 0, ...
     'LineWidth', 2, 'dts', cellfun(@str2double, dts));
 plot.plotSSSEllipseFig(C1s, C2s(:,:,end), opts);
 
+%% plot ellipses - cloud
+
+doSave = false;
+hypClrs = [plot.hypColor('data'); plot.hypColor('constant-cloud')];
+opts = struct('clrs', hypClrs, 'doSave', doSave, 'indsToMark', exInds, ...
+    'width', 13, 'height', 3, 'dstep', 6, 'XRotation', 0, ...
+    'LineWidth', 2, 'dts', cellfun(@str2double, dts));
+plot.plotSSSEllipseFig(C1s, C2s(:,:,end-1), opts);
+
 %% plot example ellipse - data
 
-doSave = true;
-hypClrs = [plot.hypColor('data'); 0.7*ones(1,3)];
-% hypClrs = [plot.hypColor('data'); [17, 135, 48]/255];
+doSave = false;
+% hypClrs = [plot.hypColor('data'); 0.7*ones(1,3)];
+hypClrs = [plot.hypColor('data'); plot.hypColor('constant-cloud')];
 
 hypNmA = 'Output-potent';
 hypNmB = 'Output-null';
+hypNmA = '';
+hypNmB = '';
 opts = struct('clrs', hypClrs, 'doSave', doSave, 'LineWidth', 3, ...
     'TextNoteA', hypNmA, 'TextNoteB', hypNmB);
 plot.plotSSSEllipseSingle(Ys{end-1}, Ys{end}, ...
-    C1s{exInds(1), exInds(2)}, C2s{exInds(1), exInds(2), end}, opts);
+    C1s{exInds(1), exInds(2)}, C2s{exInds(1), exInds(2), 6}, opts);

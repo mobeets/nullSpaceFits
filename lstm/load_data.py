@@ -2,6 +2,7 @@ import numpy as np
 import scipy.io
 import pandas as pd
 from keras.preprocessing import sequence
+from sklearn.preprocessing import OneHotEncoder
 
 def get_column(d, keys):
     if isinstance(keys, basestring): # is str
@@ -17,7 +18,14 @@ def get_column_lag1(d, key, ixSetToZero):
     x[ixSetToZero,:] = 0.0
     return x
 
-def make_design(d, kind='joint', skip_freeze_period=False):
+def make_categorical(xs, n):
+    if len(xs.shape) == 1:
+        xs = xs[:,None]
+    enc = OneHotEncoder(n)
+    enc.fit(xs)
+    return enc.transform(xs).toarray()
+
+def make_design(d, kind, skip_freeze_period=False):
     """
     LSTM-potent: Y^r(t) = f( Y^n(<t), Y^r(<t), X(<=t), H(t) )
     LSTM-null: Y^n(t) = f( Y^n(<t), Y^r(<=t), X(<=t) )
@@ -29,32 +37,46 @@ def make_design(d, kind='joint', skip_freeze_period=False):
     elif kind == 'potent':
         y = get_column(d, 'Yr')
     elif kind == 'null':
-        y = get_column(d, 'Yn')[:,:2]
+        y = get_column(d, 'Yn')#[:,:2]
     else:
         assert False
     X1 = get_column(d, 'trial_index')
     X2 = get_column(d, 'time')
     gs = get_column(d, 'gs')
+    trg = get_column(d, 'target')
+    angs = (np.arctan2(trg[:,0], trg[:,1])*180/np.pi).round()/45
+    angs = (angs - angs.min()).astype(int)
+    angs = make_categorical(angs, len(np.unique(angs))+1)
+    # add one extra group to angs for when target hasn't been seen
     
     tr_change = np.diff(X1[:,0]) > 0
     tr_change = np.hstack([[False], tr_change])
 
     X3 = get_column_lag1(d, 'Yn', tr_change)
     X4 = get_column_lag1(d, 'Yr', tr_change)
+    ths = np.deg2rad(get_column(d, 'thetas'))
+    ths = np.hstack([np.cos(ths), np.sin(ths)])
+
     X5 = get_column(d, 'Yr_goal')
     X6 = get_column(d, 'Yn_goal')
-    thsx = np.cos(np.deg2rad(get_column(d, 'thetas')))
-    thsy = np.sin(np.deg2rad(get_column(d, 'thetas')))
-
     ixFreeze = (X2 > 5.0)[:,0] # non-freeze period
+    ixSeeTarg = (X2 > 3.0)[:,0] # non-freeze period
     X5[ixFreeze] = 0.0
     X6[ixFreeze] = 0.0
+    angs[ixSeeTarg] = 0.0 # clear target identity because not seen
+    angs[ixSeeTarg,-1] = 1.0 # mark target as not yet seen in last column
 
     if kind == 'null':
-        X4c = get_column(d, 'Yr')
-        xss = [X3, X4, X4c, X5, thsx, thsy] # null goes first
+        # X7 = get_column(d, 'Yr')
+        xss = [X3, X4, trg] # null goes first
+    elif kind == 'potent':
+        X7 = get_column(d, 'Yn')
+        # xss = [X4, X3, X7]
+        xss = [X3]#, X7]
     else:
-        xss = [X4, X3, X5, thsx, thsy]
+        X5 = get_column_lag1(d, 'Yn_goal', tr_change)
+        X6 = get_column_lag1(d, 'Yr_goal', tr_change)
+        xss = [X4, X3]#, X5, X6]
     # X = np.hstack([X3, X4, X5])
     X = np.hstack(xss)
 
@@ -88,7 +110,7 @@ def prepare_for_batch_size(vals, batch_size):
         n = len(vals[0])
     return [v[:n] for v in vals]
 
-def load(infile='data/input/20131205-goals.mat', kind='null', 
+def load(infile='data/input/20131205.mat', kind='null', 
         seq_by_trial=True, maxlen=None, do_cv_split=False, batch_size=None):
     d = scipy.io.loadmat(infile)['G']
     assert 'train' in d.dtype.names
