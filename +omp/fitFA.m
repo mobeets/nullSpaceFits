@@ -1,6 +1,6 @@
-function params = fitFA(Y, maxndims)
+function params = fitFA(Y, ndims)
     if nargin < 2
-        maxndims = 20;
+        ndims = 1:20;
     end
     ix = ~any(isnan(Y),2);
     Y = Y(ix,:);
@@ -8,7 +8,7 @@ function params = fitFA(Y, maxndims)
     sdev = std(Y);
     Y = bsxfun(@minus, Y, mu);
     Y = bsxfun(@rdivide, Y, sdev);
-    dim = crossvalidate_fa(Y', 'zDimList', 1:maxndims);
+    dim = crossvalidate_fa(Y', 'zDimList', ndims);
     params = {dim.estParams};
     sumPE = [dim.sumPE];
     sumLL = [dim.sumLL];

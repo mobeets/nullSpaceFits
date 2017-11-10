@@ -1,5 +1,5 @@
 function blk = getSpikes(d, trialTags, ctrg, ...
-    ignoreIncorrects, useCTAngle, skipFreeze)
+    ignoreIncorrects, skipFreeze, useCTAngle)
     if nargin < 3
         ctrg = nan;
     end
@@ -7,11 +7,11 @@ function blk = getSpikes(d, trialTags, ctrg, ...
         ignoreIncorrects = true;
     end
     if nargin < 5
-        useCTAngle = true;
-    end
-    if nargin < 6
         skipFreeze = true;
     end
+    if nargin < 6
+        useCTAngle = true;
+    end    
     % center targets and compute target angle
     trgpos = d.targetLocations(:,1:2);
     mutrgs = mean(unique(trgpos, 'rows'));
@@ -55,10 +55,13 @@ function blk = getSpikes(d, trialTags, ctrg, ...
             ixt = ixt & (trgs == ctrg);
         end
     end
+    blk.spsBaseline = nanmean(sps(tms < 45*4,:));
     blk.sps = sps(ixt,:);
     blk.pos = pos(ixt,:);
     blk.vel = vel(ixt,:);
     blk.trs = trs(ixt,:);
+    blk.tms = round(tms(ixt,:) / 45);
+    assert(~any(diff(blk.tms) > 1)); % all times are adjacent, else new trial
     blk.trgs = trgs(ixt,:);
     blk.trgpos = trgpos(ixt,:);
     blk.ths = ths(ixt,:);

@@ -1,4 +1,4 @@
-function [latents, beta] = convertRawSpikesToRawLatents(dec, sps)
+function [latents, beta] = convertRawSpikesToRawLatents(dec, sps, ~)
 % Convert spikes to latents
 
     if isempty(sps)

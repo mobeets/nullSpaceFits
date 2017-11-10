@@ -1,4 +1,4 @@
-function h = showHeatmap(dat, ctrs)
+function [h, ctrs] = showHeatmap(dat, ctrs)
     if nargin < 2
         nbins = 50;
         mns = min(dat);

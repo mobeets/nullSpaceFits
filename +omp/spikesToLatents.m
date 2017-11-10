@@ -1,13 +1,22 @@
-function [latents, beta] = spikesToLatents(dec, sps)
+function [latents, beta] = spikesToLatents(dec, sps, doOrtho)
 % Convert spikes to latents
-
-    if isempty(sps)
-        latents = [];
-        return;
+    if nargin < 3
+        doOrtho = false;
     end
 
     % FA params
     L = dec.FactorAnalysisParams.L;
+    if doOrtho
+        [U,S,V] = svd(L, 'econ');
+        Lrot = U;
+        spikeRot = V*S;
+        if det(spikeRot) < 0
+            spikeRot(:,1) = -spikeRot(:,1);
+        end
+    else
+        spikeRot = eye(size(L,2));
+    end
+    
     ph = dec.FactorAnalysisParams.Ph;    
     sigmainv = diag(1./dec.NormalizeSpikes.std');
     if isfield(dec.FactorAnalysisParams, 'spikeRot')
@@ -18,7 +27,12 @@ function [latents, beta] = spikesToLatents(dec, sps)
     end
     beta = L'/(L*L'+diag(ph)); % See Eqn. 5 of DAP.pdf
     beta = R'*beta*sigmainv';
+    if isempty(sps)
+        latents = [];
+        return;
+    end
     mu = dec.NormalizeSpikes.mean';
     u = bsxfun(@plus, sps, -mu); % normalize
     latents = u'*beta';
+    latents = latents*spikeRot;
 end
