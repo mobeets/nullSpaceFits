@@ -13,11 +13,11 @@ function [Z, inds] = closestRowValFit(Tr, Te, dec, opts)
     Z1 = Tr.latents;
     Z2 = Te.latents;
     
-    ds = pdist2(Z2*RB2, Z1*RB2); % nz2 x nz1
+    ds = pdist2(Z2*RB2, Z1*RB2); % nz2 x nz1    
     if isnan(opts.kNN)
         [~, inds] = min(ds, [], 2);
     else
-        % sample inds from kNN nearest neighbors
+        % sample inds from kNN nearest neighbors        
         inds = sampleFromCloseInds(ds, opts.kNN);
     end
     Zsamp = Z1(inds,:);

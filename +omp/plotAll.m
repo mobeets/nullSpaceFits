@@ -1,67 +1,35 @@
 %% load
 
-dirNm = 'distsFromManif_noShift';
+dirNm = 'CI/moreTime';
 
-opts.doSave = true;
+opts.doSave = false;
 opts.saveDir = fullfile('data', 'plots', 'omp', dirNm);
 opts.ext = 'pdf';
 
-dts = omp.getDates;
-isIntOnly = false;
-prefix = '';
+doMultiOMP = true;
 
-% dts = {'20150212', '20150308', '20160717'};
-% isIntOnly = true;
-% prefix = 'intOnly-';
+dts = omp.getDates(doMultiOMP);
+if doMultiOMP
+    prefix = '';
+else
+    prefix = 'intOnly-';
+end
 
-avs = cell(numel(dts),1);
-for ii = 1%:numel(dts)
+for ii = 1%1:numel(dts)
     dtstr = dts{ii}
-    try
-        [blks, decs, ks, d] = omp.loadCoachingSessions(dtstr, ...
-            true, false, isIntOnly);
-    catch
-        continue;
+%     try
+%         [blks, decs, ks, d] = omp.loadCoachingSessions(dtstr, ...
+%             true, false, ~doMultiOMP);
+%     catch
+%         continue;
+%     end
+    
+    if strcmpi(blks(end).name, 'Washout')
+        blks = blks(1:end-1);
     end
-    
-%     opts.fnm = [prefix 'vels-' dtstr];
-%     omp.plotVelsColoredByDistFromManif(blks, decs(2), ks(1), opts);
-    
-    opts.fnm = [prefix 'prog-' dtstr];
-    vals = omp.plotProgsVsDistFromManif(blks, decs(2), ks(1), opts);
-    avs{ii} = vals;
-    close all;
-%     continue;
-    
-    plot.init;
-    clrs = cbrewer('div', 'RdYlGn', 8);
-    xl = [-0.05 0.35];
-    yl = [-180 180];
-    plot([0 0], yl, '-', 'Color', 0.8*ones(3,1));
-    plot(xl, [0 0], '-', 'Color', 0.8*ones(3,1));
-    for jj = 1:size(vals,2)
-        p1 = squeeze(vals(1,jj,:));
-        p2 = squeeze(vals(2,jj,:));
-        plot([p2(1)-p1(1)], [p2(2)-p1(2)], '.', ...
-            'Color', clrs(jj,:), 'MarkerSize', 20);
-    end
-    xlabel('\Delta distance');
-    ylabel('\Delta progress');
-    xlim(xl);
-    ylim(yl);
-    title(dtstr);
-    fnm = fullfile(opts.saveDir, ['change-' dtstr '.pdf']);
-    export_fig(gcf, fnm);    
-    
-%     close all;
-    
-%     omp.progInNewDims;
-%     omp.progressInstability;
 
-%     prgs0 = omp.plotBlockProgs(blks, decs, 0, opts, dtstr);
-%     prgs1 = omp.plotBlockProgs(blks, decs, 1, opts, dtstr);
-%     prgs2 = omp.plotBlockProgs(blks, decs, 2, opts, dtstr);
-%     close all;
+    dec = decs(2);
+    omp.plotConditionAveragedVels(blks, dec, opts);
 end
 
 %%

@@ -65,7 +65,7 @@ function hyps = getDefaultHyps(hnms, grpName)
         'nanIfOutOfBounds', nanIfOutOfBounds, 'nReps', nReps);
     hyp.fitFcn = @hypfit.closestRowValFit;
     hyps = [hyps hyp];
-    
+
     % minimum (L1 norm)
 %     clear hyp;
 %     hyp.name = 'minimum-L1';

@@ -13,7 +13,7 @@ hypsToShow = {};
 errNms = {'meanError', 'covError', 'histError'};
 mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
-errNms = {'histError'};
+errNms = {'covError'};
 
 close all;
 showYLabel = true;

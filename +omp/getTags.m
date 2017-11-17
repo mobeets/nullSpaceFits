@@ -21,6 +21,126 @@ end
 %%
 
 % intuitive day 1 tag =  [7 8]
+% full OMP day = [1 7 8 10]
+% full OMP tag = [15 4 4 4]
+% washout tag = n/a (day )
+
+dtstr = '20150323';
+
+days = [];
+day.dayInd = 1;
+day.name = 'Intuitive';
+day.trialTags = [7 8];
+days = [days day];
+
+daynums = [1 7 8 10];
+daytags = [15 4 4 4];
+for ii = 1:numel(daynums)
+    day.dayInd = daynums(ii);
+    day.name = 'OMP';
+    day.trialTags = daytags(ii);
+    days = [days day];
+end
+
+save(fullfile('data', 'omp', dtstr, 'tags.mat'), 'days');
+
+%%
+
+% intuitive day 1 tag =  [7 8]
+% full OMP day = [1 9 10 11 12]
+% full OMP tag = [9 5 4 6 4]
+% washout tag = 5 (day 12)
+
+dtstr = '20151023';
+
+days = [];
+day.dayInd = 1;
+day.name = 'Intuitive';
+day.trialTags = [7 8];
+days = [days day];
+
+daynums = [1 9 10 11 12];
+daytags = [9 5 4 6 4];
+for ii = 1:numel(daynums)
+    day.dayInd = daynums(ii);
+    day.name = 'OMP';
+    day.trialTags = daytags(ii);
+    days = [days day];
+end
+
+day.dayInd = 12;
+day.name = 'Washout';
+day.trialTags = 5;
+days = [days day];
+
+save(fullfile('data', 'omp', dtstr, 'tags.mat'), 'days');
+
+
+%%
+
+% intuitive day 1 tag =  [7 8]
+% full OMP day = [1 7 8 9 10]
+% full OMP tag = [9 5 5 6 5]
+% washout tag = 6 (day 10)
+
+dtstr = '20151005';
+
+days = [];
+day.dayInd = 1;
+day.name = 'Intuitive';
+day.trialTags = [7 8];
+days = [days day];
+
+daynums = [1 7 8 9 10];
+daytags = [9 5 5 6 5];
+for ii = 1:numel(daynums)
+    day.dayInd = daynums(ii);
+    day.name = 'OMP';
+    day.trialTags = daytags(ii);
+    days = [days day];
+end
+
+day.dayInd = 10;
+day.name = 'Washout';
+day.trialTags = 6;
+days = [days day];
+
+save(fullfile('data', 'omp', dtstr, 'tags.mat'), 'days');
+
+%%
+
+% intuitive day 1 tag =  [7 8]
+% full OMP day = [1 4 5 6 7 8]
+% full OMP tag = [15 4 4 4 4 6]
+% washout tag = 7 (day 8)
+
+dtstr = '20150102';
+
+days = [];
+day.dayInd = 1;
+day.name = 'Intuitive';
+day.trialTags = [7 8];
+days = [days day];
+
+daynums = [1 4 5 6 7 8];
+daytags = [15 4 4 4 4 6];
+for ii = 1:numel(daynums)
+    day.dayInd = daynums(ii);
+    day.name = 'OMP';
+    day.trialTags = daytags(ii);
+    days = [days day];
+end
+
+day.dayInd = 8;
+day.name = 'Washout';
+day.trialTags = 7;
+days = [days day];
+
+save(fullfile('data', 'omp', dtstr, 'tags.mat'), 'days');
+
+%%
+
+% intuitive day 1 tag =  [7 8]
 % full OMP day = [1 3 4 5 6 8 9 10 11 12]
 % full OMP tag = [15 4 3 5 4 4 7 4 5 4]
 % washout tag = 5 (day 12)

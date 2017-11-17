@@ -86,3 +86,70 @@ for ii = 1:size(cpts,1)
     xlim([0 15]);
     title(dts{ii});
 end
+
+%%
+
+doOMP = true;
+
+dts1 = omp.getDates(true);
+dts2 = omp.getDates(false);
+
+c = 0;
+plot.init;
+for kk = 0:1
+    ix1 = cellfun(@isempty, strfind(dts1, '2016'));
+    ix2 = cellfun(@isempty, strfind(dts2, '2016'));
+    mkr = 's';
+    if kk == 1
+        ix1 = ~ix1;
+        ix2 = ~ix2;
+        mkr = 'o';
+    end
+%     Ds = {D1, D2};
+%     Ds = {D1a, D2a};
+    Ds = {D1d, D2d};
+    Dts = {dts1, dts2};
+    Ix = {ix1, ix2};
+    
+    for ll = 1:numel(Dts)
+        dts = Dts{ll};
+        ix = Ix{ll};
+        D = Ds{ll};
+        
+        for ii = 1:numel(dts)
+            if ~ix(ii)
+                continue;
+            end
+            c = c + 1;
+            subplot(5,4,c); hold on; set(gca, 'FontSize', 16);
+
+            ys = D.avs{ii};
+            xs = D.day{ii};
+            ns = D.nms{ii};
+            plot(xs, ys, '-', 'Color', 'k', 'LineWidth', 2);
+            for jj = 1:numel(xs)
+                if isempty(strfind(ns{jj}, 'OMP'))
+                    clr = [0.8 0.2 0.2];
+                else
+                    clr = [0.2 0.2 0.8];
+                end
+                plot(xs(jj), ys(jj), mkr, 'Color', clr, ...
+                    'MarkerFaceColor', clr);
+            end
+            if c == 9
+                ylabel('Dist. of baseline from session-3 baseline');        
+            end
+            if c == 17
+                xlabel('Day #');
+            end
+            title(dts{ii});            
+            if kk == 0
+                xlim([0 20]);
+                ylim([0 10]);
+            else
+                xlim([0 10]);
+                ylim([0 15]);
+            end
+        end
+    end
+end

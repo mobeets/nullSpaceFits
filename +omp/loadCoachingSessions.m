@@ -52,7 +52,7 @@ function [blks, decs, ks, d] = loadCoachingSessions(dtstr, ...
         blk.name = tags(ii).name;
         blk.dayInd = dayInd;
         blk.trialTags = trialTags;
-        if strcmp(blk.name, 'OMP')
+        if strcmp(blk.name, 'OMP') || isAllIntuitive
             blk.name = [blk.name '-d' num2str(blk.dayInd)];
         end        
         blks = [blks blk];

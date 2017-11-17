@@ -1,6 +1,6 @@
 function makePreprocessed(dts, prepType, doOverwrite)
     if nargin < 2
-        prepType = 'checkpoints';
+        prepType = 'checkpoint';
     end
     if nargin < 3
         doOverwrite = false;
@@ -20,6 +20,9 @@ function makePreprocessed(dts, prepType, doOverwrite)
             D = io.loadRawDataByDate(dts{ii});
         elseif strcmpi(prepType, 'preprocessed')
             D = io.quickLoadByDate(dts{ii});
+        elseif strcmpi(prepType, 'alltrials')
+            D = io.quickLoadByDate(dts{ii}, ...
+                struct('START_SHUFFLE', nan, 'END_SHUFFLE', nan));
         end
         save(fnm, 'D');
     end
