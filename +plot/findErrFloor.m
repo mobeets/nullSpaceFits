@@ -96,6 +96,14 @@ for ii = 1:numel(F)
     [mu - std./sqrt(ii); mu; mu + std./sqrt(ii)]
 end
 
+% histErr   muErr     covErr
+% ---------------------------
+% 0.0783    0.3644    1.2304
+% 0.0815    0.3833    1.2927
+% 0.0848    0.4021    1.3550
+
+% muErr = 8.5174 spikes/s
+
 %%
 
 plot.init;

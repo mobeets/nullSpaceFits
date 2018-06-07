@@ -7,12 +7,12 @@ function [bp, mu, sigma] = gauss2dcirc(data, sigMult, sigma)
     end
     if nargin < 3
         assert(size(data,2)==2);
-        mu = mean(data)';
-        sigma = cov(data);
+        mu = nanmean(data)';
+        sigma = nancov(data);
     else
         mu = zeros(size(sigma,1),1);
     end    
-    tt = linspace(0, 2*pi, 30)';
+    tt = linspace(0, 2*pi, 60)';
     x = cos(tt); y = sin(tt);
     ap = [x(:) y(:)]';
     [v,d] = eig(sigma);

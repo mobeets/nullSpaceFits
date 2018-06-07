@@ -1,5 +1,5 @@
 function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
-    doSave, doAbbrev, showYLabel, showMnkNm)
+    doSave, doAbbrev, showYLabel, showMnkNm, errFloor)
     if nargin < 3
         mnkNm = '';
     end
@@ -18,6 +18,11 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     if nargin < 8
         showMnkNm = true; 
     end
+    if nargin < 9
+        errFloor = nan;
+    end
+    hypNmForSignificance = 'constant-cloud';
+%     hypNmForSignificance = 'habitual-corrected';
     
     % if abbreviated, shorten figure
     if doAbbrev
@@ -45,8 +50,8 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     else
         hypInds = 1:numel(hypnms);
     end
-    if ismember('constant-cloud', hypnms(hypInds))
-        starBaseName = plot.hypDisplayName('constant-cloud', doAbbrev);
+    if ismember(hypNmForSignificance, hypnms(hypInds))
+        starBaseName = plot.hypDisplayName(hypNmForSignificance, doAbbrev);
     else
         starBaseName = '';
     end
@@ -95,6 +100,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
         'ylbl', ylbl, ...
         'title', ttl, 'ymax', ymax, ...
         'TextNote', mnkTitle, ...
+        'errFloor', errFloor, ...
         'clrs', hypClrs(hypInds,:));
     plot.plotError(errs, hypDispNms(hypInds), opts);
 end

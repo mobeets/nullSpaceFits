@@ -1,4 +1,4 @@
-function G = make_struct(F, fnm, skipExtras)
+function G = make_struct(F, fnm, skipExtras, nBestTrials)
 % ps = io.setFilterDefaults(dtstr);
 % ps.MIN_DISTANCE = nan; ps.MAX_DISTANCE = nan;
 % D = io.quickLoadByDate(dtstr, ps);
@@ -10,16 +10,43 @@ function G = make_struct(F, fnm, skipExtras)
     if nargin < 3
         skipExtras = false;
     end
+    if nargin < 4
+        nBestTrials = nan;
+    end
     
     assert(isfield(F, 'train'));
-    G.train = makeBlock(F, false, skipExtras);
-    G.test = makeBlock(F, true, skipExtras);
+    
+%     if ~isnan(nBestTrials)
+%         ts = findBestTrials(F.train, nBestTrials);
+%     else
+%         ts = [];
+%     end
+%     G.train = makeBlock(F, false, skipExtras, false, ts);
+%     G.test = G.train;
+    
+    [G.train, G.test] = makeBlock(F, false, skipExtras, true);
+    
+    if ~isnan(nBestTrials)
+        ts = findBestTrials(F.test, nBestTrials);
+    else
+        ts = [];
+    end
+    
+    G.val = makeBlock(F, true, skipExtras, false, ts);
     if ~isempty(fnm)
         save(fullfile('lstm', 'data', 'input', [fnm '.mat']), 'G');
     end
 end
 
-function G = makeBlock(F, isPert, skipExtras)
+function ts = findBestTrials(B, nTrials)
+    B.progress = tools.getProgress(B.spikes, B.pos, ...
+        B.target, [], B.vel);
+    [t1, t2] = tools.identifyTopLearningRange(...
+        B, nTrials, 'progress', @max, 7, inf);
+    ts = [t1 t2];
+end
+
+function [G, Gte] = makeBlock(F, isPert, skipExtras, splitThisOne, ts)
 % 1. LSTM-null: Y^n(t) = f( Y^n(<t), Y^r(?t), X(?t) )
 % 	- can train simply using intuitive activity through perturbation mapping
 % 2. LSTM-potent: Y^r(t) = f( Y^n(<t), Y^r(<t), X(?t), H(t) )
@@ -28,8 +55,17 @@ function G = makeBlock(F, isPert, skipExtras)
 % 		- during intuitive session, this is the intuitive activity that would yield the best velocity towards the target
 % 	- can train using intuitive activity through perturbation mapping
     
+    if nargin < 4
+        splitThisOne = false;
+    end
+    if nargin < 5
+        ts = [];
+    end
+    
     N = F.test.NB;
     R = F.test.RB;
+    Nint = F.train.NB;
+    Rint = F.train.RB;
     
     if isPert
         G = prepBlock(F.test);
@@ -44,15 +80,32 @@ function G = makeBlock(F, isPert, skipExtras)
 %         dec = F.train;
 %         vels = F.train.vel;
     end
+    
+    % split intuitive block by trial
+    if splitThisOne
+        trainProp = 0.8;
+        [G, Gte] = splitBlockByTrials(G, trainProp);
+    else
+        Gte = [];
+    end
+    
+    if ~isempty(ts)
+        ix = (G.trial_index >= ts(1)) & (G.trial_index <= ts(2));
+        [G, ~] = splitBlockByIx(G, ix);
+    end
+    
     if skipExtras
         return;
     end
+        
     Y = G.latents;
     ths = G.thetas;
     dec = G;
     
     G.Yn = Y*N;
     G.Yr = Y*R;
+    G.Yn_int = Y*Nint;
+    G.Yr_int = Y*Rint;
     G.X_on = G.time >= 6; % freeze period over
     
 %     gs = tools.computeAngles(velsThroughDec(Y, F.test));
@@ -94,6 +147,32 @@ function G = makeBlock(F, isPert, skipExtras)
     end
 
 end
+
+ function [Gtr, Gte] = splitBlockByTrials(G, trainProp)
+    trs = G.trial_index;
+    alltrs = unique(trs);
+    trs_shuf = randperm(numel(alltrs));
+    nTrainTrs = ceil(trainProp*numel(alltrs));
+    ixTrain = ismember(trs, trs_shuf(1:nTrainTrs));
+    [Gtr, Gte] = splitBlockByIx(G, ixTrain);
+ end
+
+function [G1, G2] = splitBlockByIx(G, ix)
+    G1 = struct();
+    G2 = struct();
+    fnms = fieldnames(G);
+    for ii = 1:numel(fnms)
+        fnm = fnms{ii};
+        curVals = G.(fnm);
+        if size(curVals,1) ~= numel(ix)
+            G1.(fnm) = curVals;
+            G2.(fnm) = curVals;
+            continue;
+        end
+        G1.(fnm) = curVals(ix,:,:);
+        G2.(fnm) = curVals(~ix,:,:);
+    end
+ end
 
 function vs = velsThroughDec(Y, dec)
 % v = (I - A)\(Bu + c)

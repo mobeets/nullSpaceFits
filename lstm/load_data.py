@@ -38,6 +38,12 @@ def make_design(d, kind, skip_freeze_period=False):
         y = get_column(d, 'Yr')
     elif kind == 'null':
         y = get_column(d, 'Yn')#[:,:2]
+    elif kind == 'volitional':
+        yr = get_column(d, 'Yr_int')
+        yn = get_column(d, 'Yn_int')
+        # yr = get_column(d, 'Yr')
+        # yn = get_column(d, 'Yn')
+        y = np.hstack([yr, yn])
     else:
         assert False
     X1 = get_column(d, 'trial_index')
@@ -60,11 +66,11 @@ def make_design(d, kind, skip_freeze_period=False):
     X5 = get_column(d, 'Yr_goal')
     X6 = get_column(d, 'Yn_goal')
     ixFreeze = (X2 > 5.0)[:,0] # non-freeze period
-    ixSeeTarg = (X2 > 3.0)[:,0] # non-freeze period
+    ixSeeTarg = (X2 >= 3.0)[:,0] # non-freeze period
     X5[ixFreeze] = 0.0
     X6[ixFreeze] = 0.0
-    angs[ixSeeTarg] = 0.0 # clear target identity because not seen
-    angs[ixSeeTarg,-1] = 1.0 # mark target as not yet seen in last column
+    angs[~ixSeeTarg] = 0.0 # clear target identity because not seen
+    angs[~ixSeeTarg,-1] = 1.0 # mark target as not yet seen in last column
 
     if kind == 'null':
         # X7 = get_column(d, 'Yr')
@@ -73,6 +79,11 @@ def make_design(d, kind, skip_freeze_period=False):
         X7 = get_column(d, 'Yn')
         # xss = [X4, X3, X7]
         xss = [X3]#, X7]
+    elif kind == 'volitional':
+        X3tr = get_column_lag1(d, 'Yn_int', tr_change)
+        X4tr = get_column_lag1(d, 'Yr_int', tr_change)
+        xss = [X3tr, X4tr, angs]
+        # xss = [X3, X4, angs]
     else:
         X5 = get_column_lag1(d, 'Yn_goal', tr_change)
         X6 = get_column_lag1(d, 'Yr_goal', tr_change)
@@ -127,6 +138,27 @@ def load(infile='data/input/20131205.mat', kind='null',
     Xtr, ytr, gtr, ttr, tmstr = prepare_for_batch_size([Xtr, ytr, gtr, ttr, tmstr], batch_size)
     Xte, yte, gte, tte, tmste = prepare_for_batch_size([Xte, yte, gte, tte, tmste], batch_size)
     return Xtr, ytr, Xte, yte, gtr, gte, ttr, tte, tmstr, tmste
+
+def load_vol(infile='data/input/20131205.mat', kind='null', 
+        seq_by_trial=True, maxlen=None, do_cv_split=False, batch_size=None):
+    d = scipy.io.loadmat(infile)['G']
+    assert 'train' in d.dtype.names
+
+    Xtr, ytr, ttr, _, _ = make_design(get_column(d, 'train'), kind)
+    Xte, yte, tte, _, _ = make_design(get_column(d, 'test'), kind)
+    Xva, yva, tva, _, _ = make_design(get_column(d, 'val'), kind)
+
+    if maxlen is None:
+        maxlen = np.bincount(get_column(d, ['train', 'time'])).max()
+
+    Xtr, ytr = make_trial_sequences([Xtr, ytr], ttr, maxlen)
+    Xte, yte = make_trial_sequences([Xte, yte], tte, maxlen)
+    Xva, yva = make_trial_sequences([Xva, yva], tva, maxlen)
+
+    Xtr, ytr = prepare_for_batch_size([Xtr, ytr], batch_size)
+    Xte, yte = prepare_for_batch_size([Xte, yte], batch_size)
+    Xva, yva = prepare_for_batch_size([Xva, yva], batch_size)
+    return Xtr, ytr, Xte, yte, Xva, yva
 
 def make_df(d, main_key='time', ignores=['spikes', 'latents']):
     x = {}

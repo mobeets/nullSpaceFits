@@ -41,6 +41,13 @@ function plotHistFigs(fitName, dt, hypNms, opts, latents)
         YNc{ii} = bsxfun(@plus, bsxfun(@minus, Yc*NB, mu)*coeff, mu);
         err(ii) = errs(strcmp({S(1).scores.name}, hypNms{ii}));
     end
+    
+%     sps = F.test.spikes(ix,:);
+%     nse = rand(size(sps));
+%     nse = nse - 0.5;
+%     [lts, bta] = tools.convertRawSpikesToRawLatents(F.dec, sps' + nse');
+%     [~,S] = pca(lts);
+%     plot.init; plot(S(:,1), S(:,2), 'k.');
 
     useDataOnlyForRange = false; % false -> use data and preds to set range
     [Hs, Xs, ~] = score.histsFcn([YN0; YNc], ...

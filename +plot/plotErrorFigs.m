@@ -1,19 +1,23 @@
 
 doSave = false;
 
-fitName = 'Int2Pert_yIme';
+% fitName = 'Int2Pert_nIme_20180606';
+fitName = 'Int2Pert_yIme_20180606';
+% fitName = 'Int2Pert_yIme';
 % fitName = 'Int2Pert_nIme';
 % fitName = 'Pert2Int_yIme';
 
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud'};
-% hypsToShow = {'minimum'};
-hypsToShow = {};
+hypsToShow = {'habitual-corrected', 'constant-cloud'};
+% hypsToShow = {};
 
-errNms = {'meanError', 'covError', 'histError'};
+errNms = {'histError', 'meanError', 'covError'};
 mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
-errNms = {'covError'};
+% errNms = {'histError'};
+
+errFloors = [0.0815*100 0.3833*(1000/45) 1.2927];
 
 close all;
 showYLabel = true;
@@ -38,8 +42,10 @@ for ii = 1:numel(errNms)
         else
             mnkNm = mnkNms{jj};
         end
+        errFloor = errFloors(ii);
         errs = plot.plotErrorFig(fitName, errNms{ii}, mnkNm, ...
-            hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm);
+            hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm, errFloor);
+        [mean(errs(:,end)) std(errs(:,end))/sqrt(size(errs,1))]
     end
 end
 

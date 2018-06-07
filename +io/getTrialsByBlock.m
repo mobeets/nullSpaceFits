@@ -9,13 +9,9 @@ function tblk = getTrialsByBlock(D)
     firstWashoutTrial = find(~isShuffle & ...
         1:ntrials > firstShuffleTrial, 1, 'first');
     
-    realFirstShuffleTrial = firstShuffleTrial;
-    realFirstWashoutTrial = firstWashoutTrial;
-
     tblk = nan(ntrials, 1);
     tblk(1:firstShuffleTrial-1) = 1;    
-    tblk(realFirstShuffleTrial:firstWashoutTrial-1) = 2;
-    tblk(realFirstWashoutTrial:end) = 3;
-%     tblk(~D.simpleData.trialStatus) = nan; % unsuccessful trials
+    tblk(firstShuffleTrial:firstWashoutTrial-1) = 2;
+    tblk(firstWashoutTrial:end) = 3;
 
 end

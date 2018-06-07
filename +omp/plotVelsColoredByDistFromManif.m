@@ -69,12 +69,12 @@ function plotVelsColoredByDistFromManif(blks, dec, kc, opts)
             muShift = cblk.spsBaseline - blks(1).spsBaseline;
             isps = bsxfun(@plus, blks(1).sps, muShift);
             Yri = proj(isps);        
-            [k, v] = omp.convhullpct(Yri, 0.98); bs = Yri(k,:);
+            [k, v] = omp.convhullpct(Yri, 0.95); bs = Yri(k,:);
             plot(bs(:,1), bs(:,2), '--', 'Color', [0.8 0.2 0.2], 'LineWidth', 2);
 
             % show current boundary (for all points)
             Yri = proj(cblk.sps);
-            [k, v] = omp.convhullpct(Yri, 0.98); bs = Yri(k,:);
+            [k, v] = omp.convhullpct(Yri, 0.95); bs = Yri(k,:);
             plot(bs(:,1), bs(:,2), '-', 'Color', [0.8 0.2 0.2], 'LineWidth', 2);
 
             % show origin and goal velocity
@@ -83,8 +83,8 @@ function plotVelsColoredByDistFromManif(blks, dec, kc, opts)
     %         plot([0 r*cosd(thgrp)], [0 r*sind(thgrp)], 'w-', 'LineWidth', 1);
 
             axis off;        
-            xlim([min(ctrs{1})-mrg max(ctrs{1})+mrg]);
-            ylim([min(ctrs{2})-mrg max(ctrs{2})+mrg]);        
+%             xlim([min(ctrs{1})-mrg max(ctrs{1})+mrg]);
+%             ylim([min(ctrs{2})-mrg max(ctrs{2})+mrg]);        
             plot.setPrintSize(gcf, struct('width', 10, 'height', 3));
             axis equal;
 

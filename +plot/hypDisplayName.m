@@ -12,7 +12,7 @@ function nm = hypDisplayName(nm, doAbbrev)
         elseif strcmpi(nm, 'habitual-corrected')
             nm = 'Persistent Strategy';
         elseif strcmpi(nm, 'constant-cloud')
-            nm = 'Fixed Repertoire';
+            nm = 'Fixed Distribution';
         elseif strcmpi(nm, 'int-data')
             nm = 'Data, first mapping';
         elseif strcmpi(nm, 'pert-data')
@@ -33,7 +33,7 @@ function nm = hypDisplayName(nm, doAbbrev)
         elseif strcmpi(nm, 'habitual-corrected')
             nm = 'PS';
         elseif strcmpi(nm, 'constant-cloud')
-            nm = 'CC';
+            nm = 'FD';
         end
     end
 end

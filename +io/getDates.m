@@ -26,11 +26,11 @@ function dts = getDates(asympsOnly, showRaw, mnkNms, dtsToIgnore)
         return;
     end
 
-    DATADIR = getpref('factorSpace', 'data_directory');
+    DATADIR = fullfile(getpref('factorSpace', 'data_directory'), 'sessions');
     if showRaw
         dts = [];
         for ii = 1:numel(mnkNms)
-            fnms = dir(fullfile(DATADIR, mnkNms{ii}));
+            fnms = dir(fullfile(DATADIR, 'raw', mnkNms{ii}));
             ix = [fnms.isdir] & ~strcmp({fnms.name}, '.') & ...
                 ~strcmp({fnms.name}, '..');
             mnk = {fnms(ix).name};

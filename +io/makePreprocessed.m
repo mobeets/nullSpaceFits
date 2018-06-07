@@ -8,6 +8,9 @@ function makePreprocessed(dts, prepType, doOverwrite)
     
     DATADIR = getpref('factorSpace', 'data_directory');
     saveDir = fullfile(DATADIR, 'sessions', prepType);
+    if ~exist(saveDir, 'dir')
+        mkdir(saveDir);
+    end
     
     for ii = 1:numel(dts)
         fnm = fullfile(saveDir, [dts{ii} '.mat']);

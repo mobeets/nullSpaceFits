@@ -12,6 +12,10 @@ function trials = makeTrials(D)
 %         trial.spikes = d.spikeBins{tr};
         % the below shifts all timepoints of spikes by 1 (what pete did)
         spikes = d.spikeBins{tr};
+        if isempty(spikes)
+            warning(['Missing trial: in ' D.datestr ': ' num2str(tr)]);
+            continue;
+        end
         trial.spikes = nan(size(spikes));
         trial.spikes(1:end-1,:) = spikes(2:end,:);
         

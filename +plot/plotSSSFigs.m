@@ -1,5 +1,7 @@
 %% load
-fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_20180606';
+% fitName = 'Pert2Int_yIme_final_20180606';
+% fitName = 'Int2Pert_yIme';
 exInds = [11 1]; % from exInd, below
 [errs, C2s, C1s, Ys, dts, hypnms, es] = plot.getSSS(fitName, exInds);
 
@@ -11,7 +13,7 @@ mnkNms = {};
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
     'uncontrolled-empirical', 'habitual-corrected', 'constant-cloud', ...
     'data'};
-% hypsToShow = {};
+hypsToShow = {'habitual-corrected', 'constant-cloud', 'data'};
 cerrs = squeeze(nanmean(log(errs),2));
 dtsc = dts(~all(isnan(cerrs),2));
 cerrs = cerrs(~all(isnan(cerrs),2),:); % drop nans if all in session

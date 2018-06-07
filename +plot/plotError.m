@@ -6,7 +6,7 @@ function plotError(errs, nms, opts)
         'FontSize', 24, 'FontSizeTitle', 28, 'FontName', 'Helvetica', ...
         'doSave', false, 'saveDir', 'data/plots', 'filename', 'avgErr', ...
         'ext', 'pdf', 'title', '', 'clrs', [], 'doBox', true, ...
-        'ylbl', 'Avg. error', 'starBaseName', '', ...
+        'ylbl', 'Avg. error', 'starBaseName', '', 'errFloor', nan, ...
         'showZeroBoundary', false, 'nSEs', 1, ...
         'LineWidth', 2, 'ymin', 0, 'ymax', nan, 'TextNote', '');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
@@ -16,11 +16,17 @@ function plotError(errs, nms, opts)
     end
     
     % show plot
-    plot.init(opts.FontSize, opts.FontName);
+    plot.init(opts.FontSize, opts.FontName);    
     if opts.doBox
         makeBoxPlot(errs, opts.clrs, opts.LineWidth);
     else
         makeBarPlot(errs, opts.clrs, opts.LineWidth, opts.nSEs);
+    end
+    
+    % show error floor, if provided
+    if ~isnan(opts.errFloor)
+        plot(xlim, [opts.errFloor opts.errFloor], '-', ...
+            'LineWidth', opts.LineWidth, 'Color', 0.7*ones(3,1));
     end
     
     % format x-axis
