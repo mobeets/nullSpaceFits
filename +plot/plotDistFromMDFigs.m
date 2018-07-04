@@ -1,11 +1,90 @@
 %% load all fits
 
-doSave = false;
+doSave = true;
 runName = '_20180619';
 fitName = 'Int2Pert_yIme';
 [S,F] = plot.getScoresAndFits([fitName runName]);
-opts = struct('doSave', doSave, 'saveDir', 'data/plots', ...
-    'FontSize', 16, 'ext', 'pdf');
+saveDir = fullfile('data', 'plots', 'figures', runName);
+opts = struct('doSave', doSave, 'saveDir', saveDir, ...
+    'FontSize', 17, 'ext', 'pdf');
+
+%%
+
+dtstr = '20160714';
+ixd = ismember({F.datestr}, dtstr);
+f = F(ixd);
+s = S(ixd);
+
+RB1 = f.train.RB;
+NB2 = f.test.NB;
+SS0 = (NB2*NB2')*RB1; % when activity became irrelevant
+[SSS,~,v] = svd(SS0, 'econ');
+
+MD = f.fits(2);
+FD = f.fits(end);
+clr2 = plot.hypColor('best-mean');
+clr3 = plot.hypColor('constant-cloud');
+
+ix = s.gs == 315;
+xs1 = f.test.latents(ix,:)*SSS;
+xs2 = MD.latents(ix,:)*SSS;
+xs3 = FD.latents(ix,:)*SSS;
+
+% scale to spikes/s
+mult = 1000/45;
+xs1 = mult*xs1;
+xs2 = mult*xs2;
+xs3 = mult*xs3;
+
+% flip x-axis
+xs1(:,1) = -xs1(:,1);
+xs2(:,1) = -xs2(:,1);
+xs3(:,1) = -xs3(:,1);
+
+[bp1, mu1, sigma1] = plot.gauss2dcirc(xs1, 1);
+[bp2, mu2, sigma2] = plot.gauss2dcirc(xs2, 1);
+[bp3, mu3, sigma3] = plot.gauss2dcirc(xs3, 1);
+
+plot.init(opts.FontSize);
+msz = 50; lw = 2;
+
+% show scatter
+% plot(xs1(:,1), xs1(:,2), 'k.');
+% plot(xs2(:,1), xs2(:,2), '.', 'Color', clr2);
+% plot(xs3(:,1), xs3(:,2), '.', 'Color', clr3);
+
+% show cov ellipse
+plot(bp1(1,:), bp1(2,:), 'k-', 'LineWidth', lw);
+plot(bp2(1,:), bp2(2,:), '-', 'Color', clr2, 'LineWidth', lw);
+plot(bp3(1,:), bp3(2,:), '-', 'Color', clr3, 'LineWidth', lw);
+
+% show distances computed
+lw2 = 4;
+plot([mu1(1) mu2(1)], [mu1(2) mu2(2)], 'k--', 'LineWidth', lw2);
+plot([mu3(1) mu2(1)], [mu3(2) mu2(2)], '--', 'Color', clr3, 'LineWidth', lw2);
+
+% show mean
+plot(mu1(1), mu1(2), 'k.', 'MarkerSize', msz);
+plot(mu2(1), mu2(2), '.', 'Color', clr2, 'MarkerSize', msz);
+plot(mu3(1), mu3(2), '.', 'Color', clr3, 'MarkerSize', msz);
+
+set(gca, 'LineWidth', lw);
+set(gca, 'TickLength', [0 0]);
+set(gca, 'XTick', [0 150]);
+set(gca, 'YTick', [0 150]);
+xlim([0 150]);
+ylim([0 150]);
+% axis equal;
+
+xlabel({'Output-null activity, dim. 1', '(spikes/s, rel. to baseline)'});
+ylabel({'Output-null activity, dim. 2', '(spikes/s, rel. to baseline)'});
+
+plot.setPrintSize(gcf, struct('width', 5, 'height', 4));
+opts.filename = 'distFromBaseline_cart';
+if opts.doSave
+    export_fig(gcf, fullfile(opts.saveDir, ...
+        [opts.filename '.' opts.ext]));
+end
 
 %% compute avg norm of cloud and observed data, in each group
 
@@ -130,7 +209,7 @@ xlim([xmn xmx]); ylim(xlim);
 plot(xlim, ylim, 'k--', 'LineWidth', 2, 'HandleVisibility', 'off');
 
 % plot(xss(:), yss1(:), '.', 'MarkerSize', 30, 'Color', clr1);
-plot(xss(:), yss2(:), '.', 'MarkerSize', 30, 'Color', clr2);
+plot(xss(:), yss2(:), '.', 'MarkerSize', 30, 'Color', 'k');
 
 xlim([xmn xmx]); ylim(xlim);
 
@@ -150,58 +229,6 @@ set(gca, 'XTick', [0 100]);
 set(gca, 'YTick', [0 100]);
 
 opts.filename = 'distFromBaseline_scatter';
-if opts.doSave
-    export_fig(gcf, fullfile(opts.saveDir, ...
-        [opts.filename '.' opts.ext]));
-end
-
-%%
-
-% plot histogram
-
-vs0 = [pts(:,2) - pts(:,1); pts(:,3) - pts(:,1)];
-ymn = min(vs0);
-ymx = max(vs0);
-
-plot.init(opts.FontSize);
-ps = [];
-for jj = 3%2:3
-    yss = pts(:,jj);
-    clr = clrs(jj-1,:);
-    
-    vs = yss - xss;        
-    bins = linspace(min(vs0), max(vs0), 21);
-    cs = histc(vs, bins);
-    bar(bins, cs, 'FaceColor', clr, 'EdgeColor', clr);
-    median(vs)
-    p = signtest(yss, xss);
-    ps = [ps p];
-%     text(prctile(bins, 75), prctile(cs, 75), {['median = ', ...
-%         sprintf('%0.2f', median(vs))], ['     p = ' sprintf('%0.4f', p)]}, ...
-%         'FontSize', 16);
-    plot([median(vs) median(vs)], [0 18], '-', ...
-        'Color', clr, 'LineWidth', 2, 'HandleVisibility', 'off');
-end
-plot([0 0], [0 18], 'k-', ...
-    'LineWidth', 2, 'HandleVisibility', 'off');
-
-nm1 = plot.hypDisplayName('best-mean');
-nm2 = plot.hypDisplayName('constant-cloud');
-% legend({nm1, nm2}, 'Location', 'NorthWest'); legend boxoff;
-xlabel({'Difference in predicted distance', 'from MD firing rate (spikes/s)'});
-ylabel(['# Sessions']);
-xlim([-60 60]);
-
-tcks = get(gca, 'XTick');
-% set(gca, 'XTick', tcks(2:2:end));
-set(gca, 'XTick', [-50 0 50]);
-set(gca, 'YTick', [0 15]);
-set(gca, 'TickLength', [0 0]);
-set(gca, 'LineWidth', 2);
-
-plot.setPrintSize(gcf, struct('width', 6, 'height', 4));
-
-opts.filename = 'distFromBaseline_hist';
 if opts.doSave
     export_fig(gcf, fullfile(opts.saveDir, ...
         [opts.filename '.' opts.ext]));

@@ -1,15 +1,21 @@
-function plotHistFigs(fitName, dt, hypNms, opts, latents)
-    if nargin < 4
+function plotHistFigs(fitName, runName, dt, hypNms, opts)
+    if nargin < 5
         opts = struct();
     end
-    defopts = struct('doSave', false, 'saveDir', 'data/plots/hists', ...
+    defopts = struct('doSave', false, ...
         'saveExt', 'pdf', 'ymax', nan, 'rowStartInd', nan, ...
         'doPca', true, 'grpInds', 1:8, 'dimInds', 1:3);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
+    
+    saveDir = fullfile('data', 'plots', 'figures', runName, 'hists');
+    if ~exist(saveDir, 'dir')
+        mkdir(saveDir);
+    end
+    opts.saveDir = saveDir;
 
     % load output-null activity
-    [S,F] = plot.getScoresAndFits(fitName, {dt});
-    Sa = plot.getScoresAndFits(fitName, io.getDates);
+    [S,F] = plot.getScoresAndFits([fitName runName], {dt});
+    Sa = plot.getScoresAndFits([fitName runName], io.getDates);
     errs = plot.getScoreArray(Sa, 'histError');
     errs = mean(errs(~any(isinf(errs),2),:));
     
@@ -41,13 +47,6 @@ function plotHistFigs(fitName, dt, hypNms, opts, latents)
         YNc{ii} = bsxfun(@plus, bsxfun(@minus, Yc*NB, mu)*coeff, mu);
         err(ii) = errs(strcmp({S(1).scores.name}, hypNms{ii}));
     end
-    
-%     sps = F.test.spikes(ix,:);
-%     nse = rand(size(sps));
-%     nse = nse - 0.5;
-%     [lts, bta] = tools.convertRawSpikesToRawLatents(F.dec, sps' + nse');
-%     [~,S] = pca(lts);
-%     plot.init; plot(S(:,1), S(:,2), 'k.');
 
     useDataOnlyForRange = false; % false -> use data and preds to set range
     [Hs, Xs, ~] = score.histsFcn([YN0; YNc], ...
@@ -93,18 +92,21 @@ function plotSingleton(hs1, Hs, xs, hypNms, fitName, opts)
     for ii = 1:numel(Hs)
         hs2 = Hs{ii};
         opts.clr2 = plot.hypColor(hypNms{ii});
+        opts.ymax = 0.3;
         if strcmpi(hypNms{ii}, 'habitual-corrected')
-            opts.lbl1 = [0.6 0.2];
-            opts.lbl2 = [-1.36 0.3];
+            opts.lbl1 = [0.9 0.2];
+            opts.lbl2 = [-1.36 0.25];
         elseif strcmpi(hypNms{ii}, 'constant-cloud')
-            opts.lbl1 = [0.6 0.2];
-            opts.lbl2 = [-1.5 0.27];
+            opts.lbl1 = [0.9 0.2];
+            opts.lbl2 = [-1.5 0.25];
         elseif strcmpi(hypNms{ii}, 'minimum')
             opts.lbl1 = [0.6 0.2];
             opts.lbl2 = [-7.5 0.27];
+            opts.ymax = 0.4;
         elseif strcmpi(hypNms{ii}, 'best-mean')
             opts.lbl1 = [3 0.1];
             opts.lbl2 = [1 0.27];
+            opts.ymax = 0.4;
         elseif strcmpi(hypNms{ii}, 'uncontrolled-uniform')
             opts.lbl1 = [0.0 0.2];
             opts.lbl2 = [5 0.15];

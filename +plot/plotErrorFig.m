@@ -1,24 +1,24 @@
-function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
+function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
     doSave, doAbbrev, showYLabel, showMnkNm, errFloor)
-    if nargin < 3
+    if nargin < 4
         mnkNm = '';
     end
-    if nargin < 4
+    if nargin < 5
         hypsToShow = {};
     end
-    if nargin < 5
+    if nargin < 6
         doSave = false;
     end
-    if nargin < 6        
+    if nargin < 7       
         doAbbrev = false; % abbreviate x-axis names
     end
-    if nargin < 7
+    if nargin < 8
         showYLabel = true;
     end
-    if nargin < 8
+    if nargin < 9
         showMnkNm = true; 
     end
-    if nargin < 9
+    if nargin < 10
         errFloor = nan;
     end
     hypNmForSignificance = 'constant-cloud';
@@ -32,7 +32,7 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     end    
     
     % load scores
-    S = plot.getScoresAndFits(fitName, io.getDates);
+    S = plot.getScoresAndFits([fitName runName], io.getDates);
     dts = {S.datestr};
     hypnms = {S(1).scores.name};
     hypDispNms = cellfun(@(h) plot.hypDisplayName(h, doAbbrev), ...
@@ -93,7 +93,12 @@ function errs = plotErrorFig(fitName, errNm, mnkNm, hypsToShow, ...
     else
         fnm = [errNm '_' fitName '_ALL'];
     end
+    saveDir = fullfile('data', 'plots', 'figures', runName, 'errors');
+    if ~exist(saveDir, 'dir')
+        mkdir(saveDir);
+    end
     opts = struct('doSave', doSave, 'filename', fnm, ...
+        'saveDir', saveDir, ...
         'width', wdth, 'height', hght, ...
         'doBox', true, ...
         'starBaseName', starBaseName, ...

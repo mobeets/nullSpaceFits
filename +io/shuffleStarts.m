@@ -13,11 +13,12 @@ function SHUFFLE_BOUNDS = shuffleStarts(minNumTrials)
     end
     DATADIR = getpref('factorSpace', 'data_directory');
 %     fnm = fullfile(DATADIR, 'sessions', 'goodTrials_trialLength.mat');
-    fnm = fullfile(DATADIR, 'sessions', 'goodTrials_trial_length_correctsOnly.mat');
+    fnm = fullfile(DATADIR, 'sessions', 'goodTrials_trial_length.mat');
     if exist(fnm, 'file') % set in file
         d = load(fnm);
-        assert(strcmpi(d.opts.behavNm, 'trial_length') && d.opts.ignoreIncorrects, 'invalid trial selection file');
-        SHUFFLE_BOUNDS = d.Trs;
+        assert(strcmpi(d.opts.behavNm, 'trial_length'), ...
+            'invalid trial selection file');
+        SHUFFLE_BOUNDS = d.Trs{2};
         ixGood = SHUFFLE_BOUNDS(:,3) - SHUFFLE_BOUNDS(:,2) >= minNumTrials;
         SHUFFLE_BOUNDS(ixGood,4) = 1;
         % set to nan any rows where last col == 0

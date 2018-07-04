@@ -4,10 +4,10 @@ function plotError(errs, nms, opts)
     end
     defopts = struct('width', 6, 'height', 6, 'margin', 0.125, ...
         'FontSize', 24, 'FontSizeTitle', 28, 'FontName', 'Helvetica', ...
-        'doSave', false, 'saveDir', 'data/plots', 'filename', 'avgErr', ...
-        'ext', 'pdf', 'title', '', 'clrs', [], 'doBox', true, ...
-        'ylbl', 'Avg. error', 'starBaseName', '', 'errFloor', nan, ...
-        'showZeroBoundary', false, 'nSEs', 1, ...
+        'doSave', false, 'saveDir', 'data/plots/figures/errors', ...
+        'filename', 'avgErr', 'ext', 'pdf', 'title', '', 'clrs', [], ...
+        'doBox', true, 'ylbl', 'Avg. error', 'starBaseName', '', ...
+        'errFloor', nan, 'showZeroBoundary', false, 'nSEs', 1, ...
         'LineWidth', 2, 'ymin', 0, 'ymax', nan, 'TextNote', '');
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
 
@@ -16,17 +16,31 @@ function plotError(errs, nms, opts)
     end
     
     % show plot
-    plot.init(opts.FontSize, opts.FontName);    
+    plot.init(opts.FontSize, opts.FontName);
+    
+    % show error floor, if provided
+    if ~isnan(opts.errFloor)
+        xl = [0.3 size(errs,1)];
+        if numel(opts.errFloor) == 1
+            plot(xl, [opts.errFloor opts.errFloor], '-', ...
+                'LineWidth', opts.LineWidth, 'Color', 0.7*ones(3,1));
+        else
+            mu = opts.errFloor(1);
+            sd = opts.errFloor(2);
+            rectangle('Position', [xl(1), mu-sd, xl(2)-xl(1), 2*sd], ...
+                'EdgeColor', 'none', 'FaceColor', 0.95*ones(3,1));
+%             plot(xlim, [mu - sd; mu - sd], '-', ...
+%                 'LineWidth', opts.LineWidth, 'Color', 0.7*ones(3,1));
+%             plot(xlim, [mu + sd; mu + sd], '-', ...
+%                 'LineWidth', opts.LineWidth, 'Color', 0.7*ones(3,1));
+        end
+    end
+    
+    % plot box or bar
     if opts.doBox
         makeBoxPlot(errs, opts.clrs, opts.LineWidth);
     else
         makeBarPlot(errs, opts.clrs, opts.LineWidth, opts.nSEs);
-    end
-    
-    % show error floor, if provided
-    if ~isnan(opts.errFloor)
-        plot(xlim, [opts.errFloor opts.errFloor], '-', ...
-            'LineWidth', opts.LineWidth, 'Color', 0.7*ones(3,1));
     end
     
     % format x-axis
@@ -59,6 +73,17 @@ function plotError(errs, nms, opts)
         bInd = find(ismember(nms, opts.starBaseName));
         plot.addSignificanceStars(errs, bInd);
         ylim(yl);
+        
+        ytrg = ymx;
+        yspace = (ymx - ymn)/20;
+        hs = findobj(gcf, 'tag', 'sigstar_bar');
+        hss = findobj(gcf, 'tag', 'sigstar_stars');
+        for jj = 1:numel(hs)
+            cy = ytrg - (jj-1)*yspace;
+            hs(jj).YData = cy*ones(4,1);
+            hss(jj).Position(2) = cy;
+        end
+        
     end    
     
     if opts.showZeroBoundary
@@ -90,15 +115,16 @@ end
 
 function makeBoxPlot(pts, clrs, lw)
     bp = boxplot(pts, 'Colors', clrs, ...
-        'Symbol', '.', 'OutlierSize', 8, 'widths', 0.7);
-%     return;
+        'Symbol', '', 'OutlierSize', 8, 'widths', 0.7);
+
+    % hide horizontal part of error bars
     h = findobj(gcf,'tag','Upper Adjacent Value');
     for jj = 1:numel(h)
-        h(jj).Color = 'w';
+        h(jj).Color = 'None';
     end
     h = findobj(gcf,'tag','Lower Adjacent Value');
     for jj = 1:numel(h)
-        h(jj).Color = 'w';
+        h(jj).Color = 'None';
     end
     
     h = findobj(gcf,'tag','Box');
@@ -109,6 +135,10 @@ function makeBoxPlot(pts, clrs, lw)
     set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
     set(bp, 'LineWidth', lw);
     set(findobj(bp, 'LineStyle', '--'), 'LineStyle', '-');
+    
+    % hide outliers
+%     outs = findobj(bp, 'tag', 'Outliers');
+%     set(outs, 'XData', nan);
 end
 
 function makeBarPlot(pts, clrs, lw, nSEs)

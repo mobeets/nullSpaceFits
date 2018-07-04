@@ -9,8 +9,8 @@ function [D, Stats, LLs] = fitSession(dtstr, opts)
 
     params = io.setUnfilteredDefaults();
     if opts.fitPostLearnOnly
-        params = io.updateParams(params, ...
-            io.setBlockStartTrials(dtstr), true);
+        goodTrials = io.setBlockStartTrials(dtstr);
+        params = io.updateParams(params, goodTrials, true);
     end
     doRotate = false;
     D = io.quickLoadByDate(dtstr, params, doRotate);

@@ -1,7 +1,7 @@
 %% find trials used for all fits
 
 dts = io.getDates;
-fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme_20180606';
 [S,F] = plot.getScoresAndFits(fitName, dts);
 dts = {F.datestr};
 
@@ -90,9 +90,9 @@ end
 
 %%
 
-behNm = 'progress';
+% behNm = 'progress';
 % behNm = 'progressInferred';
-% behNm = 'acqTimes';
+behNm = 'acqTimes';
 
 showBaselineOnly = false; % if true: plot WMP data only; avg Int is a line
 
@@ -116,8 +116,14 @@ for ii = 1:numel(objs)
         ys = cobj.ys;
         ixHighlight = cobj.ixHighlight;
         
+        ix = ~cobj.ixIncorrect;
+        xs = xs(ix);
+        ys = ys(ix);
+        ixHighlight = ixHighlight(ix);
+        
         % smooth ys
-        ysSmooth = conv2(ys, boxSmooth, 'same');
+        ysSmooth = smooth(xs, ys, kSmooth);
+%         ysSmooth = conv2(ys, boxSmooth, 'same');
         ixToShow = false(size(ys)); % only show 'valid' inds
         ixToShow((kSmooth/2):(numel(ys)-(kSmooth/2))) = true;
         if showBaselineOnly

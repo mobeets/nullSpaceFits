@@ -1,5 +1,5 @@
-function plotSSSErrorFig(errs, hypnms, dts, mnkNms, hypsToShow, ...
-    doSave, doAbbrev)
+function plotSSSErrorFig(errs, hypnms, dts, mnkNms, ...
+    hypsToShow, doSave, doAbbrev, saveDir, fnm)
     if nargin < 4
         mnkNms = {};
     end
@@ -11,6 +11,12 @@ function plotSSSErrorFig(errs, hypnms, dts, mnkNms, hypsToShow, ...
     end
     if nargin < 7
         doAbbrev = false;
+    end
+    if nargin < 8
+        saveDir = 'data/plots';
+    end
+    if nargin < 9
+        fnm = 'SSS_avg';
     end
 
     hypDispNms = cellfun(@(h) plot.hypDisplayName(h, doAbbrev), ...
@@ -34,6 +40,6 @@ function plotSSSErrorFig(errs, hypnms, dts, mnkNms, hypsToShow, ...
         '\leftarrow Decrease     Increase \rightarrow'], ...
         'width', 4, 'height', 5.5, ...
         'doBox', false, 'starBaseName', '', 'ymin', -3, 'ymax', 3, ...
-        'doSave', doSave, 'filename', 'SSS_avg');
+        'doSave', doSave, 'saveDir', saveDir, 'filename', fnm);
     plot.plotError(errs, hypDispNms, opts);
 end

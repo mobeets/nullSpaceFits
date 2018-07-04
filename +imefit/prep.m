@@ -44,7 +44,10 @@ function [U, Y, T, trs] = prep(B, doLatents, doWarn, keepIncorrects)
         it = B.time >= firstTimeToKeep & it;
 
         % target position
-        cT = B.target(find(it, 1, 'first'),:)'; % 1x2
+        if ~isfield(B, 'targetpos')
+            B.targetpos = B.target;
+        end
+        cT = B.targetpos(find(it, 1, 'first'),:)'; % 1x2
 
         % cursor position
         cY = B.pos(it,:)';

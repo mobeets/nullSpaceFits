@@ -1,4 +1,4 @@
-function [Hs, Xs, nbins] = histsFcn(Ys, gs, useFirstForRange)
+function [Hs, Xs, nbins] = histsFcn(Ys, gs, useFirstForRange, nbins)
 % make histograms for Ys across a common range
 %
 % n.b. when making hists for display,
@@ -8,7 +8,9 @@ function [Hs, Xs, nbins] = histsFcn(Ys, gs, useFirstForRange)
     if nargin < 3
         useFirstForRange = false;
     end
-    nbins = score.optimalBinCount(Ys{1}, gs);
+    if nargin < 4 || isnan(nbins)
+        nbins = score.optimalBinCount(Ys{1}, gs);
+    end
     [Xs, rng] = getHistRange(Ys, nbins, gs, useFirstForRange);
     Hs = cell(numel(Ys),1);
     for ii = 1:numel(Ys)

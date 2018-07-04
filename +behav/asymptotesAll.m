@@ -1,6 +1,11 @@
 
+% dataDir = '~/code/wmpCode/data/preprocessed';
+% dr = dir(dataDir); nms = {dr(~[dr.isdir]).name};
+% dts = cellfun(@(d) d(1:end-4), nms, 'uni', 0);
+% dts = dts(~ismember(dts, {'.DS_Store', 'errors'}));
 dts = io.getDates(false, true);
-doSave = true;
+
+doSave = false;
 isDebug = false;
 
 % set opts
@@ -13,59 +18,75 @@ opts.maxTrialSkip = 10; % max change that we can still count as one group
 opts.minGroupSize = 100; % want at least N consecutive trials
 opts.behavNm = 'trial_length'; % 'progress'
 opts.lastBaselineTrial = 50;
-opts.ignoreIncorrects = false;
+
+% opts.behavNm = 'isCorrect';
 
 saveDir = fullfile('data', 'sessions');
-fnm = fullfile(saveDir, ['goodTrials_' opts.behavNm '.mat']);
+fnm = fullfile(saveDir, ['goodTrials_' opts.behavNm '_v2.mat']);
 
 %% find best trials (using opts)
 
-Trs = nan(numel(dts), 4);
-objs = [];
+Trs = cell(2,1);
+Trs{1} = nan(numel(dts), 4);
+Trs{2} = nan(numel(dts), 4);
+objs = cell(2,1);
+
 for ii = 1:numel(dts)
     dtstr = dts{ii};
     if ~isDebug
         try
-            cd ~/code/bciDynamics;
-            D = io.loadData(dtstr, opts.ignoreIncorrects, false);
-            cd ~/code/nullSpaceFits;
+            d = load(fullfile(dataDir, [dtstr '.mat'])); D = d.D;
+%             cd ~/code/bciDynamics;
+%             D = io.loadData(dtstr, false, false);
+%             cd ~/code/nullSpaceFits;
         catch
             warning(['Could not load ' dtstr]);
-            Trs(ii,1) = str2double(dtstr);
+            Trs{1}(ii,1) = str2double(dtstr);
+            Trs{2}(ii,1) = str2double(dtstr);
             continue;
         end
     end
-    B = D.blocks(2);
-    xs = B.trial_index;
-    if strcmpi(opts.behavNm, 'trial_length') && ~isfield(B, 'trial_length')
-        B.trial_length = nan(size(B.trial_index));
-        axs = unique(xs);
-        for jj = 1:numel(axs)
-            ix = B.trial_index == axs(jj);
-            B.trial_length(ix) = sum(ix);
+    for bind = 1:2
+        B = D.blocks(bind);
+        xs = B.trial_index;
+        if strcmpi(opts.behavNm, 'trial_length') && ~isfield(B, 'trial_length')
+            B.trial_length = nan(size(B.trial_index));
+            axs = unique(xs);
+            for jj = 1:numel(axs)
+                ixt = B.trial_index == axs(jj);
+                B.trial_length(ixt) = sum(ixt);
+            end
+        elseif strcmpi(opts.behavNm, 'progress') && ~isfield(B, 'progress')
+            cd ~/code/bciDynamics;
+            B.progress = tools.getProgress([], B.pos, B.trgpos, [], B.vel);
+            cd ~/code/nullSpaceFits;
         end
-    elseif strcmpi(opts.behavNm, 'progress') && ~isfield(B, 'progress')
-        cd ~/code/bciDynamics;
-        B.progress = tools.getProgress([], B.pos, B.trgpos, [], B.vel);
-        cd ~/code/nullSpaceFits;
+        ys = B.(opts.behavNm);
+
+        % if ignoring incorrects, set behavior to nan on those trials
+        if strcmpi(opts.behavNm, 'trial_length') || ...
+                strcmpi(opts.behavNm, 'progress')
+            ys(~B.isCorrect) = nan;
+        end
+
+        % flip sign so that learning is a decreasing value
+        if strcmpi(opts.behavNm, 'progress') || strcmpi(opts.behavNm, 'isCorrect')
+            ys = -ys;
+        end
+        obj = behav.plotThreshTrials(xs, ys, opts);
+        obj.datestr = dtstr;
+        if isfield(obj, 'xsb')
+            objs{bind} = [objs{bind}; obj];
+        end
+
+        if ~obj.isGood || isempty(obj.xsb(obj.ix))
+            tmn = nan; tmx = nan;
+        else
+            tmn = min(obj.xsb(obj.ix));
+            tmx = max(obj.xsb(obj.ix));        
+        end
+        Trs{bind}(ii,:) = [str2double(dtstr) tmn tmx obj.isGood];
     end
-    ys = B.(opts.behavNm);
-    if strcmpi(opts.behavNm, 'progress')
-        ys = -ys;
-    end
-    obj = behav.plotThreshTrials(xs, ys, opts);
-    obj.datestr = dtstr;
-    if isfield(obj, 'xsb')
-        objs = [objs; obj];
-    end
-    
-    if ~obj.isGood || isempty(obj.xsb(obj.ix))
-        tmn = nan; tmx = nan;
-    else
-        tmn = min(obj.xsb(obj.ix));
-        tmx = max(obj.xsb(obj.ix));        
-    end
-    Trs(ii,:) = [str2double(dtstr) tmn tmx obj.isGood];
 end
 
 if doSave
@@ -73,75 +94,29 @@ if doSave
         mkdir(saveDir);
     end
     save(fnm, 'Trs', 'opts', 'objs');
+    behav.plotAllThreshTrials(fnm);
 end
 
-%% plot selected trials
+%% make all behavior figures
 
-% d = load('data/sessions/goodTrials_trial_length.mat');
-% opts = d.opts;
-% objs = d.objs;
+doSave = false;
+saveDir = 'data/plots/behav';
+fnm = 'data/sessions/goodTrials_trial_length.mat';
+fnm2 = 'data/sessions/goodTrials_isCorrect.mat';
+% dtstr = '20120525';
+dtstr = '20160726';
 
-showNormalized = true;
-kind = 'Mean'; % 'Mean', 'Var'
+% close all;
+% f1 = behav.plotSingleSession(dtstr, fnm, fnm, [0 2.2]); f1nm = ['acqTime_' dtstr];
+% f2 = behav.plotAvgBehavPerMonkey(fnm); f2nm = 'acqTime';
+% f3 = behav.plotSingleSession(dtstr, fnm2, fnm, [25 100]); f3nm = ['pctCor_' dtstr];
+% f4 = behav.plotAvgBehavPerMonkey(fnm2); f4nm = 'pctCor';
+f5 = behav.plotCursorTraces(dtstr, fnm); f5nm = ['cursor_' dtstr];
 
-lw = 1;
-xmx = 1010;
-ymx = 8;
-scale = 45/1000; % 45/1000 for acquisition time
-
-plot.init;
-
-ncols = ceil(sqrt(numel(objs)));
-nrows = ceil(numel(objs)/ncols);
-for ii = 1:numel(objs)
-    subplot(nrows, ncols, ii); hold on;
-    obj = objs(ii);    
-    ix = obj.ix;
-    xsb = obj.xsb; xsb = xsb - min(xsb);
-    if showNormalized
-        ysb = obj.(['ysSmooth' kind 'Norm']);        
-    else
-        ysb = scale*obj.(['ysSmooth' kind]);
-    end    
-    
-    if obj.isGood
-        clr = 'k';
-    else
-        clr = 0.8*ones(3,1);
-    end
-    
-    if showNormalized
-        plot([0 xmx], [opts.muThresh opts.muThresh], ...
-            '-', 'Color', 0.8*ones(3,1), 'LineWidth', lw);
-        yl = [0 1.01];
-        set(gca, 'YTick', [0 1.0]);
-    else
-        yl = [0 ymx];
-        set(gca, 'YTick', [0 ymx]);
-    end
-
-    plot(xsb(1:end-10), ysb(1:end-10), '-', 'Color', clr, 'LineWidth', lw);
-%     plot(xsb(ix), ysb(ix), 'r-', 'LineWidth', lw);
-    
-    if sum(ix) > 0
-        plot([min(xsb(ix)) max(xsb(ix))], [yl(2) yl(2)], ...
-            'r-', 'LineWidth', lw);
-    end
-%     xlabel('Trial #');
-
-    if ii == 1
-        ylabel([kind ' of ' opts.behavNm]);
-    end    
-    ylim(yl);
-    xlim([min(xsb) max(xsb)]);
-    set(gca, 'LineWidth', lw);
-    set(gca, 'XTick', [500]);
-    xlim([0 xmx]);
-    title(obj.datestr);
-end
-plot.setPrintSize(gcf, struct('width', 7, 'height', 6));
-
-pnm = fullfile(saveDir, ['goodTrials_' opts.behavNm '_' kind '.pdf']);
 if doSave
-    export_fig(gcf, pnm);
+%     export_fig(f1, fullfile(saveDir, [f1nm '.pdf']));
+%     export_fig(f2, fullfile(saveDir, [f2nm '.pdf']));
+%     export_fig(f3, fullfile(saveDir, [f3nm '.pdf']));
+%     export_fig(f4, fullfile(saveDir, [f4nm '.pdf']));
+    export_fig(f5, fullfile(saveDir, [f5nm '.pdf']));
 end

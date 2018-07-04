@@ -1,7 +1,9 @@
 doSave = false;
-[S,F] = plot.getScoresAndFits('Int2Pert_yIme');
+runName = '_20180619';
+fitName = 'Int2Pert_yIme';
+[S,F] = plot.getScoresAndFits([fitName runName]);
 opts = struct('doSave', doSave, 'saveDir', 'data/plots', ...
-    'FontSize', 24, 'ext', 'pdf');
+    'FontSize', 16, 'ext', 'pdf');
 
 %% plot diagonal entries of \Phi
 
@@ -109,7 +111,6 @@ ylim([0 110]);
 xlabel({'Activity, dim. 1', 'spikes/s, rel. to baseline'});
 ylabel({'Activity, dim. 2', 'spikes/s, rel. to baseline'});
 
-%%
 plot.setPrintSize(gcf, struct('width', 5, 'height', 4));
 opts.filename = 'distFromBaseline_cart';
 if opts.doSave
