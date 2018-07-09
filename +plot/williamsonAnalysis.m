@@ -55,7 +55,7 @@ end
 d = load('data/fits/williamsonAnalysis.mat');
 Results = d.Results;
 
-doSave = true;
+doSave = false;
 saveDir = 'data/plots/figures';
 fnm = 'williamsonAnalysis';
 
@@ -69,8 +69,10 @@ mksz = 25;
 % d_shared = d_shared(ixd,:);
 % pct_shared_var = pct_shared_var(ixd,:);
 
+nrows = 3; ncols = 1;
+
 fig = plot.init;
-subplot(3,1,1); hold on; set(gca, 'FontSize', 14);
+subplot(nrows,ncols,1); hold on; set(gca, 'FontSize', 14);
 xs = 1:nd; ys = d_shared;
 mu = nanmean(ys); se = nanstd(ys)/sqrt(size(ys,1));
 ix = ~isnan(mu);
@@ -87,7 +89,7 @@ ylabel('Dimensionality (d_{shared})');
 set(gca, 'TickDir', 'out');
 % set(gca, 'TickLength', [0 0]);
 
-subplot(3,1,2); hold on; set(gca, 'FontSize', 14);
+subplot(nrows,ncols,2); hold on; set(gca, 'FontSize', 14);
 xs = 1:nd; ys = pct_shared_var;
 mu = nanmean(ys); se = nanstd(ys)/sqrt(size(ys,1));
 ix = ~isnan(mu);
@@ -104,9 +106,9 @@ ylabel('% Shared Variance');
 set(gca, 'TickDir', 'out');
 % set(gca, 'TickLength', [0 0]);
 
-subplot(3,1,3); hold on; set(gca, 'FontSize', 14);
+subplot(nrows,ncols,3); hold on; set(gca, 'FontSize', 14);
 xs = 1:nd; ys = chanceangs;
-mu = nanmean(ys); se = nanstd(ys)/sqrt(size(ys,1));
+mu = nanmean(ys); se = nanstd(ys);%/sqrt(size(ys,1));
 ix = ~isnan(mu);
 h = plot(xs(ix), mu(ix), '.', 'Color', 0.7*ones(3,1), 'MarkerSize', mksz);
 for ii = 1:numel(mu)
@@ -134,7 +136,7 @@ ylabel('Angle (degrees)');
 set(gca, 'TickDir', 'out');
 legend({'Chance', '35 vs. 85 units'}, 'Location', 'NorthWest');
 legend boxoff;
-set(gca, 'XTick', 1:5);
+set(gca, 'XTick', 1:K);
 set(gca, 'YTick', [0 30 60 90]);
 % set(gca, 'TickLength', [0 0]);
 
@@ -147,7 +149,7 @@ end
 
 d = load('data/fits/williamsonAnalysis_FAobjs_v2.mat');
 Results = d.Results;
-K = 5;
+K = 10;
 
 nboots = 1;
 angs = nan(numel(Results), K);
@@ -190,7 +192,7 @@ end
 
 fig = plot.init;
 xs = 1:nd; ys = chanceangs;
-mu = nanmean(ys); se = nanstd(ys)/sqrt(size(ys,1));
+mu = nanmean(ys); se = nanstd(ys);%/sqrt(size(ys,1));
 ix = ~isnan(mu);
 h = plot(xs(ix), mu(ix), '.', 'Color', 0.7*ones(3,1), 'MarkerSize', 30);
 for ii = 1:numel(mu)
