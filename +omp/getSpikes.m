@@ -61,7 +61,7 @@ function blk = getSpikes(d, trialTags, ctrg, ...
     blk.vel = vel(ixt,:);
     blk.trs = trs(ixt,:);
     blk.tms = round(tms(ixt,:) / 45);
-    assert(~any(diff(blk.tms) > 1)); % all times are adjacent, else new trial
+%     assert(~any(diff(blk.tms) > 1)); % all times are adjacent, else new trial
     blk.trgs = trgs(ixt,:);
     blk.trgpos = trgpos(ixt,:);
     blk.ths = ths(ixt,:);

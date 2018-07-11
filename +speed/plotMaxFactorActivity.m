@@ -3,7 +3,7 @@ function plotMaxFactorActivity(Ps, Zs, legs, clrs, ttl, lbls, saveDir, vmxc)
 
     plot.init;
     vmx = 0;
-    clrs0 = cbrewer('seq', 'Greens', 3); clrs0 = clrs0(end:-1:1,:);
+    clrs0 = cbrewer('seq', 'Greens', numel(Ps)+1); clrs0 = clrs0(end:-1:1,:);
     for ii = 1:numel(Ps)
         plot(Ps{ii}(:,1), Ps{ii}(:,2), '-', 'LineWidth', 2, ...
             'Color', clrs0(ii,:));
