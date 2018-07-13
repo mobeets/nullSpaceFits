@@ -1,14 +1,14 @@
 
 doSave = false;
-% exampleSession = '20131218';
-exampleSession = '20120628';
+exampleSession = '20131218';
+% exampleSession = '20120628';
 
 runName = '_20180619';
 fitName = 'Int2Pert_yIme';
 hypsToShow = {'minimum' 'best-mean', 'uncontrolled-uniform', ...
         'uncontrolled-empirical', 'habitual-corrected', ...
         'constant-cloud'};
-hypsToShow = {'habitual-corrected', 'constant-cloud'};
+% hypsToShow = {'habitual-corrected'};%, 'constant-cloud'};
 
 %% plot grid of hists
 

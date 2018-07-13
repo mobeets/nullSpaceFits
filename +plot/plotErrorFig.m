@@ -1,5 +1,5 @@
 function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
-    doSave, doAbbrev, showYLabel, showMnkNm, errFloor)
+    doSave, doAbbrev, showYLabel, showMnkNm, errFloor, doSaveData)
     if nargin < 4
         mnkNm = '';
     end
@@ -20,6 +20,9 @@ function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
     end
     if nargin < 10
         errFloor = nan;
+    end
+    if nargin < 11
+        doSaveData = doSave;
     end
     hypNmForSignificance = 'constant-cloud';
 %     hypNmForSignificance = 'habitual-corrected';
@@ -56,7 +59,7 @@ function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
         starBaseName = '';
     end
     errs = plot.getScoreArray(S, errNm, dtInds, hypInds);
-    errs = errs(~any(isinf(errs),2),:);
+    
     if strcmpi(errNm, 'histError')
         errs = 100*errs;
         ymax = 105;
@@ -69,6 +72,9 @@ function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
         lblDispNm = 'covariance (a.u.)';
         ymax = 11;
     end
+    
+    errsToSave = errs; errsToSave(any(isinf(errs),2),:) = nan;
+    errs = errs(~any(isinf(errs),2),:);
     
     % no ylabel, shrink figure
     if ~showYLabel        
@@ -108,4 +114,30 @@ function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
         'errFloor', errFloor, ...
         'clrs', hypClrs(hypInds,:));
     plot.plotError(errs, hypDispNms(hypInds), opts);
+    if doSaveData
+        saveDir = fullfile('data', 'plots', 'figures', runName, 'data');
+        fnm = fullfile(saveDir, ['errs_' fitName '_' errNm '_' mnkNm '.csv']);
+        writeCsvFile(errsToSave, errNm, hypDispNms, dts, fnm);
+    end
+end
+
+function writeCsvFile(errs, errNm, hypDispNms, dts, fnm)
+    mnkNms = cell(numel(dts), 1);
+    for ii = 1:numel(dts)
+        yr = dts{ii}(1:4);
+        if strcmpi(yr, '2012')
+            mnkNms{ii} = 'Jeffy';
+        elseif strcmpi(yr, '2013')
+            mnkNms{ii} = 'Lincoln';
+        elseif strcmpi(yr, '2016')
+            mnkNms{ii} = 'Nelson';
+        end
+    end
+    hnms = strrep(hypDispNms, ' ', '_');
+    hnms = strrep(hnms, '-', '_');
+    T = array2table(errs, 'VariableNames', hnms);
+    T.datestr = dts';
+    T.errorMetric = repmat(errNm, numel(dts), 1);
+    T.monkeyName = mnkNms;
+    writetable(T, fnm);
 end

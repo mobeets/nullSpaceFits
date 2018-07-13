@@ -1,9 +1,9 @@
 %% load
 
 runName = '_20180619';
-% fitName = 'Int2Pert_yIme';
+fitName = 'Int2Pert_yIme';
 % fitName = 'Int2Pert_nIme';
-fitName = 'Pert2Int_yIme';
+% fitName = 'Pert2Int_yIme';
 doSave = false;
 
 exInds = [12 1]; % from exInd, below
@@ -17,6 +17,7 @@ end
 %% plot avgs
 
 doSave = false;
+doSaveData = true;
 mnkNms = {};
 
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
@@ -27,7 +28,8 @@ cerrs = squeeze(nanmean(log(errs),2));
 dtsc = dts(~all(isnan(cerrs),2));
 cerrs = cerrs(~all(isnan(cerrs),2),:); % drop nans if all in session
 plot.plotSSSErrorFig(cerrs, hypnms, dtsc, mnkNms, ...
-    hypsToShow, doSave, false, saveDir, [fitName '_avg']);
+    hypsToShow, doSave, false, saveDir, [fitName '_avg'], ...
+    doSaveData, runName, fitName);
 
 % report avg
 if strcmpi(hypnms{end}, 'data')
@@ -35,14 +37,14 @@ if strcmpi(hypnms{end}, 'data')
         sprintf('%0.2f', nanmean(cerrs(:,end)))]);
     [h,p,ci] = ttest(cerrs(:,end));
     disp(['P-value for whether data are not = 0: ' ...
-        sprintf('%0.2f', p)]);
+        sprintf('%0.3f', p)]);
 end
 if strcmpi(hypnms{end-1}, 'constant-cloud')
     disp(['Avg. change in variance (constant-cloud): ' ...
         sprintf('%0.2f', nanmean(cerrs(:,end-1)))]);
     [h,p,ci] = ttest(cerrs(:,end-1));
     disp(['P-value for whether constant-cloud is not = 0: ' ...
-        sprintf('%0.2f', p)]);
+        sprintf('%0.3f', p)]);
 end
 
 % for selecting example session/target:

@@ -4,14 +4,19 @@ function plotHistFigs(fitName, runName, dt, hypNms, opts)
     end
     defopts = struct('doSave', false, ...
         'saveExt', 'pdf', 'ymax', nan, 'rowStartInd', nan, ...
-        'doPca', true, 'grpInds', 1:8, 'dimInds', 1:3);
+        'doPca', true, 'grpInds', 1:8, 'dimInds', 1:3, 'saveData', true);
     opts = tools.setDefaultOptsWhenNecessary(opts, defopts);
     
     saveDir = fullfile('data', 'plots', 'figures', runName, 'hists');
+    saveDirData = fullfile('data', 'plots', 'figures', runName, 'data');
     if ~exist(saveDir, 'dir')
         mkdir(saveDir);
     end
+    if ~exist(saveDirData, 'dir')
+        mkdir(saveDirData);
+    end
     opts.saveDir = saveDir;
+    opts.saveDirData = saveDirData;
 
     % load output-null activity
     [S,F] = plot.getScoresAndFits([fitName runName], {dt});
@@ -64,10 +69,10 @@ function plotHistFigs(fitName, runName, dt, hypNms, opts)
     end
 end
 
-function plotGrid(H0, Hs, xs, hypNms, fitName, err, opts)
+function data = plotGrid(H0, Hs, xs, hypNms, fitName, err, opts)
 
     % plot hists
-    opts.clr1 = plot.hypColor('data');
+    opts.clr1 = plot.hypColor('data');    
     for jj = 1:numel(Hs)        
         Hc = Hs{jj};
         opts.clr2 = plot.hypColor(hypNms{jj});
@@ -75,12 +80,40 @@ function plotGrid(H0, Hs, xs, hypNms, fitName, err, opts)
 %         opts.histError = 100*S.scores(ix).histError;
         opts.histError = 100*err(jj);
         plot.plotGridHistFig(H0, Hc, xs, opts);
+        
+        if opts.saveData
+            hnm = plot.hypDisplayName(hypNms{jj}, false);
+            fnm = fullfile(opts.saveDirData, ...
+                ['hists_' fitName '-' hypNms{jj} '.csv']);
+            writeCsvFile(xs, H0, Hc, hnm, fnm);
+        end
+        
         if opts.doSave
             fnm = ['margHist_' hypNms{jj} '_' fitName];
             export_fig(gcf, fullfile(opts.saveDir, ...
                 [fnm '.' opts.saveExt]));
         end
     end
+end
+
+function writeCsvFile(bins, H0, Hc, hnm, fnm)
+    ntrgs = size(H0,1);
+    nbins = size(H0,2);
+    ndims = size(H0,3);    
+    
+    trgs = repmat(tools.thetaCenters, 1, nbins, ndims);
+    dims = permute(repmat((1:3)', 1, ntrgs, nbins), [2 3 1]);
+    bins = repmat(bins', ntrgs, 1, ndims);
+    
+    ydata_observed = H0;
+    ydata_predicted = Hc;
+    
+    hnm = strrep(strrep(hnm, ' ', '_'), '-', '_');
+    D = [trgs(:) dims(:) bins(:) ydata_observed(:) ydata_predicted(:)];
+    T = array2table(D, 'VariableNames', ...
+        {'target', 'dimension', 'bin_center', 'data', 'predicted'});
+    T.hypothesisName = repmat(hnm, size(D,1), 1);
+    writetable(T, fnm);
 end
 
 function plotSingleton(hs1, Hs, xs, hypNms, fitName, opts)

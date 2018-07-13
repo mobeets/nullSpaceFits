@@ -1,5 +1,6 @@
 
 doSave = false;
+doSaveData = true;
 
 runName = '_20180619';
 fitName = 'Int2Pert_yIme'; showErrFloor = false;
@@ -25,7 +26,7 @@ errNms = {'histError', 'meanError', 'covError'};
 % mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
 % mnkNms = {'Lincoln'};
-errNms = {'histError'};
+% errNms = {'meanError'};
 
 close all;
 showYLabel = true;
@@ -57,7 +58,8 @@ for ii = 1:numel(errNms)
             errFloor = [];
         end
         errs = plot.plotErrorFig(fitName, runName, errNms{ii}, mnkNm, ...
-            hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm, errFloor);
+            hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm, ...
+            errFloor, doSaveData);
         
         vs = [mean(errs(:,end)) std(errs(:,end))/sqrt(size(errs,1))];
         disp(['Avg ' errNms{ii} ' of last hyp: ' ...
