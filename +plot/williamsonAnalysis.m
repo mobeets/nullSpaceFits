@@ -3,8 +3,9 @@
 dts = io.getDates;
 Results = cell(numel(dts), 1);
 nboots = 1;
+% PartResults = Results
 
-for ll = 1:numel(dts)
+for ll = 7:numel(dts)
     dtstr = dts{ll}
     dataDir = '~/code/wmpCode/data/preprocessed';
     try
@@ -22,7 +23,8 @@ for ll = 1:numel(dts)
     pct_shared_var = nan(nboots, nd);
     faobjs = cell(nboots, nd);
 %     dims = 2:5:nd;
-    dims = [35 85];
+%     dims = [30 85];
+    dims = [30];
 
     for ii = 1:nboots
         S = sps(:,inds(ii,:)); % shuffle neuron indices
@@ -48,7 +50,7 @@ for ll = 1:numel(dts)
     Results{ll} = obj;
 end
 
-% save('data/fits/williamsonAnalysis_FAobjs_v2.mat', 'Results')
+% save('data/fits/williamsonAnalysis_FAobjs_v3.mat', 'Results')
 
 %% plot
 
@@ -134,7 +136,7 @@ ylim([0 90]);
 xlabel('Principal angle index');
 ylabel('Angle (degrees)');
 set(gca, 'TickDir', 'out');
-legend({'Chance', '35 vs. 85 units'}, 'Location', 'NorthWest');
+legend({'Chance', '30 vs. 85 units'}, 'Location', 'NorthWest');
 legend boxoff;
 set(gca, 'XTick', 1:K);
 set(gca, 'YTick', [0 30 60 90]);
@@ -147,7 +149,7 @@ end
 
 %%
 
-d = load('data/fits/williamsonAnalysis_FAobjs_v2.mat');
+d = load('data/fits/williamsonAnalysis_FAobjs_v3.mat');
 Results = d.Results;
 K = 10;
 
@@ -158,7 +160,7 @@ for ii = 1:numel(Results)
     r = Results{ii};
     
     % get the two L matrices
-    dims = [35 85];
+    dims = [30 85];
     L1 = r.fa_objs{dims(1)}.estParams.L;
     L2 = r.fa_objs{dims(2)}.estParams.L;
     
@@ -218,5 +220,5 @@ ylim([0 90]);
 xlabel('Principal angle index');
 ylabel('Angle (degrees)');
 set(gca, 'TickDir', 'out');
-legend({'Chance', '35 vs. 85 units'}, 'Location', 'NorthWest'); legend boxoff;
+legend({'Chance', '30 vs. 85 units'}, 'Location', 'NorthWest'); legend boxoff;
 % set(gca, 'TickLength', [0 0]);

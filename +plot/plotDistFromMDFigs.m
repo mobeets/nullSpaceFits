@@ -1,6 +1,6 @@
 %% load all fits
 
-doSave = true;
+doSave = false;
 runName = '_20180619';
 fitName = 'Int2Pert_yIme';
 [S,F] = plot.getScoresAndFits([fitName runName]);
@@ -197,7 +197,7 @@ plot.init(opts.FontSize);
 %     plot(xss(ix), yss(ix), '.', 'MarkerSize', 10);
 % end
 
-clr1 = plot.hypColor('best-mean');
+clr1 = plot.hypColor(baseHyp);
 clr2 = plot.hypColor('constant-cloud');
 clrs = [clr1; clr2];
 
@@ -210,7 +210,8 @@ plot(xlim, ylim, 'k--', 'LineWidth', 2, 'HandleVisibility', 'off');
 
 % plot(xss(:), yss1(:), '.', 'MarkerSize', 30, 'Color', clr1);
 plot(xss(:), yss2(:), '.', 'MarkerSize', 30, 'Color', 'k');
-
+Pval = signrank(xss(:), yss2(:), 'tail', 'left'); % median(xss - yss) < 0
+disp(['p-value = ' num2str(Pval)]);
 xlim([xmn xmx]); ylim(xlim);
 
 set(gca, 'XTick', [xmn xmx]);
@@ -218,7 +219,7 @@ set(gca, 'YTick', [xmn xmx]);
 xlabel({'Distance of observed activity', 'from MD firing rate (spikes/s)'});
 ylabel({'Distance of FD activity', 'from MD firing rate (spikes/s)'});
 axis square;
-nm1 = plot.hypDisplayName('best-mean');
+nm1 = plot.hypDisplayName(baseHyp);
 nm2 = plot.hypDisplayName('constant-cloud');
 % legend({nm1, nm2}, 'Location', 'NorthWest'); legend boxoff;
 % legend({nm2}, 'Location', 'NorthWest'); legend boxoff;

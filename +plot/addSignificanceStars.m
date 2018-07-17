@@ -1,4 +1,4 @@
-function addSignificanceStars(errs, baseCol, fig, starSize)
+function Ps = addSignificanceStars(errs, baseCol, fig, starSize)
 %
     if nargin < 3
         fig = gcf;
@@ -9,7 +9,7 @@ function addSignificanceStars(errs, baseCol, fig, starSize)
     alphas = [0.05 1e-2 1e-3]; % significance levels to mark: *, **, ***
     multCompCor = 'none'; % correction for multiple comparisons, if any
     
-    [inds, lvls] = getSignificantDifferences(errs, baseCol, alphas, multCompCor);
+    [inds, lvls, Ps] = getSignificantDifferences(errs, baseCol, alphas, multCompCor);
     plot.sigstar(inds, lvls, 0, true);
     
     % edit star size
@@ -20,7 +20,7 @@ function addSignificanceStars(errs, baseCol, fig, starSize)
     
 end
 
-function [inds, lvls] = getSignificantDifferences(errs, baseCol, alphas, multCompCor)
+function [inds, lvls, Ps] = getSignificantDifferences(errs, baseCol, alphas, multCompCor)
 % returns something like {[5,6], [4,6], [3,6], [2,6], [1,6]}
     
     nd = size(errs,2);    

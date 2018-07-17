@@ -1,6 +1,6 @@
 
 doSave = false;
-doSaveData = true;
+doSaveData = false;
 
 runName = '_20180619';
 fitName = 'Int2Pert_yIme'; showErrFloor = false;
@@ -23,10 +23,10 @@ hypsToShow = {'habitual-corrected', 'constant-cloud'};
 hypsToShow = {};
 
 errNms = {'histError', 'meanError', 'covError'};
-% mnkNms = io.getMonkeys;
+mnkNms = io.getMonkeys;
 mnkNms = {'ALL'};
-% mnkNms = {'Lincoln'};
-% errNms = {'meanError'};
+% mnkNms = {'Jeffy'};
+errNms = {'histError'};
 
 close all;
 showYLabel = true;
@@ -57,17 +57,18 @@ for ii = 1:numel(errNms)
         else
             errFloor = [];
         end
-        errs = plot.plotErrorFig(fitName, runName, errNms{ii}, mnkNm, ...
-            hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm, ...
+        [errs, Ps] = plot.plotErrorFig(fitName, runName, errNms{ii}, ...
+            mnkNm, hypsToShow, doSave, doAbbrev, showYLabel, showMnkNm, ...
             errFloor, doSaveData);
         
         vs = [mean(errs(:,end)) std(errs(:,end))/sqrt(size(errs,1))];
         disp(['Avg ' errNms{ii} ' of last hyp: ' ...
             sprintf('%0.1f +/- %0.1f (mean +/- SE)', vs)]);
-        ev = errs(ismember(dts, exampleSession),end);
-        disp([errNms{ii} ' of last hyp for example session (' ...
-            exampleSession '): ' sprintf('%0.1f', ev)]);
-        
+        if isempty(mnkNm)
+            ev = errs(ismember(dts, exampleSession),end);
+            disp([errNms{ii} ' of last hyp for example session (' ...
+                exampleSession '): ' sprintf('%0.1f', ev)]);
+        end
         if strcmpi(errNms{ii}, 'histError')
             vs = [mean(errs); std(errs)/sqrt(size(errs,1))];
             for kk = 1:size(errs,2)
@@ -76,7 +77,11 @@ for ii = 1:numel(errNms)
                     sprintf('%0.1f +/- %0.1f (mean +/- SE)', vs)]);
             end
         end
+        disp(['Max p-value: ' num2str(max(Ps))]);
+        disp(['Next-to-max p-value: ' num2str(max(Ps(1:end-2)))]);
+        disp(['n = ' num2str(size(errs,1))]);
     end
+    disp('-----');
 end
 disp('-----');
 

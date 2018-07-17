@@ -1,4 +1,4 @@
-function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
+function [errs, Ps] = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
     doSave, doAbbrev, showYLabel, showMnkNm, errFloor, doSaveData)
     if nargin < 4
         mnkNm = '';
@@ -25,6 +25,7 @@ function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
         doSaveData = doSave;
     end
     hypNmForSignificance = 'constant-cloud';
+%     hypNmForSignificance = 'best-mean';
 %     hypNmForSignificance = 'habitual-corrected';
     
     % if abbreviated, shorten figure
@@ -113,7 +114,7 @@ function errs = plotErrorFig(fitName, runName, errNm, mnkNm, hypsToShow, ...
         'TextNote', mnkTitle, ...
         'errFloor', errFloor, ...
         'clrs', hypClrs(hypInds,:));
-    plot.plotError(errs, hypDispNms(hypInds), opts);
+    Ps = plot.plotError(errs, hypDispNms(hypInds), opts);
     if doSaveData
         saveDir = fullfile('data', 'plots', 'figures', runName, 'data');
         fnm = fullfile(saveDir, ['errs_' fitName '_' errNm '_' mnkNm '.csv']);

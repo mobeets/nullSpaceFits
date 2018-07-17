@@ -1,4 +1,4 @@
-function plotError(errs, nms, opts)
+function Ps = plotError(errs, nms, opts)
     if nargin < 2
         opts = struct();
     end
@@ -71,7 +71,7 @@ function plotError(errs, nms, opts)
 
     if ~isempty(opts.starBaseName)
         bInd = find(ismember(nms, opts.starBaseName));
-        plot.addSignificanceStars(errs, bInd);
+        Ps = plot.addSignificanceStars(errs, bInd);
         ylim(yl);
         
         ytrg = ymx;

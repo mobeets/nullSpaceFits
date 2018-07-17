@@ -1,9 +1,9 @@
 %% load
 
 runName = '_20180619';
-fitName = 'Int2Pert_yIme';
+% fitName = 'Int2Pert_yIme';
 % fitName = 'Int2Pert_nIme';
-% fitName = 'Pert2Int_yIme';
+fitName = 'Pert2Int_yIme';
 doSave = false;
 
 exInds = [12 1]; % from exInd, below
@@ -17,7 +17,7 @@ end
 %% plot avgs
 
 doSave = false;
-doSaveData = true;
+doSaveData = false;
 mnkNms = {};
 
 hypsToShow = {'minimum', 'best-mean', 'uncontrolled-uniform', ...
@@ -36,15 +36,13 @@ if strcmpi(hypnms{end}, 'data')
     disp(['Avg. change in variance (data): ' ...
         sprintf('%0.2f', nanmean(cerrs(:,end)))]);
     [h,p,ci] = ttest(cerrs(:,end));
-    disp(['P-value for whether data are not = 0: ' ...
-        sprintf('%0.3f', p)]);
+    disp(['P-value for whether data are not = 0: ' num2str(p)]);
 end
 if strcmpi(hypnms{end-1}, 'constant-cloud')
     disp(['Avg. change in variance (constant-cloud): ' ...
         sprintf('%0.2f', nanmean(cerrs(:,end-1)))]);
     [h,p,ci] = ttest(cerrs(:,end-1));
-    disp(['P-value for whether constant-cloud is not = 0: ' ...
-        sprintf('%0.3f', p)]);
+    disp(['P-value for whether constant-cloud is not = 0: ' num2str(p)]);
 end
 
 % for selecting example session/target:
